@@ -5,7 +5,7 @@ class AuthenticationService{
     }
 
     isUserLoggedIn(){
-        let email = sessionStorage.getItem(this.AUTHENTICATION_KEY);
+        let email = this.getUserEmail();
         console.log(email === null);
         if(email !== null){
 
@@ -16,6 +16,10 @@ class AuthenticationService{
 
     removeUserSession(){
         sessionStorage.removeItem(this.AUTHENTICATION_KEY);
+    }
+
+    getUserEmail(){
+        return sessionStorage.getItem(this.AUTHENTICATION_KEY);
     }
 }
 

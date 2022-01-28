@@ -7,6 +7,8 @@ import Register from './pages/login_register/Register';
 import MainPage from './pages/MainPage';
 import PageError from './pages/PageError';
 import AuthenticatedRoute from './components/AuthenticatedRoute';
+import Settings from './pages/Settings';
+import UserDetails from './components/UserDetails';
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
           <Route exact path="/" component={Login} />
           <AuthenticatedRoute path="/register" component={Register} />
           <AuthenticatedRoute path="/main" component={MainPage} />
+          <AuthenticatedRoute path="/settings" component={Settings} />
+          <AuthenticatedRoute path="/updateuser" component={UserDetails} />
           <Route path="*" component={PageError} />
         </Switch>
       </BrowserRouter>

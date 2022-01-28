@@ -13,12 +13,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 // for NewsApi website api
 public class NewsApi {
-	// category can be example technology%20science (%20 is whitespace)
-	
+	// category can be example technology%20science (%20 is considered whitespace)
 	public static NewsObject getNews(String category, String localdate, String key) {
-		if(key == null) {
-			key = "de30daafcb8d4b3e960359da9bd50fa2";
-		}
 	    String domain = "https://newsapi.org/v2";
 	    String compulsoryCategory = "/everything";
 	    String query = "?q=" + category;

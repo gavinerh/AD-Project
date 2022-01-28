@@ -9,10 +9,14 @@ function MainPage(){
         AuthenticationService.removeUserSession();
         history.push("/");
     }
+    const settingsHandler = () => {
+        history.push("/settings");
+    }
     return (
         <div>
             <h2>You have successfully logged in</h2>
             <button onClick={logoutHandler}>Logout</button>
+            <button onClick={settingsHandler}>Settings</button>
         </div>
     )
 }

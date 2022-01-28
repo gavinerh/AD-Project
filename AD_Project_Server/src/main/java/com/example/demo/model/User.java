@@ -14,17 +14,29 @@ public class User {
 	private String phone;
 	private String email;
 	private String password;
+	// admin or normal user
+	private String userType;
 	
-	public User() {
-		super();
-	}
-
-	public User(String name, String phone, String email, String password) {
+	public User(String name, String phone, String email, String password, String userType) {
 		super();
 		this.name = name;
 		this.phone = phone;
 		this.email = email;
 		this.password = password;
+		this.userType = userType;
+	}
+
+	public User() {
+		super();
+	}
+
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
 	}
 
 	public long getId() {
@@ -70,7 +82,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", phone=" + phone + ", email=" + email + ", password=" + password
-				+ "]";
+				+ ", userType=" + userType + "]";
 	}
 	
 	
