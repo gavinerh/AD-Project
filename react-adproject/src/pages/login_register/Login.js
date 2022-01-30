@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import AuthenticationService from '../../service/AuthenticationService';
 import UserDataService from '../../service/UserDataService';
 import {useHistory} from 'react-router-dom';
+import './login_register.css';
 
 function Login() {
     const history = useHistory();
@@ -37,24 +38,57 @@ function Login() {
                 setErrorStatement('');
                 history.push("/main");
             }).catch(response => {
-                setErrorStatement('Wrong username or password');
+                setErrorStatement('Wrong email or password');
             })
     }
 
     return (
-        <div>
-            <h1>Login</h1>
-            <form onSubmit={loginFormHandler}>
-                <label>Username: </label>
-                <input type="text" name='description' onChange={usernameChangeHandler} />
+        <div className="modal modal-signin position-static d-block py-5">
+                <div className="modal-dialog">
+                    <div className="modal-content rounded-5 shadow">
+                        <div className="modal-header pt-5 px-5 border-bottom-0">
+                            <h1 className="my-brand fw-normal">NEWSBOOK</h1>
+                        </div>
+                        <div className="modal-header px-5 border-bottom-0">
+                            <h2 className="fs-4">Login</h2>
+                        </div>
+                        
+                        <div className="modal-body p-5 pt-0">
+                            <form onSubmit={loginFormHandler}>
+                            <div className="form-floating mb-3">
+                                <input onChange={usernameChangeHandler} name="email" type="email" className="form-control rounded-4" />
+                                <label htmlFor="floatingInput">Email address</label>
+                            </div>
+                            <div className="form-floating mb-3">
+                                <input onChange={passwordChangeHandler} name="password" type="password" className="form-control rounded-4" />
+                                <label htmlFor="floatingPassword">Password</label>
+                                {errorStatement !== '' && <span className="fw-bold text-danger">{errorStatement}</span>}
+                            </div>
+                            <button onClick={loginFormHandler} className="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Login</button>
+                            </form>
+                            <hr className="my-4"></hr>
+                            <h2 className="fs-5 fw-bold mb-3">Create a new account</h2>
+                            <button className="w-100 py-2 mb-2 btn btn-outline-primary rounded-4" type="submit">
+                                Register for free
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                <br />
-                <label>Password: </label>
-                <input type="password" name='password' onChange={passwordChangeHandler} />
-                {errorStatement !== '' && <p>{errorStatement}</p>}
-                <button onClick={loginFormHandler}>Submit</button>
-            </form>
-        </div>
+        // <div>
+        //     <h1>Login</h1>
+        //     <form onSubmit={loginFormHandler}>
+        //         <label>Username: </label>
+        //         <input type="text" name='description' onChange={usernameChangeHandler} />
+
+        //         <br />
+        //         <label>Password: </label>
+        //         <input type="password" name='password' onChange={passwordChangeHandler} />
+        //         {errorStatement !== '' && <p>{errorStatement}</p>}
+        //         <button onClick={loginFormHandler}>Submit</button>
+        //     </form>
+        // </div>
     )
 }
 
