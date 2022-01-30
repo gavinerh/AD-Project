@@ -16,7 +16,7 @@ import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin()
 @RequestMapping(path="/account")
 public class AccountController {
 	@Autowired
@@ -24,9 +24,11 @@ public class AccountController {
 	
 	@PostMapping("/login")
 	public ResponseEntity<User> login(@RequestBody User user){
+		System.out.println(user);
 		User storedUser = uService.findUserByEmail(user.getEmail());
 		if(storedUser == null) return new ResponseEntity<User>(user, HttpStatus.UNAUTHORIZED);
 		if(storedUser.getEmail().equals(user.getEmail()) && storedUser.getPassword().equals(user.getPassword())) {
+			System.out.println("credentials accepted");
 			return new ResponseEntity<User>(user, HttpStatus.ACCEPTED);
 		}
 		return new ResponseEntity<User>(user, HttpStatus.UNAUTHORIZED);
