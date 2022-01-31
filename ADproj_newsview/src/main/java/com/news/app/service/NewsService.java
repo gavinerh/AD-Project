@@ -20,7 +20,7 @@ public class NewsService {
 	//HOME PAGE returning all latest articles on technology
 	public static NewsSet getNewsHome(String category, String localdate, String key) {
 		if(key == null) {
-			key = "a660825b855545d1971d84a7af17d393";
+			key = "";
 		}
 	    String domain = "https://newsapi.org/v2/everything";
 	    String query = "?q=" + category;
@@ -46,7 +46,7 @@ public class NewsService {
 	//By selecting COUNTRY or CATEGORY
 	public static NewsSet getNewsByCountryCategory(String country, String category, String key) {
 		if(key == null) {
-			key = "a660825b855545d1971d84a7af17d393";
+			key = "";
 		}		
 	    String urlString = "https://newsapi.org/v2/top-headlines"+"?country="+country+
 		    		"&category=" + category+"&apiKey=" + key;
@@ -63,7 +63,7 @@ public class NewsService {
 	//by using search bar--> at the moment only one word 
 	public static NewsSet getNewsByKeyword(String keyword, String key) {
 		if(key == null) {
-			key = "a660825b855545d1971d84a7af17d393";
+			key = "";
 		}
 	    String urlString = "https://newsapi.org/v2/everything?q=" + keyword+
 		    		"&sortBy=relevancy"+"&apiKey=" + key;
@@ -80,7 +80,7 @@ public class NewsService {
 	//by using source
 //	public static NewsSet getNewsBySource(String source1, String key) {
 //		if(key == null) {
-//			key = "a660825b855545d1971d84a7af17d393";
+//			key = "";
 //		}
 //	    String urlString = "https://newsapi.org/v2/top-headlines?sources=" + source1+
 //	    		"&apiKey=" + key;
