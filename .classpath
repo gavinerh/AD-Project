@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="AD_Project_Server/src/main/java"/>
+	<classpathentry kind="src" path="AD_Project_Server/src/test/java"/>
+	<classpathentry kind="src" path="ADProjectAndroid/app/src/androidTest/java"/>
+	<classpathentry kind="src" path="ADProjectAndroid/app/src/main/java"/>
+	<classpathentry kind="src" path="ADProjectAndroid/app/src/test/java"/>
+	<classpathentry kind="lib" path="AD_Project_Server/.mvn/wrapper/maven-wrapper.jar"/>
+	<classpathentry kind="lib" path="ADProjectAndroid/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
