@@ -5,13 +5,16 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ADProjectAndroid">
+        android:theme="@style/Theme.ADProjectAndroid"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".UserSettings"
+            android:exported="false" />
         <activity
             android:name=".ViewSettings"
             android:exported="false" />
@@ -26,9 +29,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"></activity>
     </application>
 
 </manifest>
