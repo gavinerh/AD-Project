@@ -17,4 +17,7 @@ public interface UserService {
 
     @GET("account")
     Call<User> getUser(@Path("email") String email);
+
+    @POST("account/update")
+    Call<User> updateUser(@Body User user);
 }

@@ -21,7 +21,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
-    public final String USER_CREDENTIAL = "user_credential";
+    public static final String USER_CREDENTIAL = "user_credential";
     EditText emailInput;
     EditText passwordInput;
     Button loginBtn;

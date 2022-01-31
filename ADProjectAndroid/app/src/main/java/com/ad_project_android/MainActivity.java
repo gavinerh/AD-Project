@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.ad_project_android.adapters.NewsAdapter;
+import com.ad_project_android.adapters.ViewSettingAdapter;
 import com.ad_project_android.model.NewsObject;
 import com.ad_project_android.services.ImageDownloader;
 
@@ -22,19 +23,12 @@ public class MainActivity extends AppCompatActivity {
     ImageView userIcon;
     List<NewsObject> newsObjects = new ArrayList<NewsObject>();
     private boolean isNewsDataFetched;
-    Button logout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        logout = findViewById(R.id.logout);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                logout();
-            }
-        });
+
         userIcon = findViewById(R.id.userIcon);
         createMockNewsObject(); // replace with getting json list from server must let function return true
         // after getting image url from server, go and download the images

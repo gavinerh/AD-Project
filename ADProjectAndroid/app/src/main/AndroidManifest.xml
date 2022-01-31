@@ -13,6 +13,18 @@
         android:theme="@style/Theme.ADProjectAndroid"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Feedback"
+            android:exported="false" />
+        <activity
+            android:name=".History"
+            android:exported="false" />
+        <activity
+            android:name=".AccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Preference"
+            android:exported="false" />
+        <activity
             android:name=".UserSettings"
             android:exported="false" />
         <activity
@@ -29,7 +41,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>
