@@ -6,6 +6,7 @@ import AuthenticationService from "../service/AuthenticationService";
 class SidebarComponent extends Component {
 
     render() {
+        let username = AuthenticationService.getUserEmail();
 
         return (
             <div>
@@ -42,6 +43,9 @@ class SidebarComponent extends Component {
                         <span className="my-brand-sidebar fw-normal">NEWSBOOK</span>
                     </div>
                     <hr />
+                    <form className="col-12 col-lg-auto mb-3 me-lg-3">
+                        <input type="search" className="form-control" placeholder="Search..." aria-label="Search" />
+                    </form>
                     <ul className="nav nav-pills flex-column mb-auto">
                         <li className="nav-item">
                             <a href="#" className="nav-link link-dark" aria-current="page">
@@ -75,21 +79,15 @@ class SidebarComponent extends Component {
                                 Navigation
                             </a>
                         </li>
-                        <li>
-                            <a href="#" className="nav-link link-dark">
-                                <svg className="bi me-2" width="16" height="16">
-                                    <use xlinkHref="#people-circle" />
-                                </svg>
-                                Navigation
-                            </a>
-                        </li>
                     </ul>
                     <hr />
                     <div className="dropdown">
                         <a href="#" className="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://github.com/mdo.png" alt="" width="32" height="32" className="rounded-circle me-2" />
-                            <strong>mdo</strong>
+                            <svg className="bi me-2" width="32" height="32">
+                                <use xlinkHref="#people-circle" />
+                            </svg>
+                            <strong>{username}</strong>
                         </a>
                         <ul className="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
                             <li><Link className='dropdown-item' to="/settings">Settings</Link></li>
@@ -97,8 +95,8 @@ class SidebarComponent extends Component {
                             <li>
                                 <hr className="dropdown-divider" />
                             </li>
-                            <li><a className="dropdown-item" href="#">Sign out</a></li>
-                            {/* <Link className='dropdown-item' to="/login" onClick={AuthenticationService.removeUserSession}>Sign out</Link> */}
+                            <li><Link className='dropdown-item' to="/login" onClick={AuthenticationService.removeUserSession}>Sign out</Link></li>
+                            {/* <li><a className="dropdown-item" href="#">Sign out</a></li> */}
                         </ul>
                     </div>
                 </div>

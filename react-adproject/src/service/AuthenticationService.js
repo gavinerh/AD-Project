@@ -1,25 +1,25 @@
-class AuthenticationService{
+class AuthenticationService {
     AUTHENTICATION_KEY = "authenticationKey"
-    storeUserSession(email){
+    storeUserSession(email) {
         sessionStorage.setItem(this.AUTHENTICATION_KEY, email);
     }
 
-    isUserLoggedIn(){
+    isUserLoggedIn() {
         let email = this.getUserEmail();
-        console.log(email === null);
-        if(email !== null){
+        //console.log(email === null);
+        if (email !== null) {
 
             return 'true'
         }
         return 'false';
     }
 
-    removeUserSession(){
-        sessionStorage.removeItem(this.AUTHENTICATION_KEY);
+    removeUserSession() {
+        sessionStorage.removeItem("authenticationKey");
     }
 
-    getUserEmail(){
-        return sessionStorage.getItem(this.AUTHENTICATION_KEY);
+    getUserEmail() {
+        return sessionStorage.getItem("authenticationKey");
     }
 }
 

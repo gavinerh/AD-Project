@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import AuthenticationService from '../../service/AuthenticationService';
 import UserDataService from '../../service/UserDataService';
-import {useHistory, Link} from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import './login_register.css';
 
 function Login() {
     const history = useHistory();
-    if(AuthenticationService.isUserLoggedIn() === 'true') {
+    if (AuthenticationService.isUserLoggedIn() === 'true') {
         history.push('/main');
     }
     const [errorStatement, setErrorStatement] = useState('');
@@ -44,35 +44,35 @@ function Login() {
 
     return (
         <div className="modal modal-signin position-static d-block py-5">
-                <div className="modal-dialog">
-                    <div className="modal-content rounded-5 shadow">
-                        <div className="modal-header pt-5 px-5 border-bottom-0">
-                            <h1 className="my-brand fw-normal">NEWSBOOK</h1>
-                        </div>
-                        <div className="modal-header px-5 border-bottom-0">
-                            <h2 className="fs-4">Login</h2>
-                        </div>
-                        
-                        <div className="modal-body p-5 pt-0">
-                            <form onSubmit={loginFormHandler}>
+            <div className="modal-dialog">
+                <div className="modal-content rounded-5 shadow">
+                    <div className="modal-header pt-5 px-5 border-bottom-0">
+                        <h1 className="my-brand fw-normal">NEWSBOOK</h1>
+                    </div>
+                    <div className="modal-header px-5 border-bottom-0">
+                        <h2 className="fs-4">Login</h2>
+                    </div>
+
+                    <div className="modal-body p-5 pt-0">
+                        <form onSubmit={loginFormHandler}>
                             <div className="form-floating mb-3">
-                                <input onChange={usernameChangeHandler} name="email" type="email" className="form-control rounded-4" placeholder="Email address"/>
+                                <input onChange={usernameChangeHandler} name="username" type="email" className="form-control rounded-4" placeholder="Email address" />
                                 <label htmlFor="floatingInput">Email address</label>
                             </div>
                             <div className="form-floating mb-3">
-                                <input onChange={passwordChangeHandler} name="password" type="password" className="form-control rounded-4" placeholder="Password"/>
+                                <input onChange={passwordChangeHandler} name="password" type="password" className="form-control rounded-4" placeholder="Password" />
                                 <label htmlFor="floatingPassword">Password</label>
                                 {errorStatement !== '' && <span className="fw-bold text-danger">{errorStatement}</span>}
                             </div>
                             <button onClick={loginFormHandler} className="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Login</button>
-                            </form>
-                            <hr className="my-4"></hr>
-                            <h2 className="fs-5 fw-bold mb-3">Create a new account</h2>
-                            <Link className="w-100 py-2 mb-2 btn btn-outline-primary rounded-4" to="/register">Sign up for free</Link>
-                        </div>
+                        </form>
+                        <hr className="my-4"></hr>
+                        <h2 className="fs-5 fw-bold mb-3">Create a new account</h2>
+                        <Link className="w-100 py-2 mb-2 btn btn-outline-primary rounded-4" to="/register">Sign up for free</Link>
                     </div>
                 </div>
             </div>
+        </div>
     )
 }
 

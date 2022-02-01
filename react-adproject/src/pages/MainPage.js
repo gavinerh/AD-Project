@@ -26,11 +26,11 @@ function MainPage() {
 
     <div className='wrapper'>
 
-      <div className='col-sidebar col-md-2'>
+      <div className='col-sidebar col-xs-3 col-sm-3 col-md-3 col-lg-2'>
         <SidebarComponent />
       </div>
 
-      <div className='col-articlelist col-md-10'>
+      <div className='col-articlelist col-xs-9 col-sm-9 col-md-9 col-lg-10'>
         <ArticleList />
       </div>
 
