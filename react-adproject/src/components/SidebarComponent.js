@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import './Sidebar.css';
+import AuthenticationService from "../service/AuthenticationService";
 
 class SidebarComponent extends Component {
+
     render() {
 
         return (
@@ -35,7 +37,7 @@ class SidebarComponent extends Component {
                 </svg>
 
                 {/* SIDEBAR */}
-                <div className="vh-100 d-flex flex-column flex-shrink-0 p-3 bg-light" style={{ width: 280 }}>
+                <div className="vh-100 d-flex flex-column flex-shrink-0 p-3 bg-light">
                     <div className="d-flex align-items-center mb-3 mb-md-0 me-md-auto">
                         <span className="my-brand-sidebar fw-normal">NEWSBOOK</span>
                     </div>
@@ -90,12 +92,13 @@ class SidebarComponent extends Component {
                             <strong>mdo</strong>
                         </a>
                         <ul className="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                            <li><a className="dropdown-item" href="#">Settings</a></li>
+                            <li><Link className='dropdown-item' to="/settings">Settings</Link></li>
                             <li><a className="dropdown-item" href="#">Profile</a></li>
                             <li>
                                 <hr className="dropdown-divider" />
                             </li>
                             <li><a className="dropdown-item" href="#">Sign out</a></li>
+                            {/* <Link className='dropdown-item' to="/login" onClick={AuthenticationService.removeUserSession}>Sign out</Link> */}
                         </ul>
                     </div>
                 </div>

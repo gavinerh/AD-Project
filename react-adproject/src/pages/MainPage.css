@@ -1,4 +1,14 @@
-.row-mainPage {
+.wrapper {
   display: flex;
-  flex-direction: row;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.col-sidebar {
+  overflow: hidden;
+}
+
+.col-articlelist {
+  overflow-x: hidden;
+  overflow-y: auto;
 }

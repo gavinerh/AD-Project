@@ -23,10 +23,16 @@ function MainPage() {
   //     </div>
   // )
   return (
-    <div className='row-mainPage'>
 
-      <SidebarComponent />
-      <ArticleList />
+    <div className='wrapper'>
+
+      <div className='col-sidebar col-md-2'>
+        <SidebarComponent />
+      </div>
+
+      <div className='col-articlelist col-md-10'>
+        <ArticleList />
+      </div>
 
     </div>
   );
