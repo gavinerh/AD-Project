@@ -67,7 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void registerUser(String name, String email, String password){
         // create retrofit builder
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8081/")
+                .baseUrl("http://10.0.2.2:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

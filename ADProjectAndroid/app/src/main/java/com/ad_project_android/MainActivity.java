@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    Button logoutBtn;
     ImageView userIcon;
     List<NewsObject> newsObjects = new ArrayList<NewsObject>();
     private boolean isNewsDataFetched;
@@ -28,6 +30,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        logoutBtn = findViewById(R.id.logoutBtn);
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
+            }
+        });
 
         userIcon = findViewById(R.id.userIcon);
         createMockNewsObject(); // replace with getting json list from server must let function return true

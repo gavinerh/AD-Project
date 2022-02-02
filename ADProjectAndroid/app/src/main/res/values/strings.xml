@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">AD-Project-Android</string>
+    <string name="app_name">NEWSBOOK</string>
+    <!--    login screen-->
+    <string name="login">Login</string>
+    <string name="createAcct">Create a new account</string>
+    <string name="signUp">Sign up</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <!--    register screen-->
+    <string name="name">Name</string>
+    <string name="confirmPassword">Confirm password</string>
+
+
 </resources>
