@@ -22,9 +22,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
     public static final String USER_CREDENTIAL = "user_credential";
-    EditText emailInput;
-    EditText passwordInput;
-    Button loginBtn;
+    EditText emailInput, passwordInput;
+    Button loginBtn, regBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +39,14 @@ public class LoginActivity extends AppCompatActivity {
                 String email = emailInput.getText().toString();
                 String password = passwordInput.getText().toString();
                 checkValidity(email, password);
+            }
+        });
+        regBtn = findViewById(R.id.loginToRegisterBtn);
+        regBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -59,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
     private void checkValidity(String email, String password){
         // create retrofit builder
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8080/")
+                .baseUrl("http://10.0.2.2:8081/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

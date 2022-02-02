@@ -45,5 +45,14 @@
         android:id="@+id/loginBtn"
         />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Register"
+        android:layout_margin="20dp"
+        android:id="@+id/loginToRegisterBtn"
+        />
+
 
 </LinearLayout>

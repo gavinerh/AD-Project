@@ -15,7 +15,7 @@ public interface UserService {
     @POST("account/register")
     Call<User> registerUser(@Body User user);
 
-    @GET("account")
+    @GET("account/{email}")
     Call<User> getUser(@Path("email") String email);
 
     @POST("account/update")
