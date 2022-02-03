@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import AuthenticationService from '../../service/AuthenticationService';
 import UserDataService from '../../service/UserDataService';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory, Link, Redirect } from 'react-router-dom';
 import './login_register.css';
 
 function Login() {
     const history = useHistory();
     if (AuthenticationService.isUserLoggedIn() === 'true') {
-        history.push('/main');
+        //history.push('/main');
+        <Redirect push to="/main" />
     }
     const [errorStatement, setErrorStatement] = useState('');
     const [userCredential, setUserCredential] = useState({
