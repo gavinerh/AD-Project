@@ -50,7 +50,6 @@ public class ViewSettings extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         TextView textView = view.findViewById(R.id.settingText);
-        Toast.makeText(getApplicationContext(), String.format("%s is pressed", textView.getText()), Toast.LENGTH_SHORT).show();
         Intent intent = getLinkedIntent(textView.getText().toString());
         startActivity(intent);
     }

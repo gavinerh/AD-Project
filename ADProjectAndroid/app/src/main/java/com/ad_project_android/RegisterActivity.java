@@ -87,7 +87,6 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Sign up successful!", Toast.LENGTH_SHORT).show();
                     backToLogin();
                     return;
-
                 }
                 Toast.makeText(getApplicationContext(), "Email is already registered", Toast.LENGTH_SHORT).show();
 

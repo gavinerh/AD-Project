@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,46 +19,52 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-// error getting info from server to populate form!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 public class AccountActivity extends AppCompatActivity {
 
     EditText email;
     EditText password;
     EditText phone;
     EditText name;
+    Button updateBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
-        Intent intent = getIntent();
         email = findViewById(R.id.emailInput);
         email.setEnabled(false);
         password = findViewById(R.id.passwordInput);
         phone = findViewById(R.id.phoneInput);
         name = findViewById(R.id.nameInput);
+        updateBtn = findViewById(R.id.updateBtn);
+        updateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                User user = collateUserInfo();
+                UserService userService = getUserServiceInstance();
+                Call<User> call = userService.updateUser(user);
+                call.enqueue(new Callback<User>() {
+                    @Override
+                    public void onResponse(Call<User> call, Response<User> response) {
+                        if(response.code() == 200){
+                            finishActivity();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<User> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), "Server Error", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
         retrieveInfoFromServer();
     }
 
-    public void updateUser(View view){
-        User user = collateUserInfo();
-        UserService userService = getUserServiceInstance();
-        Call<User> call = userService.updateUser(user);
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if(response.code() == 200){
-                    Intent intent = new Intent(getApplicationContext(), ViewSettings.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Server Error", Toast.LENGTH_SHORT).show();
-            }
-        });
+    private void finishActivity(){
+        Intent intent = new Intent(getApplicationContext(), ViewSettings.class);
+        startActivity(intent);
+        finish();
     }
 
     private void retrieveInfoFromServer(){
@@ -65,6 +72,7 @@ public class AccountActivity extends AppCompatActivity {
         if(!storedEmail.equals("")){
             // create instance of UserService api class
             UserService userService = getUserServiceInstance();
+
             Call<User> call = userService.getUser(storedEmail);
             call.enqueue(new Callback<User>() {
                 @Override
