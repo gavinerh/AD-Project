@@ -18,7 +18,7 @@ public class NewsService {
 	//HOME PAGE returning all latest articles on technology
 	public static NewsSet getNewsHome(String category, String localdate, String key) {
 		if(key == null) {
-			key = "";
+			key = "de30daafcb8d4b3e960359da9bd50fa2";
 		}
 	    String domain = "https://newsapi.org/v2/everything";
 	    String query = "?q=" + category;

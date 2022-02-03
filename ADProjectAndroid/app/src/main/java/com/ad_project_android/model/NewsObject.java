@@ -1,10 +1,21 @@
 package com.ad_project_android.model;
 
 public class NewsObject {
+    private Source source;
     private String title;
     private String newsUrl;
     private String imageUrl;
     private String description;
+
+//    sourceid: `${article.source.sourceid}`,
+//    id: `${article.source.id}`,
+//    sourcename: `${article.source.name}`,
+//    author: `${article.author}`,
+//    title: `${article.title}`,
+//    description: `${article.description}`,
+//    url: `${article.url}`,
+//    imageurl: `${article.urlToImage}`,
+//    content: `${article.content}`
 
     public NewsObject(String title, String newsUrl, String imageUrl, String description) {
         this.title = title;
@@ -46,5 +57,26 @@ public class NewsObject {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+}
+
+class Source{
+    private String id;
+    private String name;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
