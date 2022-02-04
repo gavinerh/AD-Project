@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,11 +15,13 @@ import com.example.demo.Repository.ArticlesRepo;
 import com.example.demo.Repository.SourceRepo;
 import com.example.demo.model.Articles;
 import com.example.demo.model.NewsSet;
+import com.example.demo.model.User;
 import com.example.demo.service.NewsService;
 
-@CrossOrigin(origins="http://localhost:3000")
+
 @RestController
-@RequestMapping("/newsapi")
+@CrossOrigin()
+@RequestMapping(path="/newsapi")
 public class NewsController {
 	
 	@Autowired
@@ -30,20 +34,30 @@ public class NewsController {
 //		return NewsService.getNewsHome("tech", null, null);
 //	}
 	
-	@RequestMapping(value="/")
-	public List<Articles> HomePage() {
+	@GetMapping(value="/")
+	public ResponseEntity<List<Articles>> HomePage() {
 		//created results ns1
 		NewsSet ns1 = NewsService.getNewsHome("technology", null, null);
 		
 		//just testing db
 		List<Articles> alist = ns1.getArticles();
-		for(Articles art:alist) {
-			//--> to extract sources if need be
-			srepo.save(art.getSource());
-			//--> to save bookmarked articles
-			arepo.save(art);
-		}
-		return alist;
+		System.out.println(alist.get(1).getTitle());
+//		for(Articles art:alist) {
+//			//--> to extract sources if need be
+//			srepo.save(art.getSource());
+//			//--> to save bookmarked articles
+//			arepo.save(art);
+//		}
+		return new ResponseEntity<List<Articles>>(alist, HttpStatus.OK);
+	}
+	@GetMapping("/news")
+	public ResponseEntity<List<Articles>> newsPage() {
+		//created results ns1
+		NewsSet ns1 = NewsService.getNewsHome("technology", null, null);
+
+		List<Articles> alist = ns1.getArticles();
+		System.out.println(alist.get(1).getTitle());
+		return new ResponseEntity<List<Articles>>(alist, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{country}/{category}")

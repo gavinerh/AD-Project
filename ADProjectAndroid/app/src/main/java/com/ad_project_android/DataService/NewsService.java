@@ -8,6 +8,6 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface NewsService {
-    @GET("newsapi")
+    @GET("newsapi/news")
     Call<List<NewsObject>> getNews();
 }
