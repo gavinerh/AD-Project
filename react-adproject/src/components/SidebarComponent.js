@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 import './Sidebar.css';
 import AuthenticationService from "../service/AuthenticationService";
+import WeatherComponent from './WeatherComponent';
 
 class SidebarComponent extends Component {
 
@@ -43,9 +44,14 @@ class SidebarComponent extends Component {
                         <span className="my-brand-sidebar fw-normal">NEWSBOOK</span>
                     </div>
                     <hr />
-                    <form className="col-12 col-lg-auto mb-3 me-lg-3">
+                    {/* weather info */}
+                    <WeatherComponent />
+                    {/* search bar */}
+                    <form className="col-12 col-lg-auto mt-3 mb-3 me-lg-3">
                         <input type="search" className="form-control" placeholder="Search..." aria-label="Search" />
                     </form>
+
+                    {/* navigation links */}
                     <ul className="nav nav-pills flex-column mb-auto">
                         <li className="nav-item">
                             <a href="#" className="nav-link link-dark" aria-current="page">
@@ -90,13 +96,12 @@ class SidebarComponent extends Component {
                             <strong>{username}</strong>
                         </a>
                         <ul className="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                            <li><Link className='dropdown-item' to="/settings">Settings</Link></li>
-                            <li><a className="dropdown-item" href="#">Profile</a></li>
+                            <li><a className="dropdown-item" href="#">News preferences</a></li>
+                            <li><Link className='dropdown-item' to="/updateuser">Settings</Link></li>
                             <li>
                                 <hr className="dropdown-divider" />
                             </li>
                             <li><Link className='dropdown-item' to="/login" onClick={AuthenticationService.removeUserSession}>Sign out</Link></li>
-                            {/* <li><a className="dropdown-item" href="#">Sign out</a></li> */}
                         </ul>
                     </div>
                 </div>
