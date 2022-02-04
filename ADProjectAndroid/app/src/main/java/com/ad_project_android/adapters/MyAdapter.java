@@ -2,6 +2,8 @@ package com.ad_project_android.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import androidx.annotation.NonNull;
 import com.ad_project_android.R;
 import com.ad_project_android.model.NewsObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,12 +24,13 @@ public class MyAdapter extends ArrayAdapter<Object> {
     private final Context context;
     private Boolean like;
     protected List<NewsObject> myitems = new ArrayList<>();
+    private ArrayList<File> files = null;
 
-    public MyAdapter(Context context, List<NewsObject> myitems) {
+    public MyAdapter(Context context, List<NewsObject> myitems, ArrayList<File> files) {
         super(context, R.layout.row);
         this.context = context;
         this.myitems = myitems;
-
+        this.files = files;
         addAll(new Object[myitems.size()]);
     }
 
@@ -42,10 +46,11 @@ public class MyAdapter extends ArrayAdapter<Object> {
 
         // set the image for ImageView
         ImageView imageView = view.findViewById(R.id.imageView);
+
 //        int id = context.getResources().getIdentifier(myitems.get(pos).getToons(),
 //            "drawable", context.getPackageName());
         imageView.setImageResource(R.drawable.user_icon);
-
+        setImageBitmap(files.get(pos), imageView);
         // set the text for TextView
         TextView textView = view.findViewById(R.id.textView);
         textView.setText(myitems.get(pos).getTitle());
@@ -98,5 +103,10 @@ public class MyAdapter extends ArrayAdapter<Object> {
     @Override
     public int getCount() {
         return myitems.size();
+    }
+
+    private void setImageBitmap(File f, ImageView imgView){
+        Bitmap bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
+        imgView.setImageBitmap(bitmap);
     }
 }

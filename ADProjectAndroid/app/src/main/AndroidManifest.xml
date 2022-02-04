@@ -12,6 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/FullScreen"
         android:usesCleartextTraffic="true">
+        <service
+            android:name=".MyNewsService"
+            android:enabled="true"
+            android:exported="true"></service>
+
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />

@@ -1,6 +1,8 @@
 package com.ad_project_android.model;
 
-public class NewsObject {
+import java.io.Serializable;
+
+public class NewsObject implements Serializable {
     private String title;
     private String url;
     private String urlToImage;

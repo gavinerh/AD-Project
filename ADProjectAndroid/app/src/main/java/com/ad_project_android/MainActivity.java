@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
@@ -41,8 +44,32 @@ public class MainActivity extends AppCompatActivity {
 
     Button logoutBtn;
     ImageView userIcon;
-    public static List<NewsObject> newsObjects = new ArrayList<NewsObject>();
+    public static ArrayList<NewsObject> newsObjects = new ArrayList<NewsObject>();
     private boolean isNewsDataFetched = false;
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getBundleExtra("BUNDLE");
+            if(bundle != null){
+                ArrayList<File> files = (ArrayList<File>) bundle.getSerializable("FILES");
+                setadaptor(newsObjects, files);
+            }
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiver, new IntentFilter(MyNewsService.NOTIFICATION));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,23 +78,6 @@ public class MainActivity extends AppCompatActivity {
         retrieveInfoFromServer();
 
         Log.d("News onCreate",""+newsObjects.size());
-
-        //logoutBtn = findViewById(R.id.logoutBtn);
-        //logoutBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                logout();
-//            }
-//        });
-
-//        userIcon = findViewById(R.id.userIcon);
-        //createMockNewsObject(); // replace with getting json list from server must let function return true
-        // after getting image url from server, go and download the images
-        if(isNewsDataFetched){ // use this function inside the onSuccess retrofit call
-
-            //downloadImages();
-        }
-//        NewsAdapter adapter = new NewsAdapter(this, newsObjects);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -113,34 +123,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void createMockNewsObject(){
-        String imageUrl = "https://sg.images.search.yahoo.com/images/view;_ylt=AwrwJU2ZQPdha3IAQ0Ml4gt.;_ylu=c2VjA3NyBHNsawNpbWcEb2lkA2FjZGNhZjgxMGNiYTVjNTA4YTc5ODVhY2RiZjFkYTgyBGdwb3MDNgRpdANiaW5n?back=https%3A%2F%2Fsg.images.search.yahoo.com%2Fsearch%2Fimages%3Fp%3Drandom%2Bimagge%26type%3DE210SG714G0%26fr%3Dmcafee%26fr2%3Dpiv-web%26tab%3Dorganic%26ri%3D6&w=564&h=634&imgurl=images6.fanpop.com%2Fimage%2Fphotos%2F42800000%2Frandom-random-42843735-564-634.jpg&rurl=http%3A%2F%2Fwww.fanpop.com%2Fclubs%2Frandom%2Fimages%2F42843735%2Ftitle%2Frandom-photo&size=52.3KB&p=random+imagge&oid=acdcaf810cba5c508a7985acdbf1da82&fr2=piv-web&fr=mcafee&tt=random+-+Random+Photo+%2842843735%29+-+Fanpop&b=0&ni=21&no=6&ts=&tab=organic&sigr=xM7r3jthWpxd&sigb=nnCOiXL7hvUQ&sigi=jxv8cQ_Vc7MC&sigt=1.zBgnZIXzvm&.crumb=b0UsnYb3SNe&fr=mcafee&fr2=piv-web&type=E210SG714G0";
-        newsObjects.add(new NewsObject("Random news title", imageUrl, imageUrl, "Random description for news title"));
-        newsObjects.add(new NewsObject("Random news title", imageUrl, imageUrl, "Random description for news title"));
-        newsObjects.add(new NewsObject("Random news title", imageUrl, imageUrl, "Random description for news title"));
-        newsObjects.add(new NewsObject("Random news title", imageUrl, imageUrl, "Random description for news title"));
-        newsObjects.add(new NewsObject("Random news title", imageUrl, imageUrl, "Random description for news title"));
-        newsObjects.add(new NewsObject("Random news title", imageUrl, imageUrl, "Random description for news title"));
-        newsObjects.add(new NewsObject("Random news title", imageUrl, imageUrl, "Random description for news title"));
-        newsObjects.add(new NewsObject("Random news title", imageUrl, imageUrl, "Random description for news title"));
-        newsObjects.add(new NewsObject("Random news title", imageUrl, imageUrl, "Random description for news title"));
-        isNewsDataFetched = true;
-    }
-
-    private void downloadImages(){
-        // download images from received image url
-        for(int i=0; i<newsObjects.size(); i++){
-            String filename = "image";
-            filename += String.format("%s", i);
-            File f = initFile(filename);
-            ImageDownloader.downloadImage(newsObjects.get(i).getImageUrl(), f);
-        }
-    }
-
-    private File initFile(String filename){
-        File f = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        return new File(f, filename);
-    }
 
     private void logout(){
         removeStoredPreference();
@@ -173,9 +155,10 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(Call<List<NewsObject>> call, Response<List<NewsObject>> response) {
                     if(response.code() == 200){
                         // populate the form
-                        newsObjects = response.body();
+                        newsObjects = (ArrayList<NewsObject>) response.body();
                         Log.d("News onResponse",""+newsObjects.size());
-                        setadaptor(newsObjects);
+                        startService();
+//                        setadaptor(newsObjects);
                     }
                 }
                 @Override
@@ -185,12 +168,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
     }
-    private void setadaptor(List<NewsObject> newsObjects){
+    private void setadaptor(List<NewsObject> newsObjects, ArrayList<File> files){
         MyAdapter adapter;
         Toolbar mToolbar;
         ListView listView = findViewById(R.id.listView);
         if (listView != null) {
-            adapter = new MyAdapter(this,newsObjects );
+            adapter = new MyAdapter(this,newsObjects, files);
             listView.setAdapter(adapter);
         }
         mToolbar = findViewById(R.id.main_toolbar);
@@ -201,6 +184,14 @@ public class MainActivity extends AppCompatActivity {
             Log.d("News Links","0 items");
         }
 
+    }
+
+    private void startService(){
+        Intent intent = new Intent(getApplicationContext(), MyNewsService.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("NEWSOBJECT", newsObjects);
+        intent.putExtra("BUNDLE", bundle);
+        startService(intent);
     }
 
 }
