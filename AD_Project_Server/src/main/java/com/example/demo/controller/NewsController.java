@@ -8,12 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Repository.ArticlesRepo;
 import com.example.demo.Repository.SourceRepo;
 import com.example.demo.model.Articles;
+import com.example.demo.model.DislikedArticle;
 import com.example.demo.model.NewsSet;
 import com.example.demo.model.User;
 import com.example.demo.service.NewsService;
@@ -84,5 +87,15 @@ public class NewsController {
 //		return NewsService.getNewsBySource(source1, null);
 //	}
 		
+	@PostMapping(path="/like")
+	public void likeNews(@RequestBody Articles article){
+		DislikedArticle a = new DislikedArticle(article.getTitle(), article.getDescription(), article.getUrl());
+		
+	}
+	
+	@PostMapping(path="/dislike")
+	public void dislikeNews(@RequestBody Articles article) {
+		System.out.println(article);
+	}
 }
 

@@ -10,25 +10,17 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ad_project_android.DataService.NewsService;
-import com.ad_project_android.DataService.UserService;
 import com.ad_project_android.adapters.MyAdapter;
-import com.ad_project_android.adapters.NewsAdapter;
-import com.ad_project_android.adapters.ViewSettingAdapter;
 import com.ad_project_android.model.NewsObject;
-import com.ad_project_android.model.User;
-import com.ad_project_android.services.ImageDownloader;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,7 +32,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterInterface {
 
     Button logoutBtn;
     ImageView userIcon;
@@ -194,4 +186,9 @@ public class MainActivity extends AppCompatActivity {
         startService(intent);
     }
 
+    @Override
+    public void sendNewsObjectPosition(int position, int preference) {
+        System.out.println(position);
+        System.out.println(preference);
+    }
 }

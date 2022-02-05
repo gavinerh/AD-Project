@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.ad_project_android.AdapterInterface;
 import com.ad_project_android.R;
 import com.ad_project_android.model.NewsObject;
 
@@ -20,11 +21,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyAdapter extends ArrayAdapter<Object> {
+public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface {
     private final Context context;
     private Boolean like;
     protected List<NewsObject> myitems = new ArrayList<>();
     private ArrayList<File> files = null;
+    AdapterInterface adapterInterface;
 
     public MyAdapter(Context context, List<NewsObject> myitems, ArrayList<File> files) {
         super(context, R.layout.row);
@@ -68,6 +70,7 @@ public class MyAdapter extends ArrayAdapter<Object> {
                     likeBtn.setImageResource(R.drawable.like_filled);
                     dislikeBtn.setImageResource(R.drawable.dislike_nofill);
                     like = true;
+//                    sendNewsObjectPosition(pos, 1);
                     }
                     else{
                         likeBtn.setImageResource(R.drawable.like_nofill);
@@ -84,6 +87,7 @@ public class MyAdapter extends ArrayAdapter<Object> {
                         dislikeBtn.setImageResource(R.drawable.dislike_filled);
                         likeBtn.setImageResource(R.drawable.like_nofill);
                         like = false;
+//                        sendNewsObjectPosition(pos, -1);
                     }
                     else{
                         dislikeBtn.setImageResource(R.drawable.dislike_nofill);
@@ -108,5 +112,10 @@ public class MyAdapter extends ArrayAdapter<Object> {
     private void setImageBitmap(File f, ImageView imgView){
         Bitmap bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
         imgView.setImageBitmap(bitmap);
+    }
+
+    @Override
+    public void sendNewsObjectPosition(int position, int preference) {
+        adapterInterface.sendNewsObjectPosition(position, preference);
     }
 }

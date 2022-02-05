@@ -29,8 +29,6 @@ public class Articles {
 	private String urlToImage;
 	private String publishedAt;
 	private String content;
-	private String likeUrl;
-	private String dislikeUrl;
 
 }
 

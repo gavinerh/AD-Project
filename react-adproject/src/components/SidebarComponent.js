@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import './Sidebar.css';
 import AuthenticationService from "../service/AuthenticationService";
 import WeatherComponent from './WeatherComponent';
+import useEventListener from '@use-it/event-listener';
+import ArticlesService from '../service/ArticlesService';
 
 class SidebarComponent extends Component {
 
@@ -47,8 +49,8 @@ class SidebarComponent extends Component {
                     {/* weather info */}
                     <WeatherComponent />
                     {/* search bar */}
-                    <form className="col-12 col-lg-auto mt-3 mb-3 me-lg-3">
-                        <input type="search" className="form-control" placeholder="Search..." aria-label="Search" />
+                    <form className="col-12 col-lg-auto mt-3 mb-3 me-lg-3" onSubmit={this.formSearchHandler}>
+                        <input onChange={this.searchInputHandler} type="search" className="form-control" placeholder="Search..." aria-label="Search" />
                     </form>
 
                     {/* navigation links */}

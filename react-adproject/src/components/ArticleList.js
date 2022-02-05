@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ArticlesService from "../service/ArticlesService";
 import ArticleService from '../service/ArticlesService';
 
 export default class ArticleList extends Component {
@@ -6,12 +7,21 @@ export default class ArticleList extends Component {
     constructor(props) {
         super(props);
         this.retrieveArticles = this.retrieveArticles.bind(this);
-
+        this.onLikeClickListener = this.onLikeClickListener.bind(this);
+        this.onDislikeClickListener = this.onDislikeClickListener.bind(this);
         this.state = {
             articles: [],
             isLoading: true,
             errors: null
         };
+    }
+
+    onLikeClickListener(article){
+        ArticlesService.likeArticle(article);
+    }
+
+    onDislikeClickListener(article){
+        ArticleService.dislikeArticle(article);
     }
 
     componentDidMount() {
@@ -102,7 +112,7 @@ export default class ArticleList extends Component {
                                                             </button>
                                                         </div>
                                                         <div className="col">
-                                                            <button className="py-2 mb-2 btn btn-outline-success rounded-4" type="submit">
+                                                            <button className="py-2 mb-2 btn btn-outline-success rounded-4" type="submit" onClick={() => this.onLikeClickListener(article)}>
                                                                 <svg className="bi bi-hand-thumbs-up mx-1" width="1em" height="1em">
                                                                     <use xlinkHref="#hand-thumbs-up" />
                                                                 </svg>
@@ -110,7 +120,7 @@ export default class ArticleList extends Component {
                                                             </button>
                                                         </div>
                                                         <div className="col">
-                                                            <button className="py-2 mb-2 btn btn-outline-danger rounded-4" type="submit">
+                                                            <button className="py-2 mb-2 btn btn-outline-danger rounded-4" type="submit" onClick={() => this.onDislikeClickListener(article)}>
                                                                 <svg className="bi bi-hand-thumbs-down mx-1" width="1em" height="1em">
                                                                     <use xlinkHref="#hand-thumbs-down" />
                                                                 </svg>
