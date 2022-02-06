@@ -28,7 +28,6 @@ class WeatherComponent extends Component {
                     content: info,
                     isLoaded: true
                 });
-                console.log(this.state.content.forecast);
             })
             .catch(error => this.setState({ error: error.message, isLoaded: true }));
     }
