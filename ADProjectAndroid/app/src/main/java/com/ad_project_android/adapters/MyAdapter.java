@@ -65,6 +65,7 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
         // set the image for ImageView
         ImageView imageView = view.findViewById(R.id.imageView);
         imageView.setImageResource(R.drawable.ic_baseline_image_24);
+
         setImageBitmap(files.get(pos), imageView, myitems.get(pos));
         // set headline
         TextView textView = view.findViewById(R.id.headlineText);
@@ -125,8 +126,9 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
 
         return view;
     }
-    public void filterlist(List<NewsObject> filterlist){
+    public void filterlist(List<NewsObject> filterlist, ArrayList<File> filterfile){
         myitems = filterlist;
+        files = filterfile;
         notifyDataSetChanged();
     }
 

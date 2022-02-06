@@ -60,8 +60,8 @@ public class NewsController {
 	@GetMapping("/news")
 	public ResponseEntity<List<Articles>> newsPage() {
 		//created results ns1
-//		arepo.deleteAll();
-//		srepo.deleteAll();
+		arepo.deleteAll();
+		srepo.deleteAll();
 		List<Category> cats = crepo.findAll();
 		List<Articles> alist = new ArrayList<>();
 		for(Category s:cats) {

@@ -82,14 +82,6 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         getMenuInflater().inflate(R.menu.main_menu,menu);
         MenuItem menuItem = menu.findItem(R.id.app_bar_search);
         SearchView searchView = (SearchView) menuItem.getActionView();
-        MenuItem logout = menu.findItem(R.id.logout);
-        logout.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                logout();
-                return false;
-            }
-        });
         MenuItem setting = menu.findItem(R.id.setting);
         setting.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -107,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //filter(newText);
+                filter(newText);
                 return false;
             }
         });
@@ -120,20 +112,6 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         startActivity(intent);
     }
 
-
-    private void logout(){
-        removeStoredPreference();
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
-    private void removeStoredPreference(){
-        SharedPreferences pref = getSharedPreferences("user_credential", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.remove("email");
-        editor.commit();
-    }
     private NewsService getNewsServiceInstance() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8080/")
@@ -182,6 +160,17 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
             Log.d("News Links","0 items");
         }
 
+    }
+    private void filter(String text){
+        List<NewsObject> filteritems = new ArrayList<>();
+        ArrayList<File> filterFile = new ArrayList<>();
+        for(int i=0; i<dynamicNewsObject.size(); i++){
+            if(dynamicNewsObject.get(i).getTitle().toLowerCase().contains(text.toLowerCase())){
+                filteritems.add(dynamicNewsObject.get(i));
+                filterFile.add(listOfFiles.get(i));
+            }
+        }
+        adapter.filterlist(filteritems,filterFile);
     }
 
     private void populateAdaptor(){

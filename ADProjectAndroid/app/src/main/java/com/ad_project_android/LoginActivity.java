@@ -24,6 +24,8 @@ public class LoginActivity extends AppCompatActivity {
     public static final String USER_CREDENTIAL = "user_credential";
     EditText emailInput, passwordInput;
     Button loginBtn, regBtn;
+    private long pressTime;
+    private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,20 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if((pressTime+2000)>System.currentTimeMillis()){
+            if(toast!=null)toast.cancel();
+            super.onBackPressed();
+            return;
+        }
+        else{
+            toast = Toast.makeText(this,"Press again to exit!",Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        pressTime = System.currentTimeMillis();
     }
 
     @Override

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.accounts.Account;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -45,11 +46,15 @@ public class ViewSettings extends AppCompatActivity implements AdapterView.OnIte
         listOfSetting.add(new SettingModel("setting", "Account Settings"));
         listOfSetting.add(new SettingModel("history", "View History"));
         listOfSetting.add(new SettingModel("feedback", "Feedback"));
+        listOfSetting.add(new SettingModel("ic_baseline_logout_24", "Logout"));
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         TextView textView = view.findViewById(R.id.settingText);
+        if(textView.getText().toString()=="Logout"){
+           logout();
+        }
         Intent intent = getLinkedIntent(textView.getText().toString());
         startActivity(intent);
     }
@@ -67,5 +72,19 @@ public class ViewSettings extends AppCompatActivity implements AdapterView.OnIte
             default:
                 return null;
         }
+    }
+    private void logout(){
+        removeStoredPreference();
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra("finish", true);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // To clean up all activities
+        startActivity(intent);
+        finish();
+    }
+    private void removeStoredPreference(){
+        SharedPreferences pref = getSharedPreferences("user_credential", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.remove("email");
+        editor.commit();
     }
 }
