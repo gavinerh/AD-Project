@@ -11,6 +11,7 @@ public class NewsObject implements Serializable {
     private String description;
     private Bitmap bitmap;
 
+
 //    sourceid: `${article.source.sourceid}`,
 //    id: `${article.source.id}`,
 //    sourcename: `${article.source.name}`,
@@ -58,6 +59,14 @@ public class NewsObject implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 }
 

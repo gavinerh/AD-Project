@@ -27,8 +27,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MyNewsService extends IntentService {
-    private List<NewsObject> newsObjects = null;
-    private ArrayList<File> listOfFiles = new ArrayList<>();
+    private NewsObject newsObject = null;
+    private File file = null;
     private int result = Activity.RESULT_CANCELED;
     public static final String NOTIFICATION = "com.ad_project_android.MyNewsService";
     public String tag = "Download service";
@@ -50,8 +50,8 @@ public class MyNewsService extends IntentService {
         assert intent != null;
         Bundle bundle = intent.getBundleExtra("BUNDLE");
         if(bundle != null){
-            newsObjects = (ArrayList<NewsObject>) bundle.getSerializable("NEWSOBJECT");
-            listOfFiles = (ArrayList<File>) bundle.getSerializable("FILES");
+            newsObject = (NewsObject) bundle.getSerializable("NEWSOBJECT");
+            file = (File) bundle.getSerializable("FILE");
             downloadImages();
             notifyDownloadComplete();
         }
@@ -59,13 +59,13 @@ public class MyNewsService extends IntentService {
 
     private void downloadImages(){
         // download images from received image url
-        for(int i=0; i<newsObjects.size(); i++){
-            ImageDownloader.downloadImage(newsObjects.get(i).getImageUrl(), listOfFiles.get(i));
-        }
+        ImageDownloader.downloadImage(newsObject.getImageUrl(), file);
     }
 
     private void notifyDownloadComplete(){
         Intent intent = new Intent(NOTIFICATION);
+        intent.putExtra("FILE", file);
+        intent.putExtra("NEWSOBJECT", newsObject);
         sendBroadcast(intent);
     }
 }

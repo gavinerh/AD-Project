@@ -46,6 +46,9 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
             // then attachToRoot should be 'false' (which is in our case)
             view = inflater.inflate(R.layout.row, parent, false);
         }
+        if(myitems.size() == 0){
+            return view;
+        }
 
         // set the image for ImageView
         ImageView imageView = view.findViewById(R.id.imageView);
@@ -54,7 +57,7 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
 //            "drawable", context.getPackageName());
         imageView.setImageResource(R.drawable.user_icon);
 
-        setImageBitmap(files.get(pos), imageView);
+        setImageBitmap(files.get(pos), imageView, myitems.get(pos));
         // set the text for TextView
         TextView textView = view.findViewById(R.id.textView);
         textView.setText(myitems.get(pos).getTitle());
@@ -111,8 +114,11 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
         return myitems.size();
     }
 
-    private void setImageBitmap(File f, ImageView imgView){
-        Bitmap bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
+    private void setImageBitmap(File f, ImageView imgView, NewsObject newsObject){
+        Bitmap bitmap = null;
+        if(newsObject.getBitmap() != null){
+            bitmap = newsObject.getBitmap();
+        }
         imgView.setImageBitmap(bitmap);
     }
 

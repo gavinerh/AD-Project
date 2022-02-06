@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -38,12 +40,18 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
 
     public static ArrayList<NewsObject> newsObjects = new ArrayList<NewsObject>();
     private ArrayList<File> listOfFiles = new ArrayList<>();
+    private ArrayList<NewsObject> dynamicNewsObject = new ArrayList<>();
+    private MyAdapter adapter = null;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            setadaptor(newsObjects);
-
+            File file = (File) intent.getSerializableExtra("FILE");
+            NewsObject newsObject = (NewsObject) intent.getSerializableExtra("NEWSOBJECT");
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+            newsObject.setBitmap(bitmap);
+            dynamicNewsObject.add(newsObject);
+            adapter.notifyDataSetChanged();
         }
     };
 
@@ -146,8 +154,8 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
                         // populate the form
                         newsObjects = (ArrayList<NewsObject>) response.body();
                         initFilesList();
-                        setadaptor(newsObjects);
-                        startService();
+                        setadaptor(dynamicNewsObject);
+                        populateAdaptor();
 //                        setadaptor(newsObjects);
                     }
                 }
@@ -159,7 +167,6 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
             });
     }
     private void setadaptor(List<NewsObject> newsObjects){
-        MyAdapter adapter;
         Toolbar mToolbar;
         ListView listView = findViewById(R.id.listView);
         if (listView != null) {
@@ -176,11 +183,19 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
 
     }
 
-    private void startService(){
+    private void populateAdaptor(){
+        List<NewsObject> newsObjectCopy = new ArrayList<>();
+        for(int i=0; i<newsObjects.size(); i++){
+            startService(newsObjects.get(i), listOfFiles.get(i));
+
+        }
+    }
+
+    private void startService(NewsObject newsObject, File file){
         Intent intent = new Intent(getApplicationContext(), MyNewsService.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("NEWSOBJECT", newsObjects);
-        bundle.putSerializable("FILES", listOfFiles);
+        bundle.putSerializable("NEWSOBJECT", newsObject);
+        bundle.putSerializable("FILE", file);
         intent.putExtra("BUNDLE", bundle);
         startService(intent);
     }
