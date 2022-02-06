@@ -53,6 +53,7 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
 //        int id = context.getResources().getIdentifier(myitems.get(pos).getToons(),
 //            "drawable", context.getPackageName());
         imageView.setImageResource(R.drawable.user_icon);
+
         setImageBitmap(files.get(pos), imageView);
         // set the text for TextView
         TextView textView = view.findViewById(R.id.textView);

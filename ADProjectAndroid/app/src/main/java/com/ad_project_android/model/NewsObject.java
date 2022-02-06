@@ -1,5 +1,7 @@
 package com.ad_project_android.model;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 
 public class NewsObject implements Serializable {
@@ -7,6 +9,7 @@ public class NewsObject implements Serializable {
     private String url;
     private String urlToImage;
     private String description;
+    private Bitmap bitmap;
 
 //    sourceid: `${article.source.sourceid}`,
 //    id: `${article.source.id}`,
@@ -23,6 +26,7 @@ public class NewsObject implements Serializable {
         this.url = newsUrl;
         this.urlToImage = imageUrl;
         this.description = description;
+        bitmap = null;
     }
 
     public NewsObject() {

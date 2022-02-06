@@ -8,9 +8,36 @@ import ArticlesService from '../service/ArticlesService';
 
 class SidebarComponent extends Component {
 
+    constructor(props){
+        super(props)
+        this.searchInputHandler = this.searchInputHandler.bind(this);
+        this.formSearchHandler = this.formSearchHandler.bind(this);
+
+        this.state = {
+            search: ''
+        }
+    }
+
+    formSearchHandler(e) {
+        e.preventDefault();
+        ArticlesService.practiceSearch(this.state.search)
+        .then(response => {
+            console.log("no error");
+            console.log(response);
+        })
+        .catch(error => console.log(error));
+    }
+
+    searchInputHandler(e){
+        this.setState({
+            search: e.target.value
+        })
+    }
+
     render() {
         let username = AuthenticationService.getUserEmail();
 
+        
         return (
             <div>
                 {/* SIDEBAR ICONS */}

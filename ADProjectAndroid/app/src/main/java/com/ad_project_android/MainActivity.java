@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.ad_project_android.DataService.NewsService;
 import com.ad_project_android.adapters.MyAdapter;
 import com.ad_project_android.model.NewsObject;
+import com.ad_project_android.services.ImageDownloader;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,19 +36,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements AdapterInterface {
 
-    Button logoutBtn;
-    ImageView userIcon;
     public static ArrayList<NewsObject> newsObjects = new ArrayList<NewsObject>();
-    private boolean isNewsDataFetched = false;
+    private ArrayList<File> listOfFiles = new ArrayList<>();
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Bundle bundle = intent.getBundleExtra("BUNDLE");
-            if(bundle != null){
-                ArrayList<File> files = (ArrayList<File>) bundle.getSerializable("FILES");
-                setadaptor(newsObjects, files);
-            }
+            setadaptor(newsObjects);
+
         }
     };
 
@@ -148,7 +145,8 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
                     if(response.code() == 200){
                         // populate the form
                         newsObjects = (ArrayList<NewsObject>) response.body();
-                        Log.d("News onResponse",""+newsObjects.size());
+                        initFilesList();
+                        setadaptor(newsObjects);
                         startService();
 //                        setadaptor(newsObjects);
                     }
@@ -160,12 +158,12 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
                 }
             });
     }
-    private void setadaptor(List<NewsObject> newsObjects, ArrayList<File> files){
+    private void setadaptor(List<NewsObject> newsObjects){
         MyAdapter adapter;
         Toolbar mToolbar;
         ListView listView = findViewById(R.id.listView);
         if (listView != null) {
-            adapter = new MyAdapter(this,newsObjects, files, this);
+            adapter = new MyAdapter(this,newsObjects, listOfFiles, this);
             listView.setAdapter(adapter);
         }
         mToolbar = findViewById(R.id.main_toolbar);
@@ -182,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         Intent intent = new Intent(getApplicationContext(), MyNewsService.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("NEWSOBJECT", newsObjects);
+        bundle.putSerializable("FILES", listOfFiles);
         intent.putExtra("BUNDLE", bundle);
         startService(intent);
     }
@@ -204,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if(response.code() == 200){
-                    Toast.makeText(MainActivity.this, "Like preference is registered", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Preference is registered", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -214,5 +213,19 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
             }
         });
 
+    }
+
+    private void initFilesList(){
+        for(int i=0; i<newsObjects.size(); i++){
+            String filename = "image";
+            filename += String.format("%s", i);
+            File f = initFile(filename);
+            listOfFiles.add(f);
+        }
+    }
+
+    private File initFile(String filename){
+        File f = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        return new File(f, filename);
     }
 }

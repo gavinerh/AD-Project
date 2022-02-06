@@ -23,14 +23,14 @@ class ArticleDataService {
         axios.post(`${ARTICLE_API_BASE_URL}dislike`, article);
     }
 
-    // practiceSearch(query){
-    //     console.log("practice search called");
-    //     var request = {
-    //         params: {
-    //             keyword: query
-    //         }
-    //     }
-    //     return axios.get("http://localhost:8080/practice/search", request);
-    // }
+    practiceSearch(query){
+        console.log("practice search called");
+        var request = {
+            params: {
+                keyword: query
+            }
+        }
+        return axios.get("http://localhost:8080/practice/search", request);
+    }
 }
 export default new ArticleDataService();

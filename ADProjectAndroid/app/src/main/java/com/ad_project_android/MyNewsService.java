@@ -51,30 +51,21 @@ public class MyNewsService extends IntentService {
         Bundle bundle = intent.getBundleExtra("BUNDLE");
         if(bundle != null){
             newsObjects = (ArrayList<NewsObject>) bundle.getSerializable("NEWSOBJECT");
+            listOfFiles = (ArrayList<File>) bundle.getSerializable("FILES");
             downloadImages();
             notifyDownloadComplete();
         }
     }
-    private File initFile(String filename){
-        File f = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        return new File(f, filename);
-    }
+
     private void downloadImages(){
         // download images from received image url
         for(int i=0; i<newsObjects.size(); i++){
-            String filename = "image";
-            filename += String.format("%s", i);
-            File f = initFile(filename);
-            listOfFiles.add(f);
-            ImageDownloader.downloadImage(newsObjects.get(i).getImageUrl(), f);
+            ImageDownloader.downloadImage(newsObjects.get(i).getImageUrl(), listOfFiles.get(i));
         }
     }
 
     private void notifyDownloadComplete(){
         Intent intent = new Intent(NOTIFICATION);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("FILES", listOfFiles);
-        intent.putExtra("BUNDLE", bundle);
         sendBroadcast(intent);
     }
 }
