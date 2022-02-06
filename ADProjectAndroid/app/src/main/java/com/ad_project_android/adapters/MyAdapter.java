@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 
 import com.ad_project_android.AdapterInterface;
 import com.ad_project_android.R;
@@ -51,18 +52,30 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
             return view;
         }
 
+        CardView mCardView = view.findViewById(R.id.card_view);
+        mCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //go to webview? go to external url
+                String externalUrl = myitems.get(pos).getNewsUrl();
+                Toast.makeText(context, externalUrl, Toast.LENGTH_SHORT).show();
+            }
+        });
+
         // set the image for ImageView
         ImageView imageView = view.findViewById(R.id.imageView);
-        imageView.setImageResource(R.drawable.user_icon);
+        imageView.setImageResource(R.drawable.ic_baseline_image_24);
         setImageBitmap(files.get(pos), imageView, myitems.get(pos));
-        // set the text for TextView
+        // set headline
         TextView textView = view.findViewById(R.id.headlineText);
         textView.setText(myitems.get(pos).getTitle());
-
-//        TextView desc = view.findViewById(R.id.textView3);
-//        desc.setText(myitems.get(pos).getDescription());
-
-        // set three dots menu
+        //set news source
+        TextView mSource = view.findViewById(R.id.sourceText);
+        mSource.setText(myitems.get(pos).getSource().getName());
+        // set time published
+        TextView mTime = view.findViewById(R.id.dateText);
+        mTime.setText(myitems.get(pos).getPublishedAt());
+        // set share to social media
         ImageView mShare = view.findViewById(R.id.share);
         mShare.setOnClickListener(new View.OnClickListener() {
             @Override

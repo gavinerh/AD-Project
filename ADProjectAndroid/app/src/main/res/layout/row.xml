@@ -10,8 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="6dp"
-        android:padding="5dp"
-        android:layout_margin="5dp"
+        android:layout_margin="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,16 +18,17 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="5dp">
 
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_margin="5dp"
-                android:paddingBottom="5dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
+                android:src="@drawable/ic_baseline_image_24"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/headlineText" />
@@ -55,9 +55,22 @@
                 android:layout_margin="5dp"
                 android:text="source"
                 android:textColor="@color/black"
+                app:layout_constraintBottom_toTopOf="@id/dateText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/imageView"
                 app:layout_constraintTop_toBottomOf="@id/headlineText" />
+
+            <TextView
+                android:id="@+id/dateText"
+                style="@android:style/TextAppearance.Small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="date"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toStartOf="@id/share"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <ImageView
                 android:id="@+id/share"

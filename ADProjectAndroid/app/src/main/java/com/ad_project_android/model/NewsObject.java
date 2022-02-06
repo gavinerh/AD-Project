@@ -10,24 +10,17 @@ public class NewsObject implements Serializable {
     private String urlToImage;
     private String description;
     private Bitmap bitmap;
+    private String publishedAt;
+    private Source source;
 
-
-//    sourceid: `${article.source.sourceid}`,
-//    id: `${article.source.id}`,
-//    sourcename: `${article.source.name}`,
-//    author: `${article.author}`,
-//    title: `${article.title}`,
-//    description: `${article.description}`,
-//    url: `${article.url}`,
-//    imageurl: `${article.urlToImage}`,
-//    content: `${article.content}`
-
-    public NewsObject(String title, String newsUrl, String imageUrl, String description) {
+    public NewsObject(String title, String newsUrl, String imageUrl, String description, String publishedAt, Source source) {
         this.title = title;
         this.url = newsUrl;
         this.urlToImage = imageUrl;
         this.description = description;
         bitmap = null;
+        this.publishedAt = publishedAt;
+        this.source = source;
     }
 
     public NewsObject() {
@@ -67,6 +60,21 @@ public class NewsObject implements Serializable {
 
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
+    }
+
+    public String getPublishedAt() {
+        //need to put in nicer string
+        //or calc last published
+        return publishedAt; }
+
+    public void setPublishedAt(String publishedAt) { this.publishedAt = publishedAt; }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
     }
 }
 

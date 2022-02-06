@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
                 }
                 @Override
                 public void onFailure(Call<List<NewsObject>> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(), "Apologies, Server is currently experiencing some unknown error, try again later", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Server error, please try again later", Toast.LENGTH_SHORT).show();
 
                 }
             });
