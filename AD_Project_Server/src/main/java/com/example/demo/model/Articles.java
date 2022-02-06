@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import java.time.Instant;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
+import org.ocpsoft.prettytime.PrettyTime;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,6 +34,12 @@ public class Articles {
 	private String urlToImage;
 	private String publishedAt;
 	private String content;
+	
+	public String getPublishedAt() {
+		Instant dateTime = Instant.parse(publishedAt);
+		PrettyTime p = new PrettyTime();
+		return p.format(dateTime);
+	}
 
 }
 

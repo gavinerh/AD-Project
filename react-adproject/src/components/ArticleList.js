@@ -16,11 +16,11 @@ export default class ArticleList extends Component {
         };
     }
 
-    onLikeClickListener(article){
+    onLikeClickListener(article) {
         ArticlesService.likeArticle(article);
     }
 
-    onDislikeClickListener(article){
+    onDislikeClickListener(article) {
         ArticleService.dislikeArticle(article);
     }
 
@@ -42,7 +42,7 @@ export default class ArticleList extends Component {
                     description: `${article.description}`,
                     url: `${article.url}`,
                     imageurl: `${article.urlToImage}`,
-                    content: `${article.content}`
+                    publishedAt: `${article.publishedAt}`
                 }))
             )
             //change loading state to display data--> set active article
@@ -62,7 +62,7 @@ export default class ArticleList extends Component {
                 <div className="list-group-item d-flex row">
                     {!isLoading ? (
                         articles.map(article => {
-                            const { sourceid, id, sourcename, title, description, url, imageurl, content } = article;
+                            const { sourceid, id, sourcename, title, description, url, imageurl, publishedAt } = article;
                             return (
                                 <div className="container g-3 flex-fill" key={sourceid, id, title}>
                                     {/* article icons */}
@@ -138,7 +138,7 @@ export default class ArticleList extends Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <small className="opacity-50 text-nowrap">now</small>
+                                            <small className="opacity-50 text-nowrap">{publishedAt}</small>
                                         </div>
                                     </div>
                                 </div>
