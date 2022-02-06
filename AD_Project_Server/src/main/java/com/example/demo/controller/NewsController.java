@@ -18,7 +18,6 @@ import com.example.demo.Repository.SourceRepo;
 import com.example.demo.model.Articles;
 import com.example.demo.model.DislikedArticle;
 import com.example.demo.model.NewsSet;
-import com.example.demo.model.User;
 import com.example.demo.service.NewsService;
 
 
@@ -88,14 +87,17 @@ public class NewsController {
 //	}
 		
 	@PostMapping(path="/like")
-	public void likeNews(@RequestBody Articles article){
-		DislikedArticle a = new DislikedArticle(article.getTitle(), article.getDescription(), article.getUrl());
+	public ResponseEntity<Void> likeNews(@RequestBody Articles article){
+//		DislikedArticle a = new DislikedArticle(article.getTitle(), article.getDescription(), article.getUrl());
+		System.out.println(article);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 		
 	}
 	
 	@PostMapping(path="/dislike")
-	public void dislikeNews(@RequestBody Articles article) {
+	public ResponseEntity<Void> dislikeNews(@RequestBody Articles article) {
 		System.out.println(article);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
 

@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         Toolbar mToolbar;
         ListView listView = findViewById(R.id.listView);
         if (listView != null) {
-            adapter = new MyAdapter(this,newsObjects, files);
+            adapter = new MyAdapter(this,newsObjects, files, this);
             listView.setAdapter(adapter);
         }
         mToolbar = findViewById(R.id.main_toolbar);
@@ -188,7 +188,31 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
 
     @Override
     public void sendNewsObjectPosition(int position, int preference) {
-        System.out.println(position);
-        System.out.println(preference);
+        postLikeOrDislike(position, preference);
+    }
+
+    private void postLikeOrDislike(int position, int preference){
+        NewsObject newsObject = newsObjects.get(position);
+        NewsService newsService = getNewsServiceInstance();
+        Call<Void> call = null;
+        if(preference == 1){
+            call = newsService.postLike(newsObject);
+        } else{
+            call = newsService.postDislike(newsObject);
+        }
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.code() == 200){
+                    Toast.makeText(MainActivity.this, "Like preference is registered", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Server error, please update preference later", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }

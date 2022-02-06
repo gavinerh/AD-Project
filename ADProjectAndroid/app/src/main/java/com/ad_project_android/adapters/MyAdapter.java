@@ -26,10 +26,11 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
     private Boolean like;
     protected List<NewsObject> myitems = new ArrayList<>();
     private ArrayList<File> files = null;
-    AdapterInterface adapterInterface;
+    private AdapterInterface adapterInterface;
 
-    public MyAdapter(Context context, List<NewsObject> myitems, ArrayList<File> files) {
+    public MyAdapter(Context context, List<NewsObject> myitems, ArrayList<File> files, AdapterInterface adapterInterface) {
         super(context, R.layout.row);
+        this.adapterInterface = adapterInterface;
         this.context = context;
         this.myitems = myitems;
         this.files = files;
@@ -70,7 +71,7 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
                     likeBtn.setImageResource(R.drawable.like_filled);
                     dislikeBtn.setImageResource(R.drawable.dislike_nofill);
                     like = true;
-//                    sendNewsObjectPosition(pos, 1);
+                    sendNewsObjectPosition(pos, 1);
                     }
                     else{
                         likeBtn.setImageResource(R.drawable.like_nofill);
@@ -87,7 +88,7 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
                         dislikeBtn.setImageResource(R.drawable.dislike_filled);
                         likeBtn.setImageResource(R.drawable.like_nofill);
                         like = false;
-//                        sendNewsObjectPosition(pos, -1);
+                        sendNewsObjectPosition(pos, -1);
                     }
                     else{
                         dislikeBtn.setImageResource(R.drawable.dislike_nofill);
