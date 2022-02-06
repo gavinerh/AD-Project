@@ -153,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
                     if(response.code() == 200){
                         // populate the form
                         newsObjects = (ArrayList<NewsObject>) response.body();
+                        Log.d("News OnResponse",""+newsObjects.size());
                         initFilesList();
                         setadaptor(dynamicNewsObject);
                         populateAdaptor();

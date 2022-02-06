@@ -6,9 +6,11 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.model.Articles;
 import com.example.demo.model.NewsSet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -42,14 +44,24 @@ public class NewsService {
 	}
 	
 	//By selecting COUNTRY or CATEGORY
-	public static NewsSet getNewsByCountryCategory(String country, String category, String key) {
-		if(key == null) {
-			key = "";
-		}		
+public static ArrayList<Articles> getNewsByCountryCategory(String category, String country) {
+		
+		String key = "fbbc757feb5b441b805c38dc2ad94bd3";
+		
+		if(country == null) {
+			country ="";
+		}
+		LocalDate temp = LocalDate.now();
+    	String localdate = temp.toString();
+    	String date = "&from=" + localdate;
+    	String pagesize = "&pageSize=30";
+	    String sortBy = "&sortBy=popularity";
+	    String language = "&language=en";
 	    String urlString = "https://newsapi.org/v2/top-headlines"+"?country="+country+
-		    		"&category=" + category+"&apiKey=" + key;
+		    		"&category=" + category+date+sortBy+language+pagesize+"&apiKey=" + key;
 		    try {
-		    	return queryApi(urlString);    	
+		    	NewsSet ns1 = queryApi(urlString);
+	    return ns1.getArticles();    	
 		    }catch(IOException e) {
 		    	e.printStackTrace();
 		    }catch(InterruptedException e) {

@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,17 +10,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Repository.ArticlesRepo;
+import com.example.demo.Repository.CategoryRepo;
 import com.example.demo.Repository.SourceRepo;
 import com.example.demo.model.Articles;
-import com.example.demo.model.DislikedArticle;
+import com.example.demo.model.Category;
 import com.example.demo.model.NewsSet;
+import com.example.demo.model.User;
 import com.example.demo.service.NewsService;
+import Enumerates.category;
 
 
 @RestController
@@ -30,6 +33,8 @@ public class NewsController {
 	ArticlesRepo arepo;
 	@Autowired
 	SourceRepo srepo;
+	@Autowired
+	CategoryRepo crepo;
 	
 //	@RequestMapping(value="/")
 //	public NewsSet HomePage() {
@@ -55,19 +60,33 @@ public class NewsController {
 	@GetMapping("/news")
 	public ResponseEntity<List<Articles>> newsPage() {
 		//created results ns1
-		NewsSet ns1 = NewsService.getNewsHome("technology", null, null);
+//		arepo.deleteAll();
+//		srepo.deleteAll();
+		List<Category> cats = crepo.findAll();
+		List<Articles> alist = new ArrayList<>();
+		for(Category s:cats) {
+			alist.addAll(NewsService.getNewsByCountryCategory(s.getName(),null));
+		}
 
-		List<Articles> alist = ns1.getArticles();
-		System.out.println(alist.get(1).getTitle());
-		return new ResponseEntity<List<Articles>>(alist, HttpStatus.OK);
+		System.out.println("Fetched Articles size: "+alist.size());
+		for(Articles ar:alist) {
+			srepo.saveAndFlush(ar.getSource());
+			arepo.saveAndFlush(ar);
+		}
+		List<Articles> android = new ArrayList<>();
+		for(int i = 0; i<40; i++) {
+			android.add(alist.get(i));
+		}
+		System.out.println("Articles for Android size: "+android.size());
+		return new ResponseEntity<List<Articles>>(android, HttpStatus.OK);
 	}
 	
-	@GetMapping("/{country}/{category}")
-	public List<Articles> requestByCountryAndCategory(@PathVariable
-			String country, @PathVariable String category) {
-			NewsSet nsCC = NewsService.getNewsByCountryCategory(country, category, null);
-			return nsCC.getArticles();
-	}
+//	@GetMapping("/{country}/{category}")
+//	public List<Articles> requestByCountryAndCategory(@PathVariable
+//			String country, @PathVariable String category) {
+//			NewsSet nsCC = NewsService.getNewsByCountryCategory(country, category);
+//			return nsCC.getArticles();
+//	}
 	
 	 
 //	@GetMapping(value="/{country}/{category}")
@@ -76,28 +95,16 @@ public class NewsController {
 //		return NewsService.getNewsByCountryCategory(country, category, null);
 //	}
 	
-	@GetMapping(value="/kw/{keyword}")
-	public NewsSet requestByKeywords(@PathVariable String keyword) {
-		return NewsService.getNewsByKeyword(keyword, null);
-	}
-	
+//	@GetMapping(value="/kw/{keyword}")
+//	public NewsSet requestByKeywords(@PathVariable String keyword) {
+//		return NewsService.getNewsByKeyword(keyword, null);
+//	}
+//	
 //	@GetMapping(value="/src/{source1}")
 //	public NewsSet requestBySource(@PathVariable String source1) {
 //		return NewsService.getNewsBySource(source1, null);
 //	}
-		
-	@PostMapping(path="/like")
-	public ResponseEntity<Void> likeNews(@RequestBody Articles article){
-//		DislikedArticle a = new DislikedArticle(article.getTitle(), article.getDescription(), article.getUrl());
-		System.out.println(article);
-		return new ResponseEntity<Void>(HttpStatus.OK);
-		
-	}
+}		
 	
-	@PostMapping(path="/dislike")
-	public ResponseEntity<Void> dislikeNews(@RequestBody Articles article) {
-		System.out.println(article);
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
-}
+
 
