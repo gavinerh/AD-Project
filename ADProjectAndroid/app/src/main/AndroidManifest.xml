@@ -12,10 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/FullScreen"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".WebViewActivity"
+            android:exported="false" />
+
         <service
             android:name=".MyNewsService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <activity
             android:name=".RegisterActivity"
@@ -48,9 +52,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:label=""
             android:name=".MainActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:label="" />
     </application>
 
 </manifest>

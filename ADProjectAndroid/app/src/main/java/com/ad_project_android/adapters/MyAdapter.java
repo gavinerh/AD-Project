@@ -1,5 +1,6 @@
 package com.ad_project_android.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,8 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +32,7 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
     protected List<NewsObject> myitems = new ArrayList<>();
     private ArrayList<File> files = null;
     private AdapterInterface adapterInterface;
+    Animation ani;
 
     public MyAdapter(Context context, List<NewsObject> myitems, ArrayList<File> files, AdapterInterface adapterInterface) {
         super(context, R.layout.row);
@@ -54,11 +58,15 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
 
         CardView mCardView = view.findViewById(R.id.card_view);
         mCardView.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceType")
             @Override
             public void onClick(View view) {
                 //go to webview? go to external url
                 String externalUrl = myitems.get(pos).getNewsUrl();
-                Toast.makeText(context, externalUrl, Toast.LENGTH_SHORT).show();
+                ani = AnimationUtils.loadAnimation(context, R.drawable.overshoot);
+                ani.start();
+                mCardView.startAnimation(ani);
+                launchWebview(externalUrl);
             }
         });
 
@@ -79,10 +87,16 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
         // set share to social media
         ImageView mShare = view.findViewById(R.id.share);
         mShare.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceType")
             @Override
             public void onClick(View view) {
                 //share to social media
                 Toast.makeText(context, "Share to social media", Toast.LENGTH_SHORT).show();
+                //Animate the share button
+                ani = AnimationUtils.loadAnimation(context, R.drawable.overshoot);
+                ani.start();
+                mShare.startAnimation(ani);
+                //Share method from another activity
                 shareNews(myitems.get(pos).getNewsUrl());
             }
         });
@@ -154,5 +168,10 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
     @Override
     public void shareNews(String url) {
         adapterInterface.shareNews(url);
+    }
+
+    @Override
+    public void launchWebview(String url) {
+        adapterInterface.launchWebview(url);
     }
 }

@@ -31,7 +31,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         checkLogin();
 
         emailInput = findViewById(R.id.emailInput);
@@ -57,8 +56,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if((pressTime+500)>System.currentTimeMillis()){
-            if(toast!=null)toast.cancel();
+        if((pressTime+2000)>System.currentTimeMillis()){
+            toast.cancel();
             super.onBackPressed();
             return;
         }
@@ -75,6 +74,12 @@ public class LoginActivity extends AppCompatActivity {
 
         // check if there is previous login sessions
         checkLogin();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(toast!=null)toast.cancel();
     }
 
     private void startMainActivity(){

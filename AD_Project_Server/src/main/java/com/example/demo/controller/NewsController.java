@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,24 +60,23 @@ public class NewsController {
 	}
 	@GetMapping("/news")
 	public ResponseEntity<List<Articles>> newsPage() {
-		//created results ns1
-		arepo.deleteAll();
-		srepo.deleteAll();
-		List<Category> cats = crepo.findAll();
+		
 		List<Articles> alist = new ArrayList<>();
-		for(Category s:cats) {
-			alist.addAll(NewsService.getNewsByCountryCategory(s.getName(),null));
-		}
-
+////////////////////////////////////////////////////////////////////		
+		//Fetch News from NEWSAPI
+		//alist = fetchNewsAPI();
+/////////////////////////////////////////////////////////////////////
+		
+		//Fetch News from database
+		alist = arepo.findAll();
+		
 		System.out.println("Fetched Articles size: "+alist.size());
-		for(Articles ar:alist) {
-			srepo.saveAndFlush(ar.getSource());
-			arepo.saveAndFlush(ar);
-		}
 		List<Articles> android = new ArrayList<>();
-		for(int i = 0; i<40; i++) {
+	
+		for(int i = 0; i<80; i++) {
 			android.add(alist.get(i));
 		}
+		Collections.shuffle(android);
 		System.out.println("Articles for Android size: "+android.size());
 		return new ResponseEntity<List<Articles>>(android, HttpStatus.OK);
 	}
@@ -104,6 +104,20 @@ public class NewsController {
 //	public NewsSet requestBySource(@PathVariable String source1) {
 //		return NewsService.getNewsBySource(source1, null);
 //	}
+	private List<Articles> fetchNewsAPI() {
+		List<Articles> nlist = new ArrayList<>();
+		List<Category> cats = crepo.findAll();
+		for(Category s:cats) {
+			nlist.addAll(NewsService.getNewsByCountryCategory(s.getName(),null));
+		}
+		arepo.deleteAll();
+		srepo.deleteAll();
+		for(Articles ar:nlist) {
+			srepo.saveAndFlush(ar.getSource());
+			arepo.saveAndFlush(ar);
+		}
+		return nlist;
+	}
 }		
 	
 

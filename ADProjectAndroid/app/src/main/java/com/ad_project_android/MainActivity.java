@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
     private ArrayList<File> listOfFiles = new ArrayList<>();
     private ArrayList<NewsObject> dynamicNewsObject = new ArrayList<>();
     private MyAdapter adapter = null;
+    public static final String EXTERNAL_URL = "externalUrl";
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -200,6 +201,11 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         sharenews(url);
     }
 
+    @Override
+    public void launchWebview(String url) {
+        launchwebview(url);
+    }
+
     private void postLikeOrDislike(int position, int preference){
         NewsObject newsObject = newsObjects.get(position);
         NewsService newsService = getNewsServiceInstance();
@@ -245,5 +251,10 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         sendIntent.setType("text/plain");
         Intent shareIntent = Intent.createChooser(sendIntent,null);
         startActivity(shareIntent);
+    }
+    private void launchwebview(String url){
+        Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
+        intent.putExtra(EXTERNAL_URL, url);
+        startActivity(intent);
     }
 }
