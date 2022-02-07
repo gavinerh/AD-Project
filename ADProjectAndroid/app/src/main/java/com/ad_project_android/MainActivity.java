@@ -195,6 +195,11 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         postLikeOrDislike(position, preference);
     }
 
+    @Override
+    public void shareNews(String url) {
+        sharenews(url);
+    }
+
     private void postLikeOrDislike(int position, int preference){
         NewsObject newsObject = newsObjects.get(position);
         NewsService newsService = getNewsServiceInstance();
@@ -232,5 +237,13 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
     private File initFile(String filename){
         File f = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         return new File(f, filename);
+    }
+    private void sharenews(String url){
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, ""+url);
+        sendIntent.setType("text/plain");
+        Intent shareIntent = Intent.createChooser(sendIntent,null);
+        startActivity(shareIntent);
     }
 }

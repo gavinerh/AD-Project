@@ -2,8 +2,8 @@ package com.ad_project_android.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,6 +83,7 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
             public void onClick(View view) {
                 //share to social media
                 Toast.makeText(context, "Share to social media", Toast.LENGTH_SHORT).show();
+                shareNews(myitems.get(pos).getNewsUrl());
             }
         });
 
@@ -150,4 +151,8 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
         adapterInterface.sendNewsObjectPosition(position, preference);
     }
 
+    @Override
+    public void shareNews(String url) {
+        adapterInterface.shareNews(url);
+    }
 }
