@@ -34,6 +34,9 @@ public class Articles {
 	private String urlToImage;
 	private String publishedAt;
 	private String content;
+	@ManyToOne(fetch=FetchType.EAGER)
+	private Comment comments;	
+	
 	
 	public String getPublishedAt() {
 		Instant dateTime = Instant.parse(publishedAt);
