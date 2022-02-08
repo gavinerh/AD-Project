@@ -24,16 +24,18 @@ class UserDataService{
 
     getUser(){
         let email = AuthenticationService.getUserEmail();
-        return axios.get(`http://localhost:8080/account/${email}`)
+        return axios.get(`http://localhost:8080/account/${email}`, AuthenticationService.setupHeader())
     }
 
     updateUser(name, phone, email, password){
-        return axios.put(`http://localhost:8080/account/update`, {
+        let user = {
             name: name,
             phone: phone,
             email: email,
             password: password
-        });
+        }
+        return axios.put(`http://localhost:8080/account/update`, user,
+        AuthenticationService.setupHeader());
     }
 }
 

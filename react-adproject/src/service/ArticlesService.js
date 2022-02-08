@@ -9,19 +9,30 @@ class ArticleDataService {
     }
     findByCountryCategory(country, category) {
         return axios.get(ARTICLE_API_BASE_URL+"/"+ country 
-            +"/"+category);
+            +"/"+category, AuthenticationService.setupHeader());
     }
     findByKeyword(keyword) {
         console.log('search axios is called');
-        return axios.get(ARTICLE_API_BASE_URL+"/kw/"+keyword);
+        return axios.get(ARTICLE_API_BASE_URL+"/kw/"+keyword, AuthenticationService.setupHeader());
     }
 
     dislikeArticle(article){
-        axios.post(`${ARTICLE_API_BASE_URL}like`, article);
+        let customArticle = {
+            title: article.title,
+            description: article.description,
+            url: article.url,
+        }
+        axios.post(`http://localhost:8080/dislike`, customArticle, AuthenticationService.setupHeader())
+        .catch(error => console.log(error));
     }
 
     likeArticle(article){
-        axios.post(`${ARTICLE_API_BASE_URL}dislike`, article);
+        let customArticle = {
+            title: article.title,
+            description: article.description,
+            url: article.url,
+        }
+        axios.post(`http://localhost:8080/like`, customArticle, AuthenticationService.setupHeader());
     }
 
     practiceSearch(query){

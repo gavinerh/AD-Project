@@ -17,10 +17,12 @@ export default class ArticleList extends Component {
     }
 
     onLikeClickListener(article) {
+        console.log(article);
         ArticlesService.likeArticle(article);
     }
 
     onDislikeClickListener(article) {
+        console.log(article);
         ArticleService.dislikeArticle(article);
     }
 
