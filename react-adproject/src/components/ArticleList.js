@@ -113,7 +113,7 @@ export default class ArticleList extends Component {
                         articles.map(article => {
                             const { sourceid, id, sourcename, title, description, url, imageurl, publishedAt } = article;
                             return (
-                                <div className="container g-3 flex-fill" key={sourceid, id, title}>
+                                <div className="container g-3 flex-fill" key={sourceid, id, url}>
                                     {/* article icons */}
                                     <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }}>
                                         <symbol id="hand-thumbs-up" viewBox="0 0 16 16">
