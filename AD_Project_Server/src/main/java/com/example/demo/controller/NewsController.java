@@ -46,8 +46,8 @@ public class NewsController {
 		for(Articles art:alist) {
 			//check if articles exist in  DB
 			if(aService.findExistngArticle(art.getTitle(), art.getDescription())==null) {
-				srepo.save(art.getSource()); //save sources
-				aService.save(art); //save articles
+				srepo.save(art.getSource()); //save sources to DB
+				aService.save(art); //save articles to DB
 			}
 		}
 		return alist;

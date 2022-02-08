@@ -29,8 +29,9 @@ public class Articles {
 	private String title;
 	@Column(length=512)
 	private String description;
-	private String url;
 	@Column(length=512)
+	private String url;
+	@Column(length=1000)
 	private String urlToImage;
 	private String publishedAt;
 	private String content;
