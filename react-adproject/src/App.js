@@ -8,7 +8,6 @@ import AuthenticatedRoute from './components/AuthenticatedRoute';
 import Settings from './pages/Settings';
 import UserDetails from './components/UserDetails';
 import ArticleList from './components/ArticleList'
-import Search from './components/Search'
 
 function App() {
   return (
@@ -22,7 +21,6 @@ function App() {
           <AuthenticatedRoute path="/settings" component={Settings} />
           <AuthenticatedRoute path="/updateuser" component={UserDetails} />
           <Route path='/ArticleList' component={ArticleList} />
-          <Route path='/Search' component={Search} />
           <Route path="*" component={PageError} />
         </Switch>
       </BrowserRouter>
