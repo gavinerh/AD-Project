@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
-import {Formik, Form, Field, ErrorMessage} from 'formik'
+import React, { Component } from 'react'
+import { Formik, Form, Field, ErrorMessage } from 'formik'
 import UserDataService from '../../service/UserDataService';
 
 class RegisterComponent extends Component {
@@ -21,25 +21,25 @@ class RegisterComponent extends Component {
 
     validate(values) { //formik function
         let errors = {}
-        if(!values.name) {
-            errors.name = 'Enter your name'
-        }
+        // if (!values.name) {
+        //     errors.name = 'Enter your name'
+        // }
 
-        if(!values.email) {
+        if (!values.email) {
             errors.email = 'Enter your email address'
         } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
             errors.email = 'Enter a valid email address';
         }
 
-        if(!values.password) {
+        if (!values.password) {
             errors.password = 'Enter password'
-        } else if(values.password.length < 2) {
+        } else if (values.password.length < 2) {
             errors.password = 'Password should be at least 2 characters'
         }
 
-        if(!values.passwordConfirmation) {
+        if (!values.passwordConfirmation) {
             errors.passwordConfirmation = 'Enter password confirmation'
-        } else if(values.passwordConfirmation !== values.password) {
+        } else if (values.passwordConfirmation !== values.password) {
             errors.passwordConfirmation = 'Passwords do not match'
         }
 
@@ -48,31 +48,31 @@ class RegisterComponent extends Component {
 
     onSubmit(values) {
         let user = {
-            name: values.name,
+            // name: values.name,
             email: values.email,
             password: values.password
         }
 
         UserDataService.createUser(user)
-        .then(() => {
-            this.isEmailRegistered = false
-            this.props.history.push('/login') //redirect to login page
-        }) 
-        .catch(error => this.handleError(error));
+            .then(() => {
+                this.isEmailRegistered = false
+                this.props.history.push('/login') //redirect to login page
+            })
+            .catch(error => this.handleError(error));
 
     }
 
     handleError(error) {
-        if(error.response.status === 409) {
+        if (error.response.status === 409) {
             this.isEmailRegistered = true
             this.setState({
-                errorMessage : 'Email is already registered'
+                errorMessage: 'Email is already registered'
             })
         }
     }
 
     render() {
-        let {name, email, password, passwordConfirmation} = this.state
+        let { email, password, passwordConfirmation } = this.state
         return (
             <div className="modal modal-signin position-static d-block py-5">
                 <div className="modal-dialog">
@@ -83,10 +83,10 @@ class RegisterComponent extends Component {
                         <div className="modal-header px-5 border-bottom-0">
                             <h2 className="fs-4">Sign Up</h2>
                         </div>
-                        
+
                         <div className="modal-body p-5 pt-0">
                             <Formik
-                                initialValues={{name, email, password, passwordConfirmation}}
+                                initialValues={{ email, password, passwordConfirmation }}
                                 onSubmit={this.onSubmit}
                                 validateOnChange={false}
                                 validateOnBlur={false}
@@ -96,14 +96,14 @@ class RegisterComponent extends Component {
                                 {
                                     () => (
                                         <Form>
-                                            <div className="form-floating mb-3">
+                                            {/* <div className="form-floating mb-3">
                                                 <Field name="name" type="string" className="form-control rounded-4" placeholder="Name" />
                                                 <label htmlFor="floatingInput">Name</label>
                                                 <ErrorMessage name="name">{msg => <div className="fw-bold text-danger">{msg}</div>}</ErrorMessage>
-                                            </div>
+                                            </div> */}
 
                                             <div className="form-floating mb-3">
-                                                <Field name="email" type="email" className="form-control rounded-4" placeholder="Email address"  />
+                                                <Field name="email" type="email" className="form-control rounded-4" placeholder="Email address" />
                                                 <label htmlFor="floatingInput">Email address</label>
                                                 <ErrorMessage name="email">{msg => <div className="fw-bold text-danger">{msg}</div>}</ErrorMessage>
                                                 {this.isEmailRegistered && <span className="fw-bold text-danger">{this.state.errorMessage}</span>}
