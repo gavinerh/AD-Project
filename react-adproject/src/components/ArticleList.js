@@ -7,15 +7,22 @@ export default class ArticleList extends Component {
     constructor(props) {
         super(props);
         this.retrieveArticles = this.retrieveArticles.bind(this);
+        this.keywordChangeHandler=this.keywordChangeHandler.bind(this);
+        this.searchFormHandler=this.searchFormHandler.bind(this);
         this.onLikeClickListener = this.onLikeClickListener.bind(this);
         this.onDislikeClickListener = this.onDislikeClickListener.bind(this);
         this.state = {
             articles: [],
             isLoading: true,
-            errors: null
+            errors: null,
+            keyword:''
         };
     }
 
+    componentDidMount() {
+        this.retrieveArticles();
+    }
+    
     onLikeClickListener(article) {
         console.log(article);
         ArticlesService.likeArticle(article);
@@ -26,15 +33,50 @@ export default class ArticleList extends Component {
         ArticleService.dislikeArticle(article);
     }
 
-    componentDidMount() {
-        this.retrieveArticles();
+    // set fnx to 'save' state of keyword
+    keywordChangeHandler = (e) => {
+        this.setState({
+            keyword: e.target.value,
+            changed: true
+        })
     }
-
+    //on Submit use curr keyword to retrieve articles
+    searchFormHandler = (e) => {
+        e.preventDefault();
+        ArticlesService.updateKeyword(this.state.keyword)
+        .then(response =>
+            response.data.map(article => ({
+                sourceid: `${article.source.sourceid}`,
+                id: `${article.source.id}`,
+                sourcename: `${article.source.name}`,
+                author: `${article.author}`,
+                title: `${article.title}`,
+                description: `${article.description}`,
+                url: `${article.url}`,
+                imageurl: `${article.urlToImage}`,
+            }))
+        )
+        //change loading state to display data--> set active article
+        .then(articles => {
+            this.setState({
+                articles,
+                isLoading: false,
+                keyword: '', //clear search field
+            });
+        })
+        .then(response => {
+            console.log("no error");
+            // console.log(response);
+        })
+        .catch(error => this.setState({ error, isLoading: false }));
+    }
+    
+	//HOMEPAGE (TEMPORARY)
     retrieveArticles() {
-        //using axios to request data
+    	//using axios to request data
         ArticleService.getArticles()
             //once get response, map API endpoints to our props
-            .then(response =>
+        	.then(response =>
                 response.data.map(article => ({
                     sourceid: `${article.source.sourceid}`,
                     id: `${article.source.id}`,
@@ -61,12 +103,19 @@ export default class ArticleList extends Component {
         const { isLoading, articles } = this.state;
         return (
             <React.Fragment>
+                <br />
+                <div className="container g-3 flex-fill">
+                    <form onSubmit={this.searchFormHandler} className="col-12 col-lg-auto mb-3 me-lg-3">
+                        <input type="keyword" value={this.state.keyword} onChange={this.keywordChangeHandler} 
+                            className="form-control" placeholder="Search..." aria-label="Search" />
+                    </form>
+                </div>
                 <div className="list-group-item d-flex row">
                     {!isLoading ? (
                         articles.map(article => {
                             const { sourceid, id, sourcename, title, description, url, imageurl, publishedAt } = article;
                             return (
-                                <div className="container g-3 flex-fill" key={sourceid, id, title}>
+                                <div className="container g-3 flex-fill" key={sourceid, id, url}>
                                     {/* article icons */}
                                     <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }}>
                                         <symbol id="hand-thumbs-up" viewBox="0 0 16 16">

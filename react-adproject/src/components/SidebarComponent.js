@@ -4,35 +4,9 @@ import './Sidebar.css';
 import AuthenticationService from "../service/AuthenticationService";
 import WeatherComponent from './WeatherComponent';
 import useEventListener from '@use-it/event-listener';
-import ArticlesService from '../service/ArticlesService';
+
 
 class SidebarComponent extends Component {
-
-    constructor(props){
-        super(props)
-        this.searchInputHandler = this.searchInputHandler.bind(this);
-        this.formSearchHandler = this.formSearchHandler.bind(this);
-
-        this.state = {
-            search: ''
-        }
-    }
-
-    formSearchHandler(e) {
-        e.preventDefault();
-        ArticlesService.practiceSearch(this.state.search)
-        .then(response => {
-            console.log("no error");
-            console.log(response);
-        })
-        .catch(error => console.log(error));
-    }
-
-    searchInputHandler(e){
-        this.setState({
-            search: e.target.value
-        })
-    }
 
     render() {
         let username = AuthenticationService.getUserEmail();
@@ -75,10 +49,6 @@ class SidebarComponent extends Component {
                     <hr />
                     {/* weather info */}
                     <WeatherComponent />
-                    {/* search bar */}
-                    <form className="col-12 col-lg-auto mt-3 mb-3 me-lg-3" onSubmit={this.formSearchHandler}>
-                        <input onChange={this.searchInputHandler} type="search" className="form-control" placeholder="Search..." aria-label="Search" />
-                    </form>
 
                     {/* navigation links */}
                     <ul className="nav nav-pills flex-column mb-auto">

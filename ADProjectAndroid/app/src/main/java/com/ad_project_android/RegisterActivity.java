@@ -22,7 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    EditText nameInput, emailInput, passwordInput, checkPasswordInput;
+    EditText emailInput, passwordInput, checkPasswordInput;
     Button regBtn;
 
     @Override
@@ -30,7 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        nameInput = findViewById(R.id.reg_nameinput);
+//        nameInput = findViewById(R.id.reg_nameinput);
         emailInput = findViewById(R.id.reg_emailinput);
         passwordInput = findViewById(R.id.reg_passwordinput);
         checkPasswordInput = findViewById(R.id.reg_checkpassword);
@@ -39,20 +39,20 @@ public class RegisterActivity extends AppCompatActivity {
         regBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = nameInput.getText().toString();
+//                String name = nameInput.getText().toString();
                 String email = emailInput.getText().toString();
                 String password = passwordInput.getText().toString();
                 String checkPassword = checkPasswordInput.getText().toString();
 
-                if(checkFields(name, email, password, checkPassword)) {
-                    registerUser(name, email, password);
+                if(checkFields(email, password, checkPassword)) {
+                    registerUser(email, password);
                 }
             }
         });
     }
 
-    private boolean checkFields(String name, String email, String password, String checkPassword) {
-        if(isEmpty(nameInput) || isEmpty(emailInput) || isEmpty(passwordInput) || isEmpty(checkPasswordInput)) {
+    private boolean checkFields(String email, String password, String checkPassword) {
+        if(isEmpty(emailInput) || isEmpty(passwordInput) || isEmpty(checkPasswordInput)) {
             Toast.makeText(this, "All fields must be completed", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -64,7 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
         return true;
     }
 
-    private void registerUser(String name, String email, String password){
+    private void registerUser(String email, String password){
         // create retrofit builder
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8080/")
@@ -74,7 +74,7 @@ public class RegisterActivity extends AppCompatActivity {
         // create instance of UserService api class
         UserService userService = retrofit.create(UserService.class);
         // passing data from text field into user model
-        User user = new User(name, null, email, password);
+        User user = new User(null, null, email, password);
 
         // calling method to create a post and pass in model class
         Call<User> call = userService.registerUser(user);
