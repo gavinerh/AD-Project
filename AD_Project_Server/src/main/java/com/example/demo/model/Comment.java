@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,7 +25,8 @@ public class Comment {
 	int id;
 	
 	private String commentcontent;
-    @OneToOne(fetch=FetchType.EAGER)
+	
+    @ManyToOne(fetch=FetchType.EAGER)
 	private UserCredential user;
 	
 
