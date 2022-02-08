@@ -67,3 +67,14 @@
   font-size: 2rem;
   font-family: "Zen Kurenaido", sans-serif;
 }
+
+
+.liusername{
+float: left;
+}
+
+.licomment{
+float: left;
+margin-left: 40px;
+
+}
