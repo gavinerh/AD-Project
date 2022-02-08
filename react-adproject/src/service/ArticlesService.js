@@ -1,7 +1,7 @@
 import axios from "axios";
 import AuthenticationService from "./AuthenticationService";
 
-const ARTICLE_API_BASE_URL = "http://localhost:8080/newsapi/"
+const ARTICLE_API_BASE_URL = "http://localhost:8080/newsapi/news"
 
 class ArticleDataService {
     getArticles() {
@@ -40,6 +40,16 @@ class ArticleDataService {
         }
         axios.post(`http://localhost:8080/like`, customArticle, AuthenticationService.setupHeader());
     }
+
+    makecomment(comment){
+        
+         
+
+       return  axios.post(`http://localhost:8080/comment`, comment,AuthenticationService.setupHeader());
+    }
+
+
+
 
 //    practiceSearch(query){
 //        console.log("practice search called");

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ArticlesService from "../service/ArticlesService";
 import ArticleService from '../service/ArticlesService';
+import './Sidebar.css';
 
 export default class ArticleList extends Component {
     // constructor
@@ -11,10 +12,14 @@ export default class ArticleList extends Component {
         this.searchFormHandler=this.searchFormHandler.bind(this);
         this.onLikeClickListener = this.onLikeClickListener.bind(this);
         this.onDislikeClickListener = this.onDislikeClickListener.bind(this);
+        this.onCommentListener = this.onCommentListener.bind(this);
+        this.onsubmitCommentListener = this.onsubmitCommentListener.bind(this);
         this.state = {
             articles: [],
             isLoading: true,
             errors: null,
+            isOn: false,
+            display:'none',
             keyword:''
         };
     }
@@ -24,7 +29,7 @@ export default class ArticleList extends Component {
     }
     
     onLikeClickListener(article) {
-        console.log(article);
+        console.log(article);       
         ArticlesService.likeArticle(article);
     }
 
@@ -32,6 +37,26 @@ export default class ArticleList extends Component {
         console.log(article);
         ArticleService.dislikeArticle(article);
     }
+
+    onsubmitCommentListener(title){
+        console.log(title);
+        var comment = document.getElementById(title).value;
+        console.log(comment);
+        ArticleService.makecomment(comment);
+    }
+
+
+
+    onCommentListener(){
+        this.setState(prevState =>({
+       isOn:!prevState.isOn,
+       display:prevState.isOn?'none':'block'
+
+        }))  ;
+   }
+
+
+
 
     // set fnx to 'save' state of keyword
     keywordChangeHandler = (e) => {
@@ -178,6 +203,12 @@ export default class ArticleList extends Component {
                                                                 Dislike
                                                             </button>
                                                         </div>
+                                                        <div className="col">
+                                                            <button className="py-2 mb-2 btn btn-outline-danger rounded-4" type="submit" onClick={() => this.onCommentListener()}>
+                                                               
+                                                                Comments
+                                                            </button>
+                                                        </div>
                                                         <div className="col order-last">
                                                             <a href={url} target="_blank" rel="noopener noreferrer" className="py-2 mb-2 btn btn-outline-secondary rounded-4">
                                                                 <svg className="bi bi-link mx-1" width="1em" height="1em">
@@ -192,6 +223,29 @@ export default class ArticleList extends Component {
                                             <small className="opacity-50 text-nowrap">{publishedAt}</small>
                                         </div>
                                     </div>
+                                    <div className="comment" style={{display: this.state.display}}> 
+                                              <input id={title}></input>
+                                              <div>
+                                                  <button className="py-2 mb-2 btn btn-outline-danger rounded-4" type="submit" onClick={() => this.onsubmitCommentListener(title)}>
+                                                      comment
+                                                      </button>
+                                              </div>
+                                              <div>
+                                                 <ul>
+                                                 <li className="li1">
+                                                 <div className="liusername"> Username</div> 
+                                                 <div className="licomment"> Comment</div>
+                                                
+                                                  </li>
+                                                 </ul>
+                                                  
+                                              </div>
+                                              
+                                             
+
+                                            </div>    
+
+
                                 </div>
                             );
                         })

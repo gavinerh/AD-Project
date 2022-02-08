@@ -10,15 +10,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MLJson {
 	private List<String> titles=new ArrayList<>();
-	private List<String> likeDislike=new ArrayList<>();
-	private String like;
-	private String dislike;
-	private String result;
+	private List<String> likedNews=new ArrayList<>();
+	private List<Integer> result=new ArrayList<>();
 	
     @Override
     public String toString() {
-    	String s = "";
-    	return s = titles.toString()+" "+likeDislike.toString()+" "+like+" "+dislike+" "+result;
+   
+    	return titles.toString()+" "+likedNews.toString()+" "+result;
     }
 
 }
