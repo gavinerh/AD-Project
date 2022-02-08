@@ -42,4 +42,14 @@ public class LikeDislikeController {
 	public void search(@RequestParam String keyword) {
 		System.out.println(keyword);
 	}
+	
+	
+	@PostMapping(path="/comment")
+	public void comment(@RequestBody String comment){
+		//System.out.println(article);
+		 System.out.println(1234);
+	     System.out.println(comment);
+		// register the like news from client side
+		
+	}
 }
