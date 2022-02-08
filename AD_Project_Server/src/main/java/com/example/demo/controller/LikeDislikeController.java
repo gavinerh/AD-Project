@@ -46,10 +46,9 @@ public class LikeDislikeController {
 	
 	@PostMapping(path="/comment")
 	public void comment(@RequestBody String comment){
-		//System.out.println(article);
-		 
+		
 	     System.out.println(comment);
-		// register the like news from client side
+		
 		
 	}
 }
