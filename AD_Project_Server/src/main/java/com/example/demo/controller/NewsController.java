@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,19 +15,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.Repository.ArticlesRepo;
 import com.example.demo.Repository.CategoryRepo;
 import com.example.demo.Repository.SourceRepo;
 import com.example.demo.model.Articles;
 import com.example.demo.model.Category;
 import com.example.demo.model.NewsSet;
 import com.example.demo.model.Search;
+import com.example.demo.model.UserCredential;
 import com.example.demo.service.ArticlesService;
 import com.example.demo.service.NewsService;
 import com.example.demo.service.SearchService;
 
+import Enumerates.category;
+
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin()
 @RequestMapping(path="/newsapi")
 public class NewsController {
 	
@@ -128,7 +133,6 @@ public class NewsController {
 		}
 		return nlist;
 	}
-}		
-	
+}
 
 

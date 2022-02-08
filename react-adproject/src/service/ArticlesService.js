@@ -11,20 +11,15 @@ class ArticleDataService {
         return axios.get(ARTICLE_API_BASE_URL+"/"+ country 
             +"/"+category, AuthenticationService.setupHeader());
     }
-<<<<<<< HEAD
-    findByKeyword(keyword) {
-        console.log('search axios is called');
-        return axios.get(ARTICLE_API_BASE_URL+"/kw/"+keyword, AuthenticationService.setupHeader());
-=======
+
    updateKeyword(query){
         console.log("Search called");
         var request = {
             params: {
                 keyword: query
             }
-        }
-        return axios.get(ARTICLE_API_BASE_URL+"kw/updateKeyword", request);
->>>>>>> ef889f43c2b692a61af9585be9c05694e074547f
+        };
+        return axios.get(ARTICLE_API_BASE_URL+"kw/updateKeyword", request, AuthenticationService.setupHeader());
     }
     dislikeArticle(article){
         let customArticle = {
@@ -35,6 +30,7 @@ class ArticleDataService {
         axios.post(`http://localhost:8080/dislike`, customArticle, AuthenticationService.setupHeader())
         .catch(error => console.log(error));
     }
+
 
     likeArticle(article){
         let customArticle = {

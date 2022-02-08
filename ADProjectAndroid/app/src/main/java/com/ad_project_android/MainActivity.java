@@ -139,6 +139,8 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
                         setadaptor(dynamicNewsObject);
                         populateAdaptor();
 //                        setadaptor(newsObjects);
+                    }else{
+                        logout();
                     }
                 }
                 @Override
@@ -267,5 +269,13 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
             finish();
             return;
         }
+    }
+
+    private void logout(){
+        SharedPreferences pref = getSharedPreferences(LoginActivity.USER_CREDENTIAL, MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.clear();
+        editor.commit();
+        finish();
     }
 }
