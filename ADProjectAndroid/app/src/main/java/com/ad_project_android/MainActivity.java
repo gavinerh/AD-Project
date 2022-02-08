@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
     private ArrayList<NewsObject> dynamicNewsObject = new ArrayList<>();
     private MyAdapter adapter = null;
     public static final String EXTERNAL_URL = "externalUrl";
+    private static String tokenString = null;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        populateTokenString();
         retrieveInfoFromServer();
 
         Log.d("News onCreate",""+newsObjects.size());
@@ -124,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
             // create instance of UserService api class
             NewsService newsService = getNewsServiceInstance();
 
-            Call<List<NewsObject>> call = newsService.getNews();
+            Call<List<NewsObject>> call = newsService.getNews(tokenString);
 
             call.enqueue(new Callback<List<NewsObject>>() {
                 @Override
@@ -211,9 +213,9 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         NewsService newsService = getNewsServiceInstance();
         Call<Void> call = null;
         if(preference == 1){
-            call = newsService.postLike(newsObject);
+            call = newsService.postLike(newsObject, tokenString);
         } else{
-            call = newsService.postDislike(newsObject);
+            call = newsService.postDislike(newsObject, tokenString);
         }
         call.enqueue(new Callback<Void>() {
             @Override
@@ -256,5 +258,14 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
         intent.putExtra(EXTERNAL_URL, url);
         startActivity(intent);
+    }
+
+    private void populateTokenString(){
+        SharedPreferences pref = getSharedPreferences(LoginActivity.USER_CREDENTIAL, MODE_PRIVATE);
+        tokenString = pref.getString("token", null);
+        if(tokenString == null){
+            finish();
+            return;
+        }
     }
 }

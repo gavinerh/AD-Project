@@ -42,16 +42,17 @@ public class AccountController {
 	
 	@PostMapping(value="/authenticate")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody UserCredential user) throws Exception{
+		System.out.println(user);
 		try {
 			authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
 		} catch (BadCredentialsException e) {
-			return new ResponseEntity<>(new AuthenticationResponse("wrong email or password"), HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<>(new AuthenticationResponse(null, null), HttpStatus.UNAUTHORIZED);
 		}
 		
 		UserDetails userDetails = userDetailService.loadUserByUsername(user.getEmail());
 		String jwt = jwtUtil.generateToken(userDetails);
-		return new ResponseEntity<>(new AuthenticationResponse(jwt), HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(new AuthenticationResponse(jwt, user.getEmail()), HttpStatus.ACCEPTED);
 	}
 	
 	@PostMapping(value="/register")
@@ -77,7 +78,8 @@ public class AccountController {
 		System.out.println(user);
 		UserCredential u = uService.findUserByEmail(user.getEmail());
 		u.setName(user.getName());
-		u.setPassword(user.getPassword());
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		u.setPassword(encoder.encode(user.getPassword()));
 		u.setPhone(user.getPhone());
 		uService.save(u);
 		return new ResponseEntity<UserCredential>(u, HttpStatus.OK);

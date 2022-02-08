@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ad_project_android.DataService.UserService;
+import com.ad_project_android.model.TokenJWT;
 import com.ad_project_android.model.User;
 
 import retrofit2.Call;
@@ -100,14 +101,15 @@ public class LoginActivity extends AppCompatActivity {
         User user = new User(null, null, email, password);
 
         // calling method to create a post and pass in model class
-        Call<User> call = userService.authenticateUser(user);
+        Call<TokenJWT> call = userService.authenticateUser(user);
 
         // execute post method
-        call.enqueue(new Callback<User>() {
+        call.enqueue(new Callback<TokenJWT>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<TokenJWT> call, Response<TokenJWT> response) {
                 if(response.code() == 202){
-                    updateLoggedInStatus(email);
+                    TokenJWT token = response.body();
+                    updateLoggedInStatus(token.getEmail(), "Bearer " + token.getToken());
                     startMainActivity();
                     return;
                 }
@@ -115,16 +117,17 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<TokenJWT> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Error in connecting to server", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void updateLoggedInStatus(String email){
+    private void updateLoggedInStatus(String email, String token){
         SharedPreferences pref = getSharedPreferences(USER_CREDENTIAL, MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("email", email);
+        editor.putString("token", token);
         editor.commit();
     }
 

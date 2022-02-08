@@ -26,11 +26,13 @@ public class AccountActivity extends AppCompatActivity {
     EditText phone;
     EditText name;
     Button updateBtn;
+    private String tokenString = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
+        populateTokenString();
         email = findViewById(R.id.emailInput);
         email.setEnabled(false);
         password = findViewById(R.id.passwordInput);
@@ -42,7 +44,7 @@ public class AccountActivity extends AppCompatActivity {
             public void onClick(View view) {
                 User user = collateUserInfo();
                 UserService userService = getUserServiceInstance();
-                Call<User> call = userService.updateUser(user);
+                Call<User> call = userService.updateUser(user, tokenString);
                 call.enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
@@ -73,7 +75,7 @@ public class AccountActivity extends AppCompatActivity {
             // create instance of UserService api class
             UserService userService = getUserServiceInstance();
 
-            Call<User> call = userService.getUser(storedEmail);
+            Call<User> call = userService.getUser(storedEmail, tokenString);
             call.enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
@@ -112,5 +114,10 @@ public class AccountActivity extends AppCompatActivity {
 
     private User collateUserInfo(){
         return new User(name.getText().toString(), phone.getText().toString(), email.getText().toString(), password.getText().toString());
+    }
+
+    private void populateTokenString(){
+        SharedPreferences pref = getSharedPreferences(LoginActivity.USER_CREDENTIAL, MODE_PRIVATE);
+        tokenString = pref.getString("token", null);
     }
 }
