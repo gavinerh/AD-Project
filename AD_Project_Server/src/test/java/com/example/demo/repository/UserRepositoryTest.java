@@ -30,14 +30,10 @@ import com.example.demo.Repository.SourceRepo;
 import com.example.demo.Repository.UserRepository;
 import com.example.demo.model.Articles;
 import com.example.demo.model.Category;
-<<<<<<< Updated upstream
 import com.example.demo.model.UserCredential;
-=======
 import com.example.demo.model.LikedArticle;
-import com.example.demo.model.User;
 import com.example.demo.model.JsonModel.MLJson;
 import com.example.demo.service.NewsService;
->>>>>>> Stashed changes
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -68,7 +64,6 @@ public class UserRepositoryTest {
 //		List<User> users = uService.findAll();
 //		assertEquals(1, users.size());
 		
-<<<<<<< Updated upstream
 		category[] cats = category.values();
 		List<Category> Cats = crepo.findAll();
 	    //crepo.saveAllAndFlush(Cats);
@@ -82,7 +77,6 @@ public class UserRepositoryTest {
 		user.addCat(Cats.get(0));
 		System.out.println(user.getName());
 		urepo.save(user);
-=======
 //		category[] cats = category.values();
 //		List<Category> Cats = crepo.findAll();
 //	    //crepo.saveAllAndFlush(Cats);
@@ -150,7 +144,6 @@ public class UserRepositoryTest {
       }catch (IOException e){
 e.printStackTrace();
       }
->>>>>>> Stashed changes
 	}
 	
 //	@Test

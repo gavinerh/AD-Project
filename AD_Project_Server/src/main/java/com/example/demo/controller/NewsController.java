@@ -33,12 +33,8 @@ import com.example.demo.model.Category;
 import com.example.demo.model.LikedArticle;
 import com.example.demo.model.NewsSet;
 import com.example.demo.model.Search;
-<<<<<<< Updated upstream
 import com.example.demo.model.UserCredential;
-=======
-import com.example.demo.model.User;
 import com.example.demo.model.JsonModel.MLJson;
->>>>>>> Stashed changes
 import com.example.demo.service.ArticlesService;
 import com.example.demo.service.NewsService;
 import com.example.demo.service.SearchService;
@@ -156,9 +152,7 @@ public class NewsController {
 		}
 		return nlist;
 	}
-<<<<<<< Updated upstream
-}
-=======
+
 	private List<Articles> mlfunction(List<LikedArticle> llist) {
 		List<Articles> mlList = new ArrayList<>();
 		try {
@@ -211,7 +205,6 @@ public class NewsController {
 		return mlList;
 	}
 }		
-	
->>>>>>> Stashed changes
+
 
 
