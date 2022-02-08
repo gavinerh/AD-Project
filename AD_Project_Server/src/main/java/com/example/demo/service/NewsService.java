@@ -46,7 +46,7 @@ public class NewsService {
 	
 	//By selecting COUNTRY or CATEGORY
 	public static ArrayList<Articles> getNewsByCountryCategory(String category, String country) {
-		String key = "";
+		String key = "fbbc757feb5b441b805c38dc2ad94bd3";
 		
 		if(country == null) {
 			country ="";
