@@ -21,6 +21,8 @@ import lombok.NoArgsConstructor;
 public class Comment {
 	
 	
+	
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	int id;

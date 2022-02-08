@@ -48,7 +48,7 @@ public class LikeDislikeController {
 	public void comment(@RequestBody String comment){
 		
 	     System.out.println(comment);
-		
+		//get comment but havenot done the db part
 		
 	}
 }
