@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Repository.ArticlesRepo;
@@ -20,9 +21,12 @@ import com.example.demo.Repository.SourceRepo;
 import com.example.demo.model.Articles;
 import com.example.demo.model.Category;
 import com.example.demo.model.NewsSet;
+import com.example.demo.model.Search;
 import com.example.demo.model.User;
 import com.example.demo.service.ArticlesService;
 import com.example.demo.service.NewsService;
+import com.example.demo.service.SearchService;
+
 import Enumerates.category;
 
 
@@ -33,6 +37,8 @@ public class NewsController {
 	
 	@Autowired
 	ArticlesService aService;
+	@Autowired
+	SearchService srhService;
 	@Autowired
 	SourceRepo srepo;
 	@Autowired
@@ -50,6 +56,42 @@ public class NewsController {
 				aService.save(art); //save articles to DB
 			}
 		}
+		return alist;
+	}
+	
+	//search using USING NEWSAPI, save keywords no duplicates, no saving articles
+	@RequestMapping(value= {"/kw/updateKeyword"})
+	public List<Articles> displayPage(@RequestParam(required=false) 
+			String keyword) {
+		System.out.println(keyword);
+
+		NewsSet ns = new NewsSet();
+		if(keyword!=null) {	
+			Search s = new Search(); 
+			if(srhService.findWord(keyword)==null) { //check for existing word
+				s.setKeyword(keyword);
+				srhService.save(s);
+			}
+			ns = NewsService.getNewsByKeyword(keyword, null);
+		} 
+		else if(keyword==null) {
+			ns = NewsService.getNewsHome("technology", null, null);
+		}
+		List<Articles> alist = ns.getArticles();		
+		return alist;
+	}
+	
+	//For testing
+	@RequestMapping(value= {"/kw/{keyword}"})
+	public List<Articles> testDisplayPage(@PathVariable(required=false) 
+			String keyword) {
+		NewsSet ns = new NewsSet();
+		if(keyword!=null) {
+			ns = NewsService.getNewsByKeyword(keyword, null);
+		} else {
+			ns = NewsService.getNewsHome("technology", null, null);
+		}
+		List<Articles> alist = ns.getArticles();	
 		return alist;
 	}
 	
