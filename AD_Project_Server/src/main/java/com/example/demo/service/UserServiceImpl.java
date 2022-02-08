@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Repository.UserRepository;
-import com.example.demo.model.User;
+import com.example.demo.model.UserCredential;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -15,27 +15,27 @@ public class UserServiceImpl implements UserService {
 	UserRepository uRepo;
 	
 	@Override
-	public List<User> findAll() {
+	public List<UserCredential> findAll() {
 		return uRepo.findAll();
 	}
 
 	@Override
-	public User findById(Long id) {
+	public UserCredential findById(Long id) {
 		return uRepo.getById(id);
 	}
 
 	@Override
-	public User findUserByEmail(String email) {
+	public UserCredential findUserByEmail(String email) {
 		return uRepo.findUserByEmail(email);
 	}
 
 	@Override
-	public User save(User user) {
+	public UserCredential save(UserCredential user) {
 		return uRepo.save(user);
 	}
 
 	@Override
-	public void deleteUser(User user) {
+	public void deleteUser(UserCredential user) {
 		uRepo.delete(user);
 	}
 

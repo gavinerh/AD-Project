@@ -20,7 +20,7 @@ import com.example.demo.AdProjectServerApplication;
 import com.example.demo.Repository.CategoryRepo;
 import com.example.demo.Repository.UserRepository;
 import com.example.demo.model.Category;
-import com.example.demo.model.User;
+import com.example.demo.model.UserCredential;
 import com.example.demo.service.UserService;
 
 import Enumerates.category;
@@ -53,7 +53,7 @@ public class UserRepositoryTest {
 		Category pref2 = new Category(category.sports.name());
 		pref.add(Cats.get(4));
 		pref.add(Cats.get(5));
-		User user = urepo.findById((long) 59).orElse(null);
+		UserCredential user = urepo.findById((long) 59).orElse(null);
 		user.addCat(Cats.get(0));
 		System.out.println(user.getName());
 		urepo.save(user);

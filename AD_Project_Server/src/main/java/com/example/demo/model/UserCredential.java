@@ -15,7 +15,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 @Entity
-public class User {
+public class UserCredential {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
@@ -31,7 +31,7 @@ public class User {
 					@JoinColumn(name = "categoryid", referencedColumnName = "id") })
 	private Collection<Category> cats;
 	
-	public User(String name, String phone, String email, String password, String userType) {
+	public UserCredential(String name, String phone, String email, String password, String userType) {
 		super();
 		this.name = name;
 		this.phone = phone;
@@ -40,7 +40,7 @@ public class User {
 		this.userType = userType;
 	}
 
-	public User() {
+	public UserCredential() {
 		super();
 		cats = new ArrayList<>();
 	}

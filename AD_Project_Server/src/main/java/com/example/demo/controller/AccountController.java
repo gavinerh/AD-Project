@@ -1,10 +1,13 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.model.Articles;
-import com.example.demo.model.NewsSet;
-import com.example.demo.model.User;
-import com.example.demo.service.NewsService;
+import com.example.demo.model.UserCredential;
+import com.example.demo.security.AuthenticationResponse;
+import com.example.demo.security.CustomUserDetailsService;
+import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
 
 @RestController
@@ -27,44 +30,57 @@ public class AccountController {
 	@Autowired
 	UserService uService;
 	
-	@PostMapping("/login")
-	public ResponseEntity<User> login(@RequestBody User user){
-		System.out.println(user);
-		User storedUser = uService.findUserByEmail(user.getEmail());
-		if(storedUser == null) return new ResponseEntity<User>(user, HttpStatus.UNAUTHORIZED);
-		if(storedUser.getEmail().equals(user.getEmail()) && storedUser.getPassword().equals(user.getPassword())) {
-			System.out.println("credentials accepted");
-			return new ResponseEntity<User>(user, HttpStatus.ACCEPTED);
+	@Autowired
+	private CustomUserDetailsService userDetailService;
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	
+	
+	@Autowired
+	private JwtUtil jwtUtil;
+	
+	@PostMapping(value="/authenticate")
+	public ResponseEntity<?> createAuthenticationToken(@RequestBody UserCredential user) throws Exception{
+		try {
+			authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+		} catch (BadCredentialsException e) {
+			return new ResponseEntity<>(new AuthenticationResponse("wrong email or password"), HttpStatus.UNAUTHORIZED);
 		}
-		return new ResponseEntity<User>(user, HttpStatus.UNAUTHORIZED);
+		
+		UserDetails userDetails = userDetailService.loadUserByUsername(user.getEmail());
+		String jwt = jwtUtil.generateToken(userDetails);
+		return new ResponseEntity<>(new AuthenticationResponse(jwt), HttpStatus.ACCEPTED);
 	}
 	
-	@PostMapping("/register")
-	public ResponseEntity<User> register(@RequestBody User user){
-		// validation of user
+	@PostMapping(value="/register")
+	public ResponseEntity register(@RequestBody UserCredential user){
 		if(uService.findUserByEmail(user.getEmail()) == null) {
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+			user.setPassword(encoder.encode(user.getPassword()));
 			uService.save(user);
-			return new ResponseEntity<User>(user, HttpStatus.CREATED);
+			return new ResponseEntity<>(HttpStatus.CREATED);
 		}
-		return new ResponseEntity<User>(user, HttpStatus.CONFLICT);
+		return new ResponseEntity<>(HttpStatus.CONFLICT);
 	}
 	
 	@GetMapping("/{email}")
-	public ResponseEntity<User> getUser(@PathVariable String email){
-		User u = uService.findUserByEmail(email);
-		if(u == null) return new ResponseEntity<User>(u, HttpStatus.BAD_REQUEST);
-		return new ResponseEntity<User>(u, HttpStatus.OK);
+	public ResponseEntity<UserCredential> getUser(@PathVariable String email){
+		UserCredential u = uService.findUserByEmail(email);
+		if(u == null) return new ResponseEntity<UserCredential>(u, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<UserCredential>(u, HttpStatus.OK);
 	}
 	
 	@PutMapping("/update")
-	public ResponseEntity<User> update(@RequestBody User user){
+	public ResponseEntity<UserCredential> update(@RequestBody UserCredential user){
 		System.out.println(user);
-		User u = uService.findUserByEmail(user.getEmail());
+		UserCredential u = uService.findUserByEmail(user.getEmail());
 		u.setName(user.getName());
 		u.setPassword(user.getPassword());
 		u.setPhone(user.getPhone());
 		uService.save(u);
-		return new ResponseEntity<User>(u, HttpStatus.OK);
+		return new ResponseEntity<UserCredential>(u, HttpStatus.OK);
 	}
 	
 }

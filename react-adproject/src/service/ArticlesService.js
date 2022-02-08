@@ -1,10 +1,11 @@
 import axios from "axios";
+import AuthenticationService from "./AuthenticationService";
 
 const ARTICLE_API_BASE_URL = "http://localhost:8080/newsapi/"
 
 class ArticleDataService {
     getArticles() {
-        return axios.get(ARTICLE_API_BASE_URL);
+        return axios.get(ARTICLE_API_BASE_URL, AuthenticationService.setupHeader());
     }
     findByCountryCategory(country, category) {
         return axios.get(ARTICLE_API_BASE_URL+"/"+ country 

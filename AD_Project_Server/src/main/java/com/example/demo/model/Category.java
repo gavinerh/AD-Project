@@ -24,7 +24,7 @@ public class Category implements Serializable {
 	private String name;
 	
 	@ManyToMany(mappedBy="cats", fetch = FetchType.EAGER)
-	private Collection<User> users;
+	private Collection<UserCredential> users;
 	
 	public Category() {
 		super();
@@ -52,11 +52,11 @@ public class Category implements Serializable {
 		this.name = name;
 	}
 
-	public Collection<User> getUsers() {
+	public Collection<UserCredential> getUsers() {
 		return users;
 	}
 
-	public void setUsers(Collection<User> users) {
+	public void setUsers(Collection<UserCredential> users) {
 		this.users = users;
 	}
 	

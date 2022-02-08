@@ -20,13 +20,13 @@ import com.example.demo.Repository.SourceRepo;
 import com.example.demo.model.Articles;
 import com.example.demo.model.Category;
 import com.example.demo.model.NewsSet;
-import com.example.demo.model.User;
+import com.example.demo.model.UserCredential;
 import com.example.demo.service.NewsService;
 import Enumerates.category;
 
 
 @RestController
-@CrossOrigin()
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(path="/newsapi")
 public class NewsController {
 	

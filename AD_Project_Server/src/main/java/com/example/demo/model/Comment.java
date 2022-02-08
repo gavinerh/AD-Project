@@ -25,7 +25,7 @@ public class Comment {
 	
 	private String commentcontent;
     @OneToOne(fetch=FetchType.EAGER)
-	private User user;
+	private UserCredential user;
 	
 
 	

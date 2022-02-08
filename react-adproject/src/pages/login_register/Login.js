@@ -7,7 +7,7 @@ import './login_register.css';
 function Login() {
     const history = useHistory();
     if (AuthenticationService.isUserLoggedIn() === 'true') {
-        //history.push('/main');
+        // history.push('/main');
         <Redirect push to="/main" />
     }
     const [errorStatement, setErrorStatement] = useState('');
@@ -36,6 +36,7 @@ function Login() {
             .then(response => {
                 console.log(response);
                 AuthenticationService.storeUserSession(userCredential.username);
+                AuthenticationService.registerSuccessfulLogin(response.data.jwt);
                 setErrorStatement('');
                 history.push("/main");
             }).catch(response => {

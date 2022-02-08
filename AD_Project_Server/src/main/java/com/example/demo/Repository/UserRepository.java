@@ -9,18 +9,18 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.model.User;
+import com.example.demo.model.UserCredential;
 
 @Repository
-public interface UserRepository extends CrudRepository<User, Long> {
-	List<User> findAll();
+public interface UserRepository extends CrudRepository<UserCredential, Long> {
+	List<UserCredential> findAll();
 	
-	User getById(Long id);
+	UserCredential getById(Long id);
 	
-	@Query("SELECT u FROM User u WHERE u.email = :email")
-	User findUserByEmail(@Param("email") String email);
+	@Query("SELECT u FROM UserCredential u WHERE u.email = :email")
+	UserCredential findUserByEmail(@Param("email") String email);
 	
 
-	void delete(User user);
+	void delete(UserCredential user);
 	
 }

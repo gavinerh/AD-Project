@@ -3,7 +3,7 @@ import AuthenticationService from './AuthenticationService';
 
 class UserDataService{
     login(username, password){
-        return axios.post(`http://localhost:8080/account/login`, {
+        return axios.post(`http://localhost:8080/account/authenticate`, {
             email: username,
             password: password
         });
