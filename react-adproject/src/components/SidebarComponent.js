@@ -7,6 +7,15 @@ import useEventListener from '@use-it/event-listener';
 
 
 class SidebarComponent extends Component {
+    constructor(props){
+        super(props);
+        this.logoutProcess = this.logoutProcess.bind(this);
+    }
+
+    logoutProcess(){
+        AuthenticationService.removeJwtToken();
+        AuthenticationService.removeUserSession();
+    }
 
     render() {
         let username = AuthenticationService.getUserEmail();
@@ -100,7 +109,7 @@ class SidebarComponent extends Component {
                             <li>
                                 <hr className="dropdown-divider" />
                             </li>
-                            <li><Link className='dropdown-item' to="/login" onClick={AuthenticationService.removeUserSession}>Sign out</Link></li>
+                            <li><Link className='dropdown-item' to="/login" onClick={this.logoutProcess}>Sign out</Link></li>
                         </ul>
                     </div>
                 </div>

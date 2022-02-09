@@ -1,15 +1,15 @@
 import axios from "axios";
 import AuthenticationService from "./AuthenticationService";
 
-const ARTICLE_API_BASE_URL = "http://localhost:8080/newsapi/news"
+const ARTICLE_API_BASE_URL = "http://localhost:8080/newsapi/"
 
 class ArticleDataService {
     getArticles() {
-        return axios.get(ARTICLE_API_BASE_URL, AuthenticationService.setupHeader());
+        return axios.get(ARTICLE_API_BASE_URL);
     }
     findByCountryCategory(country, category) {
         return axios.get(ARTICLE_API_BASE_URL+"/"+ country 
-            +"/"+category, AuthenticationService.setupHeader());
+            +"/"+category);
     }
 
    updateKeyword(query){
@@ -19,15 +19,26 @@ class ArticleDataService {
                 keyword: query
             }
         };
-        return axios.get(ARTICLE_API_BASE_URL+"kw/updateKeyword", request, AuthenticationService.setupHeader());
+        return axios.get(ARTICLE_API_BASE_URL+"kw/updateKeyword", request);
     }
+
+
+// updateKeyword(query){
+//     console.log("Search called");
+//     var request = {
+//         params: {
+//             keyword: query
+//         }
+//     };
+//     return axios.get("http://localhost:8080/search", request);
+// }
     dislikeArticle(article){
         let customArticle = {
             title: article.title,
             description: article.description,
             url: article.url,
         }
-        axios.post(`http://localhost:8080/dislike`, customArticle, AuthenticationService.setupHeader())
+        axios.post(`http://localhost:8080/dislike`, customArticle)
         .catch(error => console.log(error));
     }
 
@@ -38,14 +49,14 @@ class ArticleDataService {
             description: article.description,
             url: article.url,
         }
-        axios.post(`http://localhost:8080/like`, customArticle, AuthenticationService.setupHeader());
+        axios.post(`http://localhost:8080/like`, customArticle);
     }
 
     makecomment(comment){
         
          
 
-       return  axios.post(`http://localhost:8080/comment`, comment,AuthenticationService.setupHeader());
+       return  axios.post(`http://localhost:8080/comment`, comment);
     }
 
 

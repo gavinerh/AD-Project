@@ -77,7 +77,7 @@ public class NewsController {
 	}
 	
 	//search using USING NEWSAPI, save keywords no duplicates, no saving articles
-	@RequestMapping(value= {"/kw/updateKeyword"})
+	@GetMapping(value= {"/kw/updateKeyword"})
 	public List<Articles> displayPage(@RequestParam(required=false) 
 			String keyword) {
 		System.out.println(keyword);

@@ -1,6 +1,8 @@
+import axios from "axios";
 import React, { Component } from "react";
 import ArticlesService from "../service/ArticlesService";
 import ArticleService from '../service/ArticlesService';
+import AuthenticationService from "../service/AuthenticationService";
 import './Sidebar.css';
 
 export default class ArticleList extends Component {
@@ -14,6 +16,12 @@ export default class ArticleList extends Component {
         this.onDislikeClickListener = this.onDislikeClickListener.bind(this);
         this.onCommentListener = this.onCommentListener.bind(this);
         this.onsubmitCommentListener = this.onsubmitCommentListener.bind(this);
+        axios.interceptors.request.use(
+            config => {
+                config.headers.authorization = AuthenticationService.createJWTToken();
+                return config;
+            }
+        )
         this.state = {
             articles: [],
             isLoading: true,

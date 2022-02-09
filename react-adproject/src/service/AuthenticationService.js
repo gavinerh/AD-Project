@@ -26,14 +26,16 @@ class AuthenticationService {
         this.setupHeader(this.createJWTToken(token));
     }
 
-    createJWTToken(token){
+    createJWTToken(){
+        let token = sessionStorage.getItem(this.TOKEN_KEY);
         return "Bearer " + token;
     }
 
     setupHeader(){
-        let token = sessionStorage.getItem(this.TOKEN_KEY);
-        token = this.createJWTToken(token);
-        return {headers: {"Authorization": token}};
+        let token = this.createJWTToken();
+        return {headers: {
+            "Authorization": token
+        }};
     }
 
     // setupAxiosInterceptors(token){
@@ -49,6 +51,7 @@ class AuthenticationService {
 
     removeUserSession() {
         sessionStorage.removeItem("authenticationKey");
+        this.removeJwtToken();
     }
 
     getUserEmail() {
