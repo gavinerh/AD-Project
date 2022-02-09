@@ -96,11 +96,11 @@ public class NewsController {
 		}
 		
 		List<Articles> alist = ns.getArticles();	
-			for(Articles art:ns.getArticles()) {
-				if(!art.getUrl().contains("blogger.googleusercontent")) {
-					alist.add(art);
-				}
-			}
+//			for(Articles art:ns.getArticles()) {
+//				if(!art.getUrl().contains("blogger.googleusercontent")) {
+//					alist.add(art);
+//				}
+//			}
 		return alist;
 	}
 	
