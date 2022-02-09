@@ -2,6 +2,7 @@ package com.ad_project_android;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -27,6 +28,14 @@ public class LoginActivity extends AppCompatActivity {
     Button loginBtn, regBtn;
     private long pressTime;
     private Toast toast;
+
+//    @Override
+//    public void startActivityForResult(Intent intent, int requestCode) {
+//        if (intent == null) {
+//            intent = new Intent();
+//        }
+//        super.startActivityForResult(intent, requestCode);
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

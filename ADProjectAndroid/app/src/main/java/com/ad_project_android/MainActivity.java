@@ -73,8 +73,9 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        retrieveInfoFromServer();
         populateTokenString();
+        retrieveInfoFromServer();
+
         Log.d("News onCreate",""+newsObjects.size());
     }
     @Override
