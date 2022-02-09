@@ -2,14 +2,15 @@ import React, { Component } from "react";
 import ArticlesService from "../service/ArticlesService";
 import ArticleService from '../service/ArticlesService';
 import './Sidebar.css';
+import noImage from '../assets/no-image-placeholder.svg';
 
 export default class ArticleList extends Component {
     // constructor
     constructor(props) {
         super(props);
         this.retrieveArticles = this.retrieveArticles.bind(this);
-        this.keywordChangeHandler=this.keywordChangeHandler.bind(this);
-        this.searchFormHandler=this.searchFormHandler.bind(this);
+        this.keywordChangeHandler = this.keywordChangeHandler.bind(this);
+        this.searchFormHandler = this.searchFormHandler.bind(this);
         this.onLikeClickListener = this.onLikeClickListener.bind(this);
         this.onDislikeClickListener = this.onDislikeClickListener.bind(this);
         this.onCommentListener = this.onCommentListener.bind(this);
@@ -19,17 +20,17 @@ export default class ArticleList extends Component {
             isLoading: true,
             errors: null,
             isOn: false,
-            display:'none',
-            keyword:''
+            display: 'none',
+            keyword: ''
         };
     }
 
     componentDidMount() {
         this.retrieveArticles();
     }
-    
+
     onLikeClickListener(article) {
-        console.log(article);       
+        console.log(article);
         ArticlesService.likeArticle(article);
     }
 
@@ -38,7 +39,7 @@ export default class ArticleList extends Component {
         ArticleService.dislikeArticle(article);
     }
 
-    onsubmitCommentListener(title){
+    onsubmitCommentListener(title) {
         console.log(title);
         var comment = document.getElementById(title).value;
         console.log(comment);
@@ -47,13 +48,13 @@ export default class ArticleList extends Component {
 
 
 
-    onCommentListener(){
-        this.setState(prevState =>({
-       isOn:!prevState.isOn,
-       display:prevState.isOn?'none':'block'
+    onCommentListener() {
+        this.setState(prevState => ({
+            isOn: !prevState.isOn,
+            display: prevState.isOn ? 'none' : 'block'
 
-        }))  ;
-   }
+        }));
+    }
 
 
 
@@ -69,39 +70,39 @@ export default class ArticleList extends Component {
     searchFormHandler = (e) => {
         e.preventDefault();
         ArticlesService.updateKeyword(this.state.keyword)
-        .then(response =>
-            response.data.map(article => ({
-                sourceid: `${article.source.sourceid}`,
-                id: `${article.source.id}`,
-                sourcename: `${article.source.name}`,
-                author: `${article.author}`,
-                title: `${article.title}`,
-                description: `${article.description}`,
-                url: `${article.url}`,
-                imageurl: `${article.urlToImage}`,
-            }))
-        )
-        //change loading state to display data--> set active article
-        .then(articles => {
-            this.setState({
-                articles,
-                isLoading: false,
-                keyword: '', //clear search field
-            });
-        })
-        .then(response => {
-            console.log("no error");
-            // console.log(response);
-        })
-        .catch(error => this.setState({ error, isLoading: false }));
+            .then(response =>
+                response.data.map(article => ({
+                    sourceid: `${article.source.sourceid}`,
+                    id: `${article.source.id}`,
+                    sourcename: `${article.source.name}`,
+                    author: `${article.author}`,
+                    title: `${article.title}`,
+                    description: `${article.description}`,
+                    url: `${article.url}`,
+                    imageurl: `${article.urlToImage}`,
+                }))
+            )
+            //change loading state to display data--> set active article
+            .then(articles => {
+                this.setState({
+                    articles,
+                    isLoading: false,
+                    keyword: '', //clear search field
+                });
+            })
+            .then(response => {
+                console.log("no error");
+                // console.log(response);
+            })
+            .catch(error => this.setState({ error, isLoading: false }));
     }
-    
-	//HOMEPAGE (TEMPORARY)
+
+    //HOMEPAGE (TEMPORARY)
     retrieveArticles() {
-    	//using axios to request data
+        //using axios to request data
         ArticleService.getArticles()
             //once get response, map API endpoints to our props
-        	.then(response =>
+            .then(response =>
                 response.data.map(article => ({
                     sourceid: `${article.source.sourceid}`,
                     id: `${article.source.id}`,
@@ -131,7 +132,7 @@ export default class ArticleList extends Component {
                 <br />
                 <div className="container g-3 flex-fill">
                     <form onSubmit={this.searchFormHandler} className="col-12 col-lg-auto mb-3 me-lg-3">
-                        <input type="keyword" value={this.state.keyword} onChange={this.keywordChangeHandler} 
+                        <input type="keyword" value={this.state.keyword} onChange={this.keywordChangeHandler}
                             className="form-control" placeholder="Search..." aria-label="Search" />
                     </form>
                 </div>
@@ -170,7 +171,10 @@ export default class ArticleList extends Component {
 
                                     {/*start of one news box*/}
                                     <div className="list-group-item rounded d-flex gap-3 p-3" aria-current="true">
-                                        <img src={imageurl} alt={title} width="128" height="128" className="rounded flex-shrink-0" />
+                                        {/* display image */}
+                                        <img src={imageurl} alt={title} width="128" height="128" className="rounded flex-shrink-0"
+                                            onError={(e) => { e.target.onerror = null; e.target.src = `${noImage}` }} />
+                                        {/* display article text */}
                                         <div className="d-flex gap-2 w-100 justify-content-between ">
                                             <div className="flex-fill">
                                                 <h5 className="mb-0">{title}</h5>
@@ -205,7 +209,7 @@ export default class ArticleList extends Component {
                                                         </div>
                                                         <div className="col">
                                                             <button className="py-2 mb-2 btn btn-outline-danger rounded-4" type="submit" onClick={() => this.onCommentListener()}>
-                                                               
+
                                                                 Comments
                                                             </button>
                                                         </div>
@@ -223,27 +227,27 @@ export default class ArticleList extends Component {
                                             <small className="opacity-50 text-nowrap">{publishedAt}</small>
                                         </div>
                                     </div>
-                                    <div className="comment" style={{display: this.state.display}}> 
-                                              <input id={title}></input>
-                                              <div>
-                                                  <button className="py-2 mb-2 btn btn-outline-danger rounded-4" type="submit" onClick={() => this.onsubmitCommentListener(title)}>
-                                                      comment
-                                                      </button>
-                                              </div>
-                                              <div>
-                                                 <ul>
-                                                 <li className="li1">
-                                                 <div className="liusername"> Username</div> 
-                                                 <div className="licomment"> Comment</div>
-                                                
-                                                  </li>
-                                                 </ul>
-                                                  
-                                              </div>
-                                              
-                                             
+                                    <div className="comment" style={{ display: this.state.display }}>
+                                        <input id={title}></input>
+                                        <div>
+                                            <button className="py-2 mb-2 btn btn-outline-danger rounded-4" type="submit" onClick={() => this.onsubmitCommentListener(title)}>
+                                                comment
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <ul>
+                                                <li className="li1">
+                                                    <div className="liusername"> Username</div>
+                                                    <div className="licomment"> Comment</div>
 
-                                            </div>    
+                                                </li>
+                                            </ul>
+
+                                        </div>
+
+
+
+                                    </div>
 
 
                                 </div>
