@@ -15,8 +15,8 @@ class ArticleDataService {
             + "/" + category, AuthenticationService.setupHeader());
     }
 
-    
-// updateKeyword(query) {
+
+    // updateKeyword(query) {
     //     console.log("Search called");
     //     var request = {
     //         params: {
@@ -25,17 +25,19 @@ class ArticleDataService {
     //     };
     //     return axios.get(ARTICLE_API_BASE_URL + "kw/updateKeyword", request);
     // }
-    
-    updateKeyword(query) {
+
+    updateKeyword(query, sorting) {
         const instance = axios.create();
         instance.defaults.headers.common["Authorization"] = AuthenticationService.createJWTToken();
-        console.log("Search called");
-        var request = {
+
+        let request = {
             params: {
-                keyword: query
+                keyword: query,
+                sortBy: sorting
             }
-        };
-        return instance.get(ARTICLE_API_BASE_URL + "kw/updateKeyword", request);
+        }
+        console.log(request)
+        return axios.get(ARTICLE_API_BASE_URL + "kw/updateKeyword", request);
     }
 
     dislikeArticle(article) {
