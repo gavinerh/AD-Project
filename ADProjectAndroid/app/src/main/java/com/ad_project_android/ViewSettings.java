@@ -55,8 +55,10 @@ public class ViewSettings extends AppCompatActivity implements AdapterView.OnIte
         if(textView.getText().toString()=="Logout"){
            logout();
         }
+        else{
         Intent intent = getLinkedIntent(textView.getText().toString());
         startActivity(intent);
+        }
     }
 
     private Intent getLinkedIntent(String text){

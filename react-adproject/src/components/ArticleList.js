@@ -122,7 +122,8 @@ export default class ArticleList extends Component {
                     description: `${article.description}`,
                     url: `${article.url}`,
                     imageurl: `${article.urlToImage}`,
-                    publishedAt: `${article.publishedAt}`
+                    publishedAt: `${article.publishedAt}`,
+                    prettytime: `${article.prettytime}`
                 }))
             )
             //change loading state to display data--> set active article
@@ -149,7 +150,7 @@ export default class ArticleList extends Component {
                 <div className="list-group-item d-flex row">
                     {!isLoading ? (
                         articles.map(article => {
-                            const { sourceid, id, sourcename, title, description, url, imageurl, publishedAt } = article;
+                            const { sourceid, id, sourcename, title, description, url, imageurl, publishedAt, prettytime } = article;
                             return (
                                 <div className="container g-3 flex-fill" key={sourceid, id, url}>
                                     {/* article icons */}
@@ -234,7 +235,7 @@ export default class ArticleList extends Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <small className="opacity-50 text-nowrap">{publishedAt}</small>
+                                            <small className="opacity-50 text-nowrap">{prettytime}</small>
                                         </div>
                                     </div>
                                     <div className="comment" style={{ display: this.state.display }}>
