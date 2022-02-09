@@ -20,7 +20,7 @@ public class NewsService {
 	//HOME PAGE returning all latest articles on technology
 	public static NewsSet getNewsHome(String category, String localdate, String key) {
 		if(key == null) {
-			key = "de30daafcb8d4b3e960359da9bd50fa2";
+			key = "a660825b855545d1971d84a7af17d393";
 		}
 	    String domain = "https://newsapi.org/v2/everything";
 	    String query = "?q=" + category;
@@ -46,7 +46,7 @@ public class NewsService {
 	
 	//By selecting COUNTRY or CATEGORY
 	public static ArrayList<Articles> getNewsByCountryCategory(String category, String country) {
-		String key = "fbbc757feb5b441b805c38dc2ad94bd3";
+		String key = "a660825b855545d1971d84a7af17d393";
 		
 		if(country == null) {
 			country ="";
@@ -73,9 +73,13 @@ public class NewsService {
 	//by using search bar--> at the moment only one word 
 	public static NewsSet getNewsByKeyword(String keyword, String key) {
 		if(key == null) {
-			key = "";
+			key = "a660825b855545d1971d84a7af17d393";
 		}
-	    String urlString = "https://newsapi.org/v2/everything?q=" + keyword+
+		
+		//to search for multiple words
+		String newkeyword = ReplaceSpace(keyword);
+				
+	    String urlString = "https://newsapi.org/v2/everything?q=" + newkeyword+
 		    		"&sortBy=relevancy"+"&apiKey=" + key;
 		    try {
 		    	return queryApi(urlString);    	
@@ -100,4 +104,8 @@ public class NewsService {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(response.body(), NewsSet.class);
     }
+	static String ReplaceSpace(String s) {
+		String plus="+";
+		return s.replace(" ", plus); 
+	}
 }

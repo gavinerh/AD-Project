@@ -94,7 +94,13 @@ public class NewsController {
 		else if(keyword==null) {
 			ns = NewsService.getNewsHome("technology", null, null);
 		}
-		List<Articles> alist = ns.getArticles();		
+		
+		List<Articles> alist = ns.getArticles();	
+			for(Articles art:ns.getArticles()) {
+				if(!art.getUrl().contains("blogger.googleusercontent")) {
+					alist.add(art);
+				}
+			}
 		return alist;
 	}
 	
