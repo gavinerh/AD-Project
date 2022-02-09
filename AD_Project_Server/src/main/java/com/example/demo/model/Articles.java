@@ -36,12 +36,13 @@ public class Articles {
 	@Column(length=1000)
 	private String urlToImage;
 	private String publishedAt;
+	private String prettytime;
 	private String content;
 	@OneToMany(fetch=FetchType.EAGER)
 	private List<Comment> comments;	
 	
 	
-	public String getPublishedAt() {
+	public String getPrettytime() {
 		Instant dateTime = Instant.parse(publishedAt);
 		PrettyTime p = new PrettyTime();
 		return p.format(dateTime);

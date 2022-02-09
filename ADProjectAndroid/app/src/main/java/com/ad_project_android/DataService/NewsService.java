@@ -12,7 +12,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 public interface NewsService {
-    @GET("newsapi/")
+    @GET("newsapi/news")
     Call<List<NewsObject>> getNews(@Header("Authorization") String token);
 
     @POST("newsapi/like")
