@@ -17,12 +17,14 @@ export default class ArticleList extends Component {
         this.onDislikeClickListener = this.onDislikeClickListener.bind(this);
         this.onCommentListener = this.onCommentListener.bind(this);
         this.onsubmitCommentListener = this.onsubmitCommentListener.bind(this);
-        axios.interceptors.request.use(
-            config => {
-                config.headers.authorization = AuthenticationService.createJWTToken();
-                return config;
-            }
-        )
+        // axios.interceptors.request.use(
+        //     (config) => {
+        //         if (AuthenticationService.isUserLoggedIn() === 'true') {
+        //             config.headers.authorization = AuthenticationService.createJWTToken();
+        //         }
+        //         return config;
+        //     }
+        // )
         this.state = {
             articles: [],
             isLoading: true,

@@ -34,8 +34,7 @@ class UserDataService{
             email: email,
             password: password
         }
-        return axios.put(`http://localhost:8080/account/update`, user,
-        AuthenticationService.setupHeader());
+        return axios.put(`http://localhost:8080/account/update`, user, AuthenticationService.setupHeader());
     }
 }
 

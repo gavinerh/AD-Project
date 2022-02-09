@@ -84,7 +84,7 @@ public class ViewSettings extends AppCompatActivity implements AdapterView.OnIte
     private void removeStoredPreference(){
         SharedPreferences pref = getSharedPreferences("user_credential", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.remove("email");
+        editor.clear();
         editor.commit();
     }
 }
