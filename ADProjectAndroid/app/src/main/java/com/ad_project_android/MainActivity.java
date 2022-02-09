@@ -73,10 +73,8 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        populateTokenString();
         retrieveInfoFromServer();
-
+        populateTokenString();
         Log.d("News onCreate",""+newsObjects.size());
     }
     @Override
@@ -196,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
     }
 
     @Override
-    public void sendNewsObjectPosition(int position, int preference) {
+    public void sendNewsObjectPosition(NewsObject position, int preference) {
         postLikeOrDislike(position, preference);
     }
 
@@ -210,8 +208,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         launchwebview(url);
     }
 
-    private void postLikeOrDislike(int position, int preference){
-        NewsObject newsObject = newsObjects.get(position);
+    private void postLikeOrDislike(NewsObject newsObject, int preference){
         NewsService newsService = getNewsServiceInstance();
         Call<Void> call = null;
         if(preference == 1){

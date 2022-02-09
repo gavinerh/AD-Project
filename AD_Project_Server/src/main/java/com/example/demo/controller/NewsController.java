@@ -131,6 +131,7 @@ public class NewsController {
 		alist = aService.findAll();
 /////////////////////////////////////////////////////////////////////			
 		System.out.println("Fetched Articles size: "+alist.size());
+		System.out.println("Fetched Articles size: "+alist.get(1).getPublishedAt());
 		List<Articles> android = new ArrayList<>();
 		List<LikedArticle> likes = larepo.findAll();
 		if(likes.size()>0) {android = mlfunction(likes);}
@@ -139,11 +140,30 @@ public class NewsController {
 		for(int i = 0; i<80; i++) {
 			android.add(alist.get(i));}
 		}
-		Collections.shuffle(android,new Random(7));
+		Collections.shuffle(android,new Random(5));
 		System.out.println("Articles for Android size: "+android.size());
 		return new ResponseEntity<List<Articles>>(android, HttpStatus.OK);
 	}
 	
+	@PostMapping(path="/like")
+	public ResponseEntity<Void> likeNews(@RequestBody Articles article){
+		LikedArticle like = larepo.findByTitle(article.getTitle());
+		if(like ==null) {
+		larepo.saveAndFlush(new LikedArticle(article.getTitle()));}
+		else {
+			larepo.delete(like);
+		}
+		System.out.println(article);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	@PostMapping(path="/dislike")
+	public ResponseEntity<Void> dislikeNews(@RequestBody Articles article) {
+		System.out.println(article);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	
+/////////////////////////////Private Methods///////////////////////////////////////
 	private List<Articles> fetchNewsAPI() {
 		List<Articles> nlist = new ArrayList<>();
 		List<Category> cats = crepo.findAll();

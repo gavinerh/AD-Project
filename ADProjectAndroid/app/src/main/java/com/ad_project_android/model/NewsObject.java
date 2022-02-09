@@ -11,15 +11,18 @@ public class NewsObject implements Serializable {
     private String description;
     private Bitmap bitmap;
     private String publishedAt;
+    private String prettytime;
     private Source source;
 
-    public NewsObject(String title, String newsUrl, String imageUrl, String description, String publishedAt, Source source) {
+    public NewsObject(String title, String newsUrl, String imageUrl, String description, String publishedAt,
+                      String prettytime, Source source) {
         this.title = title;
         this.url = newsUrl;
         this.urlToImage = imageUrl;
         this.description = description;
         bitmap = null;
         this.publishedAt = publishedAt;
+        this.prettytime = prettytime;
         this.source = source;
     }
 
@@ -66,6 +69,8 @@ public class NewsObject implements Serializable {
         //need to put in nicer string
         //or calc last published
         return publishedAt; }
+
+    public String getPrettytime(){return prettytime;}
 
     public void setPublishedAt(String publishedAt) { this.publishedAt = publishedAt; }
 

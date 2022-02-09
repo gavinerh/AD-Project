@@ -83,7 +83,7 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
         mSource.setText(myitems.get(pos).getSource().getName());
         // set time published
         TextView mTime = view.findViewById(R.id.dateText);
-        mTime.setText(myitems.get(pos).getPublishedAt());
+        mTime.setText(myitems.get(pos).getPrettytime());
         // set share to social media
         ImageView mShare = view.findViewById(R.id.share);
         mShare.setOnClickListener(new View.OnClickListener() {
@@ -112,10 +112,11 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
                     likeBtn.setImageResource(R.drawable.ic_hand_thumbs_up_fill);
                     dislikeBtn.setImageResource(R.drawable.ic_hand_thumbs_down);
                     like = true;
-                    sendNewsObjectPosition(pos, 1);
+                    sendNewsObjectPosition(myitems.get(pos), 1);
                     }
                     else{
                         likeBtn.setImageResource(R.drawable.ic_hand_thumbs_up);
+                        sendNewsObjectPosition(myitems.get(pos), 1);
                         like = null;
                     }
                 }
@@ -129,7 +130,7 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
                         dislikeBtn.setImageResource(R.drawable.ic_hand_thumbs_down_fill);
                         likeBtn.setImageResource(R.drawable.ic_hand_thumbs_up);
                         like = false;
-                        sendNewsObjectPosition(pos, -1);
+                        sendNewsObjectPosition(myitems.get(pos), -1);
                     }
                     else{
                         dislikeBtn.setImageResource(R.drawable.ic_hand_thumbs_down);
@@ -161,7 +162,7 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
     }
 
     @Override
-    public void sendNewsObjectPosition(int position, int preference) {
+    public void sendNewsObjectPosition(NewsObject position, int preference) {
         adapterInterface.sendNewsObjectPosition(position, preference);
     }
 
