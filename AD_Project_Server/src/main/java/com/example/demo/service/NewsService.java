@@ -50,11 +50,9 @@ public class NewsService {
 	
 	//By selecting COUNTRY or CATEGORY
 	public static ArrayList<Articles> getNewsByCountryCategory(String category, String country) {
-<<<<<<< Updated upstream
+
 		String key = myKey;
-=======
-		String key = "fbbc757feb5b441b805c38dc2ad94bd3";
->>>>>>> Stashed changes
+//		String key = "fbbc757feb5b441b805c38dc2ad94bd3";
 		
 		if(country == null) {
 			country ="";
@@ -65,14 +63,13 @@ public class NewsService {
     	String pagesize = "&pageSize=30";
 	    String sortBy = "&sortBy=popularity";
 	    String language = "&language=en";
-<<<<<<< Updated upstream
-	    String urlString = "https://newsapi.org/v2/top-headlines"+"?country="+country+
-		    		"&category=" + category+date+sortBy+language+pagesize+key;
-=======
+//	    String urlString = "https://newsapi.org/v2/top-headlines"+"?country="+country+
+//		    		"&category=" + category+date+sortBy+language+pagesize+key;
+
 	    String urlString = "https://newsapi.org/v2/top-headlines"+
 		    		"?category=" + category+language+pagesize+"&apiKey=" + key;
->>>>>>> Stashed changes
-		    try {
+
+	    try {
 		    	NewsSet ns1 = queryApi(urlString);
 	    return ns1.getArticles();    	
 		    }catch(IOException e) {
@@ -124,6 +121,7 @@ public class NewsService {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(response.body(), NewsSet.class);
     }
+	
 	static String ReplaceSpace(String s) {
 		String plus="+";
 		return s.replace(" ", plus); 

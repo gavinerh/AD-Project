@@ -35,12 +35,10 @@ import com.example.demo.model.Category;
 import com.example.demo.model.DislikedArticle;
 import com.example.demo.model.LikedArticle;
 import com.example.demo.model.NewsSet;
-import com.example.demo.model.Search;
 import com.example.demo.model.UserCredential;
 import com.example.demo.model.JsonModel.MLJson;
 import com.example.demo.service.ArticlesService;
 import com.example.demo.service.NewsService;
-import com.example.demo.service.SearchService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Enumerates.category;
@@ -53,8 +51,6 @@ public class NewsController {
 	
 	@Autowired
 	ArticlesService aService;
-	@Autowired
-	SearchService srhService;
 	@Autowired
 	SourceRepo srepo;
 	@Autowired
@@ -90,11 +86,6 @@ public class NewsController {
 
 		NewsSet ns = new NewsSet();
 		if(keyword!=null) {	
-//			Search s = new Search(); 
-//			if(srhService.findWord(keyword)==null) { //check for existing word
-//				s.setKeyword(keyword);
-//				srhService.save(s);
-//			}
 			ns = NewsService.getNewsByKeyword(keyword, sorting, null, null); //no date, no key
 		} 
 		else if(keyword==null) {
@@ -106,32 +97,17 @@ public class NewsController {
 		return alist;
 	}
 	
-//	//For testing
-//	@RequestMapping(value= {"/kw/{keyword}"})
-//	public List<Articles> testDisplayPage(@PathVariable(required=false) 
-//			String keyword) {
-//		NewsSet ns = new NewsSet();
-//		if(keyword!=null) {
-//			ns = NewsService.getNewsByKeyword(keyword, null);
-//		} else {
-//			ns = NewsService.getNewsHome("technology", null, null);
-//		}
-//		List<Articles> alist = ns.getArticles();	
-//		return alist;
-//	}
 	
 	//For ANDROID TEMPORARY
 	@GetMapping("/news")
 	public ResponseEntity<List<Articles>> newsPage() {
-<<<<<<< Updated upstream
-		alist = aService.findAll();		
-=======
+//		alist = aService.findAll();		
 ////////////////////////////////////////////////////////////////////		
 		//Fetch News from database
 
 		alist = aService.findAll();
 /////////////////////////////////////////////////////////////////////			
->>>>>>> Stashed changes
+
 		System.out.println("Fetched Articles size: "+alist.size());
 		System.out.println("Fetched Articles size: "+alist.get(1).getPublishedAt());
 		List<Articles> android = new ArrayList<>();
