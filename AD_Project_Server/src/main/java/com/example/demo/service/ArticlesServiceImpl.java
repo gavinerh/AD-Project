@@ -37,4 +37,11 @@ public class ArticlesServiceImpl implements ArticlesService {
 	public void deleteAll() {
 		aRepo.deleteAll();
 	}
+	@Override
+	public Articles findbytitle(String title) {
+		
+		return aRepo.findArticlesBytitle(title);
+	}
+	
+	
 }

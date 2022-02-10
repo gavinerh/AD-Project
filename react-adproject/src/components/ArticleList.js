@@ -20,21 +20,28 @@ export default class ArticleList extends Component{
         this.onDislikeClickListener = this.onDislikeClickListener.bind(this);
         this.onCommentListener = this.onCommentListener.bind(this);
         this.onsubmitCommentListener = this.onsubmitCommentListener.bind(this);
-        
-        axios.interceptors.request.use(
-            config => {
-                config.headers.authorization = AuthenticationService.createJWTToken();
-                return config;
-            }
-        )
+
+        this.sortByInputHandler = this.sortByInputHandler.bind(this);
+
+       //  axios.interceptors.request.use(
+       //      (config) => {
+        //         if (AuthenticationService.isUserLoggedIn() === 'true') {
+        //            config.headers.authorization = AuthenticationService.createJWTToken();
+       //         }
+        //       return config;
+       //     }
+       //  )
+
         this.state = {
             articles: [],
             comment:[],
             isLoading: true,
             errors: null,
-            changecomment:"",
+          //  isOn: false,
+          //  display: 'none',
             keyword: '',
-           
+            sortBy: ''
+
         };
     }
     
@@ -60,7 +67,7 @@ export default class ArticleList extends Component{
         document.getElementById(title).value ="";
 
         var id= title+"comment";
-        var area =   document.getElementById(id);
+       
         
     }
 
@@ -101,10 +108,19 @@ export default class ArticleList extends Component{
             changed: true
         })
     }
+
+    //sorting articles handler
+    sortByInputHandler(e) {
+        this.setState({
+            sortBy: e.target.value
+        })
+        console.log(this.state.sortBy);
+    }
+
     //on Submit use curr keyword to retrieve articles
     searchFormHandler = (e) => {
         e.preventDefault();
-        ArticlesService.updateKeyword(this.state.keyword)
+        ArticlesService.updateKeyword(this.state.keyword, this.state.sortBy)
             .then(response =>
                 response.data.map(article => ({
                     sourceid: `${article.source.sourceid}`,
@@ -115,7 +131,8 @@ export default class ArticleList extends Component{
                     description: `${article.description}`,
                     url: `${article.url}`,
                     imageurl: `${article.urlToImage}`,
-                    
+                    prettytime: `${article.prettytime}`
+
                 }))
             )
             //change loading state to display data--> set active article
@@ -123,7 +140,7 @@ export default class ArticleList extends Component{
                 this.setState({
                     articles,
                     isLoading: false,
-                    keyword: '', //clear search field
+                    // keyword: '', //clear search field
                 });
             })
             .then(response => {
@@ -148,7 +165,7 @@ export default class ArticleList extends Component{
                     description: `${article.description}`,
                     url: `${article.url}`,
                     imageurl: `${article.urlToImage}`,
-                    publishedAt: `${article.publishedAt}`
+                    prettytime: `${article.prettytime}`
                 }))
             )
             //change loading state to display data--> set active article
@@ -196,16 +213,69 @@ export default class ArticleList extends Component{
                     <form onSubmit={this.searchFormHandler} className="col-12 col-lg-auto mb-3 me-lg-3">
                         <input type="keyword" value={this.state.keyword} onChange={this.keywordChangeHandler}
                             className="form-control" placeholder="Search..." aria-label="Search" />
+
+                        {/* sort by */}
+                        <legend>Sort by</legend>
+                        <div className="form-check my-2" >
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="popularity"
+                                    value="popularity"
+                                    checked={this.state.sortBy === "popularity"}
+                                    onChange={this.sortByInputHandler}
+                                    className="form-check-input"
+                                />
+                                Popularity
+                            </label>
+                        </div>
+
+                        <div className="form-check my-2" >
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="publishedAt"
+                                    value="publishedAt"
+                                    checked={this.state.sortBy === "publishedAt"}
+                                    onChange={this.sortByInputHandler}
+                                    className="form-check-input"
+                                />
+                                Most recent
+                            </label>
+                        </div>
+
+                        <div className="form-check my-2" >
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="relevancy"
+                                    value="relevancy"
+                                    checked={this.state.sortBy === "relevancy"}
+                                    onChange={this.sortByInputHandler}
+                                    className="form-check-input"
+                                />
+                                Relevance
+                            </label>
+                        </div>
+
+                        <div className="form-group">
+                            <button className="btn btn-primary mt-2" type="submit">
+                                Submit
+                            </button>
+                        </div>
+
+
                     </form>
                 </div>
                 <div className="list-group-item d-flex row">
                     {!isLoading ? (
                         articles.map(article => {
-                            const { sourceid, id, sourcename, title, description, url, imageurl, publishedAt } = article;
-                            let obj={
-                                title:{title},
-                                num:"5",
-                            }
+
+ 
+                         
+
+
+                            const { sourceid, id, sourcename, title, description, url, imageurl, prettytime } = article;
 
                             return (
                                 <div className="container g-3 flex-fill" key={sourceid, id, url}>
@@ -291,7 +361,7 @@ export default class ArticleList extends Component{
                                                     </div>
                                                 </div>
                                             </div>
-                                            <small className="opacity-50 text-nowrap">{publishedAt}</small>
+                                            <small className="opacity-50 text-nowrap">{prettytime}</small>
                                         </div>
                                     </div>
                                     <div id={title+"comment"} style={{ display: "none" }}>

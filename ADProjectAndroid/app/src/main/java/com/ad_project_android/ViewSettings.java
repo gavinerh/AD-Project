@@ -55,8 +55,10 @@ public class ViewSettings extends AppCompatActivity implements AdapterView.OnIte
         if(textView.getText().toString()=="Logout"){
            logout();
         }
+        else{
         Intent intent = getLinkedIntent(textView.getText().toString());
         startActivity(intent);
+        }
     }
 
     private Intent getLinkedIntent(String text){
@@ -84,7 +86,7 @@ public class ViewSettings extends AppCompatActivity implements AdapterView.OnIte
     private void removeStoredPreference(){
         SharedPreferences pref = getSharedPreferences("user_credential", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.remove("email");
+        editor.clear();
         editor.commit();
     }
 }

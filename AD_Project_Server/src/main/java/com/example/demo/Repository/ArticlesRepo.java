@@ -19,5 +19,8 @@ public interface ArticlesRepo extends JpaRepository<Articles, Integer>{
 	@Query("SELECT a FROM Articles a WHERE a.title like :k" 
 			+" AND a.description like :k")
 	List<Articles> findByTitleDescription(@Param("k") String k);
+	
+	@Query("SELECT a FROM Articles a WHERE a.title like :t" )
+	public Articles findArticlesBytitle(@Param("t")String title);
 }
 

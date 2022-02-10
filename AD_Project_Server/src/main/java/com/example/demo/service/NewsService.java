@@ -17,23 +17,27 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class NewsService {
 	
+	private static final String myKey = "&apiKey=dbc6375daa754b3695d78bc9ce2853ea";
+	private static final String myLang = "&language=en";
+	private static final String myPageSize = "&pageSize=30";
+	
 	//HOME PAGE returning all latest articles on technology
 	public static NewsSet getNewsHome(String category, String localdate, String key) {
 		if(key == null) {
-			key = "de30daafcb8d4b3e960359da9bd50fa2";
+			key = myKey;
 		}
-	    String domain = "https://newsapi.org/v2/everything";
-	    String query = "?q=" + category;
+	    
 	    if(localdate == null) {
 //	    	LocalDate temp = LocalDate.now();
 //	    	localdate = temp.minusDays(7).toString();
 	    	localdate=LocalDate.now().toString(); //retrieve latest news
 	    }
+	    
+	    String domain = "https://newsapi.org/v2/everything";
+	    String query = "?q=" + category;
 	    String date = "&from=" + localdate;
-	    String sortBy = "&sortBy=publishedAt"; //"&sortBy=popularity"; 
-	    String apikey = "&apiKey=" + key;
-	    String urlString = String.format("%s%s%s%s%s", domain, 
-	    		query, date, sortBy, apikey); 
+	    String sortBy = "&sortBy=publishedAt";
+	    String urlString = domain + query + date + sortBy + myLang + myPageSize + key; 
 		    try {
 		    	return queryApi(urlString);    
 		    }catch(IOException e) {
@@ -46,7 +50,7 @@ public class NewsService {
 	
 	//By selecting COUNTRY or CATEGORY
 	public static ArrayList<Articles> getNewsByCountryCategory(String category, String country) {
-		String key = "a660825b855545d1971d84a7af17d393";
+		String key = myKey;
 		
 		if(country == null) {
 			country ="";
@@ -58,7 +62,7 @@ public class NewsService {
 	    String sortBy = "&sortBy=popularity";
 	    String language = "&language=en";
 	    String urlString = "https://newsapi.org/v2/top-headlines"+"?country="+country+
-		    		"&category=" + category+date+sortBy+language+pagesize+"&apiKey=" + key;
+		    		"&category=" + category+date+sortBy+language+pagesize+key;
 		    try {
 		    	NewsSet ns1 = queryApi(urlString);
 	    return ns1.getArticles();    	
@@ -70,25 +74,32 @@ public class NewsService {
 	    return null;
 	}
 	
-	//by using search bar--> at the moment only one word 
-	public static NewsSet getNewsByKeyword(String keyword, String key) {
+	public static NewsSet getNewsByKeyword(String keyword, String sortBy, String localdate, String key) {
 		if(key == null) {
-			key = "a660825b855545d1971d84a7af17d393";
+			key = myKey;
 		}
 		
-		//to search for multiple words
+		if(sortBy == null) {
+			sortBy = "relevance";
+		}
+		
+		if(localdate == null) {
+			localdate=LocalDate.now().toString();
+		}
+		
+		// to search for multiple words
 		String newkeyword = ReplaceSpace(keyword);
-				
-	    String urlString = "https://newsapi.org/v2/everything?q=" + newkeyword+
-		    		"&sortBy=relevancy"+"&apiKey=" + key;
-		    try {
-		    	return queryApi(urlString);    	
-		    }catch(IOException e) {
-		    	e.printStackTrace();
-		    }catch(InterruptedException e) {
-		    	e.printStackTrace();
-		    }
-	    return null;
+
+		String urlString = "https://newsapi.org/v2/everything?q=" + newkeyword + 
+				"&sortBy=" + sortBy + "&from=" + localdate + myLang + myPageSize + key;
+		try {
+			return queryApi(urlString);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	

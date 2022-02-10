@@ -11,4 +11,5 @@ public interface ArticlesService {
 	Articles save(Articles a);
 	Articles saveAndFlush(Articles a);
 	void deleteAll();
+	Articles findbytitle(String title);
 }

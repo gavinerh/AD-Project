@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,59 +79,49 @@ public class NewsController {
 	
 	//search using USING NEWSAPI, save keywords no duplicates, no saving articles
 	@GetMapping(value= {"/kw/updateKeyword"})
-	public List<Articles> displayPage(@RequestParam(required=false) 
-			String keyword) {
-		System.out.println(keyword);
+	public List<Articles> displayPage(@RequestParam Map<String,String> requestParams) {
+		String keyword = requestParams.get("keyword");
+		String sorting = requestParams.get("sortBy");
+		System.out.println(keyword + sorting);
 
 		NewsSet ns = new NewsSet();
 		if(keyword!=null) {	
-			Search s = new Search(); 
-			if(srhService.findWord(keyword)==null) { //check for existing word
-				s.setKeyword(keyword);
-				srhService.save(s);
-			}
-			ns = NewsService.getNewsByKeyword(keyword, null);
+//			Search s = new Search(); 
+//			if(srhService.findWord(keyword)==null) { //check for existing word
+//				s.setKeyword(keyword);
+//				srhService.save(s);
+//			}
+			ns = NewsService.getNewsByKeyword(keyword, sorting, null, null); //no date, no key
 		} 
 		else if(keyword==null) {
+			System.out.println("keyword is null"); 
 			ns = NewsService.getNewsHome("technology", null, null);
 		}
 		
 		List<Articles> alist = ns.getArticles();	
-			for(Articles art:ns.getArticles()) {
-				if(!art.getUrl().contains("blogger.googleusercontent")) {
-					alist.add(art);
-				}
-			}
 		return alist;
 	}
 	
-	//For testing
-	@RequestMapping(value= {"/kw/{keyword}"})
-	public List<Articles> testDisplayPage(@PathVariable(required=false) 
-			String keyword) {
-		NewsSet ns = new NewsSet();
-		if(keyword!=null) {
-			ns = NewsService.getNewsByKeyword(keyword, null);
-		} else {
-			ns = NewsService.getNewsHome("technology", null, null);
-		}
-		List<Articles> alist = ns.getArticles();	
-		return alist;
-	}
+//	//For testing
+//	@RequestMapping(value= {"/kw/{keyword}"})
+//	public List<Articles> testDisplayPage(@PathVariable(required=false) 
+//			String keyword) {
+//		NewsSet ns = new NewsSet();
+//		if(keyword!=null) {
+//			ns = NewsService.getNewsByKeyword(keyword, null);
+//		} else {
+//			ns = NewsService.getNewsHome("technology", null, null);
+//		}
+//		List<Articles> alist = ns.getArticles();	
+//		return alist;
+//	}
 	
 	//For ANDROID TEMPORARY
 	@GetMapping("/news")
 	public ResponseEntity<List<Articles>> newsPage() {
-////////////////////////////////////////////////////////////////////
-		//Fetch News from NEWSAPI
-		
-		//alist = fetchNewsAPI();
-////////////////////////////////////////////////////////////////////		
-		//Fetch News from database
-
-		alist = aService.findAll();
-/////////////////////////////////////////////////////////////////////			
+		alist = aService.findAll();		
 		System.out.println("Fetched Articles size: "+alist.size());
+		System.out.println("Fetched Articles size: "+alist.get(1).getPublishedAt());
 		List<Articles> android = new ArrayList<>();
 		List<LikedArticle> likes = larepo.findAll();
 		if(likes.size()>0) {android = mlfunction(likes);}
@@ -139,11 +130,30 @@ public class NewsController {
 		for(int i = 0; i<80; i++) {
 			android.add(alist.get(i));}
 		}
-		Collections.shuffle(android,new Random(7));
+		Collections.shuffle(android,new Random(5));
 		System.out.println("Articles for Android size: "+android.size());
 		return new ResponseEntity<List<Articles>>(android, HttpStatus.OK);
 	}
 	
+	@PostMapping(path="/like")
+	public ResponseEntity<Void> likeNews(@RequestBody Articles article){
+		LikedArticle like = larepo.findByTitle(article.getTitle());
+		if(like ==null) {
+		larepo.saveAndFlush(new LikedArticle(article.getTitle()));}
+		else {
+			larepo.delete(like);
+		}
+		System.out.println(article);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	@PostMapping(path="/dislike")
+	public ResponseEntity<Void> dislikeNews(@RequestBody Articles article) {
+		System.out.println(article);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	
+/////////////////////////////Private Methods///////////////////////////////////////
 	private List<Articles> fetchNewsAPI() {
 		List<Articles> nlist = new ArrayList<>();
 		List<Category> cats = crepo.findAll();

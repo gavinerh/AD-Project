@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.demo.model.LikedArticle;
 
 public interface LikedArticleRepository extends JpaRepository<LikedArticle, Integer> {
-	
+	public LikedArticle findByTitle(String title);
 }

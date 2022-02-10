@@ -57,6 +57,16 @@ class AuthenticationService {
     getUserEmail() {
         return sessionStorage.getItem("authenticationKey");
     }
+
+    checkTokenPresent(){
+        let token = sessionStorage.getItem(this.TOKEN_KEY);
+        console.log(token === null);
+        if(token !== null){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
 
 export default new AuthenticationService()
