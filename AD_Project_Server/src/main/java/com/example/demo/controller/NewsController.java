@@ -77,26 +77,44 @@ public class NewsController {
 		return alist;
 	}
 	
-	//search using USING NEWSAPI, save keywords no duplicates, no saving articles
+	//search using NEWSAPI
+//	@GetMapping(value= {"/kw/updateKeyword"})
+//	public List<Articles> displayPage(@RequestParam Map<String,String> requestParams) {
+//		String keyword = requestParams.get("keyword");
+//		String sorting = requestParams.get("sortBy");
+//		System.out.println(keyword + sorting);
+//
+//		NewsSet ns = new NewsSet();
+//		if(keyword!=null) {	
+//			ns = NewsService.getNewsByKeyword(keyword, sorting, null, null); //no date, no key
+//		} 
+//		else if(keyword==null) {
+//			System.out.println("keyword is null"); 
+//			ns = NewsService.getNewsHome("technology", null, null);
+//		}
+//		
+//		List<Articles> alist = ns.getArticles();	
+//		return alist;
+//	}
+	
+	//search from database
 	@GetMapping(value= {"/kw/updateKeyword"})
-	public List<Articles> displayPage(@RequestParam Map<String,String> requestParams) {
+	public List<Articles> searchFromDB(@RequestParam Map<String,String> requestParams) {
 		String keyword = requestParams.get("keyword");
 		String sorting = requestParams.get("sortBy");
 		System.out.println(keyword + sorting);
-
+		
 		NewsSet ns = new NewsSet();
+		List<Articles> searchList = new ArrayList<>();
 		if(keyword!=null) {	
-			ns = NewsService.getNewsByKeyword(keyword, sorting, null, null); //no date, no key
-		} 
-		else if(keyword==null) {
+			searchList = aService.findArticlesByTitleAndDescription(keyword);
+		} else if(keyword==null) {
 			System.out.println("keyword is null"); 
 			ns = NewsService.getNewsHome("technology", null, null);
+			searchList = ns.getArticles();
 		}
-		
-		List<Articles> alist = ns.getArticles();	
-		return alist;
+		return searchList;
 	}
-	
 	
 	//For ANDROID TEMPORARY
 	@GetMapping("/news")
