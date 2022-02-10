@@ -63,7 +63,8 @@ export default class ArticleList extends Component{
         console.log(title);
         var comment = document.getElementById(title).value;
         console.log(comment);
-        ArticleService.makecomment(title,comment);
+        let name = AuthenticationService.getUserEmail();
+        ArticleService.makecomment(title,comment,name);
         document.getElementById(title).value ="";
 
         var id= title+"comment";
@@ -374,7 +375,7 @@ export default class ArticleList extends Component{
                                                 comment
                                             </button>
                                         </div>
-                                       <CommentList title={title} >
+                                       <CommentList title={title}  >
 
                                        </CommentList>
 

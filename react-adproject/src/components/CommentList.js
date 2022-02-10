@@ -43,6 +43,7 @@ export default class CommentList extends Component{
                  commentcontent:`${comment.commentcontent}`,
                  id:`${comment.id}`,
                  ctitle:`${comment.title}`,
+                 username:`${comment.username}`,
 
             }))
             
@@ -65,14 +66,14 @@ export default class CommentList extends Component{
                 <div className="list-group-item d-flex row">
                     {!isLoading ? (
                         comment.map(comment => {
-                            const { title,commentcontent  } = comment;
+                            const { title,commentcontent,username  } = comment;
                             
 
                             return (
                                 <div className="container g-3 flex-fill" >
                                     <ul>
                                        
-                                        <li>Someone:  {commentcontent}</li>
+                                        <li>{username}:  {commentcontent}</li>
                                     </ul>
                                    
 
