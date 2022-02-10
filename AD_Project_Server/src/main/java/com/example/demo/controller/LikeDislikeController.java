@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Articles;
+import com.example.demo.model.Comment;
 import com.example.demo.model.JsonArticle;
+import com.example.demo.model.UserCredential;
 @CrossOrigin()
 @RestController
 public class LikeDislikeController {
@@ -44,11 +46,5 @@ public class LikeDislikeController {
 	}
 	
 	
-	@PostMapping(path="/comment")
-	public void comment(@RequestBody String comment){
-		
-	     System.out.println(comment);
-		//get comment but havenot done the db part
-		
-	}
+	
 }
