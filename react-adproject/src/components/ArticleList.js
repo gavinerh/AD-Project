@@ -5,18 +5,22 @@ import ArticleService from '../service/ArticlesService';
 import AuthenticationService from "../service/AuthenticationService";
 import './Sidebar.css';
 import noImage from '../assets/no-image-placeholder.svg';
+import CommentList from "./CommentList";
+import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
-export default class ArticleList extends Component {
+export default class ArticleList extends Component{ 
     // constructor
     constructor(props) {
         super(props);
         this.retrieveArticles = this.retrieveArticles.bind(this);
+        this.retrievecomment = this.retrievecomment.bind(this);
         this.keywordChangeHandler = this.keywordChangeHandler.bind(this);
         this.searchFormHandler = this.searchFormHandler.bind(this);
         this.onLikeClickListener = this.onLikeClickListener.bind(this);
         this.onDislikeClickListener = this.onDislikeClickListener.bind(this);
         this.onCommentListener = this.onCommentListener.bind(this);
         this.onsubmitCommentListener = this.onsubmitCommentListener.bind(this);
+        
         axios.interceptors.request.use(
             config => {
                 config.headers.authorization = AuthenticationService.createJWTToken();
@@ -25,14 +29,15 @@ export default class ArticleList extends Component {
         )
         this.state = {
             articles: [],
+            comment:[],
             isLoading: true,
             errors: null,
-            isOn: false,
-            display: 'none',
-            keyword: ''
+            changecomment:"",
+            keyword: '',
+           
         };
     }
-
+    
     componentDidMount() {
         this.retrieveArticles();
     }
@@ -51,18 +56,40 @@ export default class ArticleList extends Component {
         console.log(title);
         var comment = document.getElementById(title).value;
         console.log(comment);
-        ArticleService.makecomment(comment);
+        ArticleService.makecomment(title,comment);
+        document.getElementById(title).value ="";
+
+        var id= title+"comment";
+        var area =   document.getElementById(id);
+        
     }
 
 
+   
 
-    onCommentListener() {
-        this.setState(prevState => ({
-            isOn: !prevState.isOn,
-            display: prevState.isOn ? 'none' : 'block'
 
-        }));
-    }
+
+    onCommentListener(id,title) {
+      //  this.setState(prevState => ({
+       //     isOn: !prevState.isOn,
+        //    display: prevState.isOn ? 'none' : 'block'
+
+      //  }));
+        // console.log(id);
+
+         var area =   document.getElementById(id);
+        // console.log(area);
+        // console.log(area.style);
+        
+         area.style ="display:block";
+        
+          if(area.style=="display:block"){
+            area.style ="display:none";
+          }
+
+  
+             
+}
 
 
 
@@ -88,6 +115,7 @@ export default class ArticleList extends Component {
                     description: `${article.description}`,
                     url: `${article.url}`,
                     imageurl: `${article.urlToImage}`,
+                    
                 }))
             )
             //change loading state to display data--> set active article
@@ -131,7 +159,33 @@ export default class ArticleList extends Component {
                 });
             })
             .catch(error => this.setState({ error, isLoading: false }));
+
+           
+
     }
+
+    retrievecomment(title){
+        ArticleService.getcomment(title)
+        .then(response =>
+            response.data.map(comment=>({
+                 commentcontent:`${comment.commentcontent}`,
+                 id:`${comment.id}`,
+                 ctitle:`${comment.title}`
+            }))
+            
+            )
+            .then(comment => {
+                this.setState({
+                    comment,
+                    
+                });
+            })
+            .catch(error => this.setState({ error, isLoading: false }));
+
+    }
+
+
+
 
     render() {
         const { isLoading, articles } = this.state;
@@ -148,6 +202,11 @@ export default class ArticleList extends Component {
                     {!isLoading ? (
                         articles.map(article => {
                             const { sourceid, id, sourcename, title, description, url, imageurl, publishedAt } = article;
+                            let obj={
+                                title:{title},
+                                num:"5",
+                            }
+
                             return (
                                 <div className="container g-3 flex-fill" key={sourceid, id, url}>
                                     {/* article icons */}
@@ -216,7 +275,7 @@ export default class ArticleList extends Component {
                                                             </button>
                                                         </div>
                                                         <div className="col">
-                                                            <button className="py-2 mb-2 btn btn-outline-danger rounded-4" type="submit" onClick={() => this.onCommentListener()}>
+                                                            <button className="py-2 mb-2 btn btn-outline-danger rounded-4" type="submit" onClick={() => this.onCommentListener(title+"comment",title)}>
 
                                                                 Comments
                                                             </button>
@@ -235,28 +294,24 @@ export default class ArticleList extends Component {
                                             <small className="opacity-50 text-nowrap">{publishedAt}</small>
                                         </div>
                                     </div>
-                                    <div className="comment" style={{ display: this.state.display }}>
+                                    <div id={title+"comment"} style={{ display: "none" }}>
+                                        <div className="list-group-item d-flex row">
+                                            
+
                                         <input id={title}></input>
                                         <div>
                                             <button className="py-2 mb-2 btn btn-outline-danger rounded-4" type="submit" onClick={() => this.onsubmitCommentListener(title)}>
                                                 comment
                                             </button>
                                         </div>
-                                        <div>
-                                            <ul>
-                                                <li className="li1">
-                                                    <div className="liusername"> Username</div>
-                                                    <div className="licomment"> Comment</div>
+                                       <CommentList title={title} >
 
-                                                </li>
-                                            </ul>
-
-                                        </div>
+                                       </CommentList>
 
 
 
                                     </div>
-
+                                    </div>
 
                                 </div>
                             );

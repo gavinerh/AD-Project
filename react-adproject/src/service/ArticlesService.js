@@ -7,6 +7,7 @@ class ArticleDataService {
     getArticles() {
         return axios.get(ARTICLE_API_BASE_URL);
     }
+
     findByCountryCategory(country, category) {
         return axios.get(ARTICLE_API_BASE_URL+"/"+ country 
             +"/"+category);
@@ -52,12 +53,35 @@ class ArticleDataService {
         axios.post(`http://localhost:8080/like`, customArticle);
     }
 
-    makecomment(comment){
-        
+    makecomment(title,content){
+        let comment ={
+            title: title,
+            commentcontent:content,
+           
+        }
+
+
+
          
 
        return  axios.post(`http://localhost:8080/comment`, comment);
     }
+
+
+    getcomment(title) {
+      let custom = {
+          title:title,
+         
+      }
+          
+        return axios.post(`http://localhost:8080/getComment`,custom);
+    }
+
+
+
+
+
+
 
 
 
