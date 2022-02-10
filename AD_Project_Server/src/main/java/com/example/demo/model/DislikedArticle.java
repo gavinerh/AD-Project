@@ -25,5 +25,8 @@ public class DislikedArticle {
 		this.description = description;
 		this.url = url;
 	}
+	public DislikedArticle(String title, String url) {
+		this(title,null,url);
+	}
 
 }

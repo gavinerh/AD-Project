@@ -137,7 +137,6 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
                         initFilesList();
                         setadaptor(dynamicNewsObject);
                         populateAdaptor();
-//                        setadaptor(newsObjects);
                     }else{
                         logout();
                     }
@@ -178,7 +177,6 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
     }
 
     private void populateAdaptor(){
-        List<NewsObject> newsObjectCopy = new ArrayList<>();
         for(int i=0; i<newsObjects.size(); i++){
             startService(newsObjects.get(i), listOfFiles.get(i));
 

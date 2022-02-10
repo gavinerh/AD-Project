@@ -27,10 +27,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Repository.ArticlesRepo;
 import com.example.demo.Repository.CategoryRepo;
+import com.example.demo.Repository.DislikedArticleRepository;
 import com.example.demo.Repository.LikedArticleRepository;
 import com.example.demo.Repository.SourceRepo;
 import com.example.demo.model.Articles;
 import com.example.demo.model.Category;
+import com.example.demo.model.DislikedArticle;
 import com.example.demo.model.LikedArticle;
 import com.example.demo.model.NewsSet;
 import com.example.demo.model.Search;
@@ -59,6 +61,8 @@ public class NewsController {
 	CategoryRepo crepo;
 	@Autowired
 	LikedArticleRepository larepo;
+	@Autowired
+	DislikedArticleRepository darepo;
 	
 	private List<Articles> alist = new ArrayList<>();
 	
@@ -119,7 +123,15 @@ public class NewsController {
 	//For ANDROID TEMPORARY
 	@GetMapping("/news")
 	public ResponseEntity<List<Articles>> newsPage() {
+<<<<<<< Updated upstream
 		alist = aService.findAll();		
+=======
+////////////////////////////////////////////////////////////////////		
+		//Fetch News from database
+
+		alist = aService.findAll();
+/////////////////////////////////////////////////////////////////////			
+>>>>>>> Stashed changes
 		System.out.println("Fetched Articles size: "+alist.size());
 		System.out.println("Fetched Articles size: "+alist.get(1).getPublishedAt());
 		List<Articles> android = new ArrayList<>();
@@ -129,7 +141,7 @@ public class NewsController {
 		else {
 		for(int i = 0; i<80; i++) {
 			android.add(alist.get(i));}
-		}
+		} 
 		Collections.shuffle(android,new Random(5));
 		System.out.println("Articles for Android size: "+android.size());
 		return new ResponseEntity<List<Articles>>(android, HttpStatus.OK);
@@ -139,35 +151,28 @@ public class NewsController {
 	public ResponseEntity<Void> likeNews(@RequestBody Articles article){
 		LikedArticle like = larepo.findByTitle(article.getTitle());
 		if(like ==null) {
-		larepo.saveAndFlush(new LikedArticle(article.getTitle()));}
+		larepo.saveAndFlush(new LikedArticle(article.getTitle(),article.getUrl()));}
 		else {
 			larepo.delete(like);
 		}
 		System.out.println(article);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
+	
 	@PostMapping(path="/dislike")
 	public ResponseEntity<Void> dislikeNews(@RequestBody Articles article) {
+		DislikedArticle dislike = darepo.findByTitle(article.getTitle());
+		if(dislike ==null) {
+		darepo.saveAndFlush(new DislikedArticle(article.getTitle(),article.getUrl()));}
+		else {
+			darepo.delete(dislike);
+		}
 		System.out.println(article);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	
 /////////////////////////////Private Methods///////////////////////////////////////
-	private List<Articles> fetchNewsAPI() {
-		List<Articles> nlist = new ArrayList<>();
-		List<Category> cats = crepo.findAll();
-		for(Category s:cats) {
-			nlist.addAll(NewsService.getNewsByCountryCategory(s.getName(),null));
-		}
-		aService.deleteAll();
-		srepo.deleteAll();
-		for(Articles art:nlist) {
-			srepo.save(art.getSource()); //save sources to DB
-			aService.save(art); //save articles to DB
-		}
-		return nlist;
-	}
 
 	private List<Articles> mlfunction(List<LikedArticle> llist) {
 		List<Articles> mlList = new ArrayList<>();
@@ -185,7 +190,10 @@ public class NewsController {
 	          List<String> titles = new ArrayList<>();
 	          List<String> likes = new ArrayList<>();
 	          alist.stream()
-	          		.forEach(x-> titles.add(x.getTitle()));
+	          		.forEach(x-> {
+		          		if(!titles.contains(x.getTitle())) {
+		          			titles.add(x.getTitle());}
+		          			});
 	         
 	          llist.stream()
 	          		.forEach(x-> likes.add(x.getTitle()));

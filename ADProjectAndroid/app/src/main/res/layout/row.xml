@@ -66,39 +66,44 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                android:layout_marginEnd="52dp"
+                android:layout_marginBottom="4dp"
                 android:text="date"
                 android:textColor="@color/black"
-                app:layout_constraintEnd_toStartOf="@id/share"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintEnd_toStartOf="@id/share" />
 
             <ImageView
                 android:id="@+id/share"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="3dp"
                 android:src="@drawable/ic_baseline_share_24"
-                app:layout_constraintEnd_toStartOf="@id/like"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintEnd_toStartOf="@id/like" />
 
-            <ImageView
+            <ToggleButton
                 android:id="@+id/like"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@android:color/transparent"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/ic_toggle_bg_1"
                 android:src="@drawable/ic_hand_thumbs_up"
+                style="@style/toggleButton"
                 app:layout_constraintEnd_toStartOf="@id/dislike"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <ImageView
+            <ToggleButton
                 android:id="@+id/dislike"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@android:color/transparent"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/ic_toggle_bg"
                 android:src="@drawable/ic_hand_thumbs_down"
+                style="@style/toggleButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 

@@ -17,8 +17,8 @@ public class LikedArticle {
 	public LikedArticle() {
 		super();
 	}
-	public LikedArticle(String title) {
-		this.title = title;
+	public LikedArticle(String title,String url) {
+		this(title,null,url);
 	}
 
 	public LikedArticle(String title, String description, String url) {
