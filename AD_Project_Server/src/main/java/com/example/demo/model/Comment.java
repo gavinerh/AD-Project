@@ -27,9 +27,11 @@ public class Comment {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	int id;
 	private String commentcontent;
-   // @ManyToOne(fetch=FetchType.EAGER)
-	//private UserCredential user;
+    // @ManyToOne(fetch=FetchType.EAGER)
+	private String username;
     private String title;
+    
+    
 	
 
     
