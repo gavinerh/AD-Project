@@ -1,8 +1,10 @@
+
 package com.example.demo.Scheduler;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,7 @@ public class Scheduler {
 	@Autowired
 	SourceRepo srepo;
 	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("h:mm:ss a");
-	@Scheduled(cron = "0 01 12 * * ?")
+	@Scheduled(cron = "00 08 10 * * ?")
 	public void scheduleTaskUsingCronExpression() {
 		
 	    System.out.println(
@@ -39,9 +41,24 @@ public class Scheduler {
 			nlist.addAll(NewsService.getNewsByCountryCategory(s.getName(),null));
 		}
 		System.out.println("Fetched Articles (size): "+nlist.size());
+		List<Articles> alist = new ArrayList<>();
+		List<String> st = new ArrayList<>();
+		List<Integer> index = new ArrayList<>();
+		for(Articles art:nlist) {
+			String[] t = art.getTitle().split("-");
+			t = Arrays.copyOf(t,t.length-1);
+			String u = String.join("", t);
+			if(!st.contains(u)) {
+				st.add(u);
+				index.add(nlist.indexOf(art));
+			}
+		}
+		for(int i:index) {
+			alist.add(nlist.get(i));
+		}
 		aService.deleteAll();
 		srepo.deleteAll();
-		for(Articles art:nlist) {
+		for(Articles art:alist) {
 			srepo.save(art.getSource()); //save sources to DB
 			aService.save(art); //save articles to DB
 		}

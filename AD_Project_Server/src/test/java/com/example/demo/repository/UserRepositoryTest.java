@@ -9,10 +9,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -91,60 +93,81 @@ public class UserRepositoryTest {
 //		System.out.println(user.getName());
 //		urepo.save(user);
 		List<Articles> arlist = arepo.findAll();
+		List<Articles> alist = new ArrayList<>();
+		List<String> st = new ArrayList<>();
+		List<Integer> index = new ArrayList<>();
+		for(Articles art:arlist) {
+			String[] t = art.getTitle().split("-");
+			t = Arrays.copyOf(t,t.length-1);
+			String u = String.join("", t);
+			if(!st.contains(u)) {
+				st.add(u);
+				index.add(arlist.indexOf(art));
+			}
+		}
+		for(int i:index) {
+			alist.add(arlist.get(i));
+		}
+//		arepo.deleteAll();
+//		arepo.saveAllAndFlush(alist);
+		System.out.println(arlist.size()+"\n"+alist.size()+"\n"+st.size()+"\n"+index.size());
+//		arlist.stream().forEach(x->{
+//			System.out.println(x.getTitle());		
+//			});
 //		List<LikedArticle> la = new ArrayList<>();
 //		for(int i=0; i<10; i++) {
 //			la.add(new LikedArticle(arlist.get(i).getTitle()));
 //		}
 //		larepo.saveAllAndFlush(la);
-		try {
-          URL url = new URL("http://127.0.0.1:5000/like");
-          HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-          conn.setRequestMethod("POST");
-          conn.setRequestProperty("Content-Type", "application/json; utf-8");
-          conn.setRequestProperty("Accept","application/json");
-          conn.setDoOutput(true);
-          
-          ObjectMapper mapper = new ObjectMapper();      
-          MLJson ldlike = new MLJson();
-          
-          List<String> titles = new ArrayList<>();
-          List<String> likes = new ArrayList<>();
-          List<LikedArticle> llist = larepo.findAll();
-          arlist.stream()
-          		.forEach(x-> titles.add(x.getTitle()));
-         
-          llist.stream()
-          		.forEach(x-> likes.add(x.getTitle()));
-          
-          ldlike.setTitles(titles);
-          ldlike.setLikedNews(likes);
-          System.out.println(ldlike.getLikedNews().size()+"\n"+ldlike.getTitles().size());
-          OutputStream os = conn.getOutputStream();
-          byte[] input = mapper.writeValueAsBytes(ldlike);
-          os.write(input,0,input.length);
-     
-          if (conn.getResponseCode() != 200) {
-              throw new RuntimeException("Failed : HTTP error code : "
-                      + conn.getResponseCode());
-          }
-
-          InputStream is = conn.getInputStream();
-          MLJson result = mapper.readValue(is, MLJson.class);
-         
-          System.out.println(result.getResult());
-          System.out.println(result.getResult().size());
-          for(int i:result.getResult()) {
-        	  System.out.println(arlist.get(i).getTitle());
-          }
-          //disconnect from url connection
-          conn.disconnect();
-
-      } catch (MalformedURLException e) {
-          e.printStackTrace();
-      }catch (IOException e){
-e.printStackTrace();
-      }
-	}
+//		try {
+//          URL url = new URL("http://127.0.0.1:5000/like");
+//          HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//          conn.setRequestMethod("POST");
+//          conn.setRequestProperty("Content-Type", "application/json; utf-8");
+//          conn.setRequestProperty("Accept","application/json");
+//          conn.setDoOutput(true);
+//          
+//          ObjectMapper mapper = new ObjectMapper();      
+//          MLJson ldlike = new MLJson();
+//          
+//          List<String> titles = new ArrayList<>();
+//          List<String> likes = new ArrayList<>();
+//          List<LikedArticle> llist = larepo.findAll();
+//          arlist.stream()
+//          		.forEach(x-> titles.add(x.getTitle()));
+//         
+//          llist.stream()
+//          		.forEach(x-> likes.add(x.getTitle()));
+//          
+//          ldlike.setTitles(titles);
+//          ldlike.setLikedNews(likes);
+//          System.out.println(ldlike.getLikedNews().size()+"\n"+ldlike.getTitles().size());
+//          OutputStream os = conn.getOutputStream();
+//          byte[] input = mapper.writeValueAsBytes(ldlike);
+//          os.write(input,0,input.length);
+//     
+//          if (conn.getResponseCode() != 200) {
+//              throw new RuntimeException("Failed : HTTP error code : "
+//                      + conn.getResponseCode());
+//          }
+//
+//          InputStream is = conn.getInputStream();
+//          MLJson result = mapper.readValue(is, MLJson.class);
+//         
+//          System.out.println(result.getResult());
+//          System.out.println(result.getResult().size());
+//          for(int i:result.getResult()) {
+//        	  System.out.println(arlist.get(i).getTitle());
+//          }
+//          //disconnect from url connection
+//          conn.disconnect();
+//
+//      } catch (MalformedURLException e) {
+//          e.printStackTrace();
+//      }catch (IOException e){
+//e.printStackTrace();
+//      }
+//	}
 	
 //	@Test
 //	@Order(2)
@@ -164,4 +187,4 @@ e.printStackTrace();
 //		}
 //		assert(true);
 //	}
-}
+}}

@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.BoringLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
     private ArrayList<NewsObject> dynamicNewsObject = new ArrayList<>();
     private MyAdapter adapter = null;
     public static final String EXTERNAL_URL = "externalUrl";
+    private Boolean[] likeonoff;
+    private Boolean[] dislikeonoff;
     private static String tokenString = null;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -133,7 +136,13 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
                     if(response.code() == 200){
                         // populate the form
                         newsObjects = (ArrayList<NewsObject>) response.body();
+                        likeonoff = new Boolean[newsObjects.size()];
+                        dislikeonoff = new Boolean[newsObjects.size()];
                         Log.d("News OnResponse",""+newsObjects.size());
+                        for(int i =0; i<newsObjects.size(); i++){
+                            likeonoff[i] = false;
+                            dislikeonoff[i]=false;
+                        }
                         initFilesList();
                         setadaptor(dynamicNewsObject);
                         populateAdaptor();
@@ -152,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         Toolbar mToolbar;
         ListView listView = findViewById(R.id.listView);
         if (listView != null) {
-            adapter = new MyAdapter(this,newsObjects, listOfFiles, this);
+            adapter = new MyAdapter(this,newsObjects, listOfFiles,likeonoff,dislikeonoff, this);
             listView.setAdapter(adapter);
         }
         mToolbar = findViewById(R.id.main_toolbar);

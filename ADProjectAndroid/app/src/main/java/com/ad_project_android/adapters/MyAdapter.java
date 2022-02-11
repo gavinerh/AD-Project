@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,24 +33,26 @@ import java.util.Set;
 
 public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface {
     private final Context context;
-    public static final String Likes = "Likes";
-    public static final String Dislikes = "Dislikes";
     protected List<NewsObject> myitems = new ArrayList<>();
     private ArrayList<File> files = null;
     private AdapterInterface adapterInterface;
-//    static Set<String> likes = new HashSet<>();
-//    static Set<String> dislikes = new HashSet<>();
+    private Boolean[] likeonoff;
+    private Boolean[] dislikeonoff;
     Animation ani;
 
-    public MyAdapter(Context context, List<NewsObject> myitems, ArrayList<File> files, AdapterInterface adapterInterface) {
+    public MyAdapter(Context context, List<NewsObject> myitems, ArrayList<File> files, Boolean[] onff,
+                     Boolean[] donff, AdapterInterface adapterInterface) {
         super(context, R.layout.row);
         this.adapterInterface = adapterInterface;
         this.context = context;
         this.myitems = myitems;
         this.files = files;
+        this.likeonoff = onff;
+        this.dislikeonoff = donff;
     }
 
     public View getView(int pos, View view, @NonNull ViewGroup parent) {
+        final int rowpos = pos;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(
                     Activity.LAYOUT_INFLATER_SERVICE);
@@ -108,69 +111,72 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
         });
 
 
-            ToggleButton likeBtn = mCardView.findViewById(R.id.like);
-            ToggleButton dislikeBtn = mCardView.findViewById(R.id.dislike);
-//            final SharedPreferences pref = context.getSharedPreferences("LikeDislike",Context.MODE_PRIVATE);
-//            if(pref.contains(Likes)){
-//                likes = pref.getStringSet(Likes,null);
-//            }
-//            if(pref.contains(Dislikes)){
-//                dislikes = pref.getStringSet(Dislikes,null);
-//            }
-//            final SharedPreferences.Editor editor = pref.edit();
+            ToggleButton likeBtn = view.findViewById(R.id.like);
+            ToggleButton dislikeBtn = view.findViewById(R.id.dislike);
+            final SharedPreferences pref = context.getSharedPreferences("LikeDislike",Context.MODE_PRIVATE);
+            if(pref.contains(myitems.get(pos).getTitle())){
+                Boolean ld = pref.getBoolean(myitems.get(pos).getTitle(),false);
+                if(ld){
+                    likeBtn.setChecked(true);
+                    likeonoff[rowpos] = true;}
+                else if(!ld){
+                    dislikeBtn.setChecked(true);
+                    dislikeonoff[rowpos] = true;
+                }
+            }
+
+            final SharedPreferences.Editor editor = pref.edit();
             if(likeBtn!=null){
                 likeBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(likeBtn.isChecked()){
-//                        likes.add(myitems.get(pos).getTitle());
-//                        editor.putStringSet(Likes,likes);
-//                        editor.commit();
-                        sendNewsObjectPosition(myitems.get(pos), 1);
-                        if(dislikeBtn.isChecked()){
-                            dislikeBtn.setChecked(false);
-//                            dislikes.remove(myitems.get(pos).getTitle());
-//                            editor.putStringSet(Dislikes,dislikes);
-//                            editor.commit();
-                            sendNewsObjectPosition(myitems.get(pos), -1);
+                    @Override
+                    public void onClick(View view) {
+                        if(likeBtn.isChecked()){
+                            likeonoff[rowpos] = true; //save state
+                            editor.putBoolean(myitems.get(pos).getTitle(),true);
+                            editor.commit();
+                            sendNewsObjectPosition(myitems.get(pos), 1);
+                            if(dislikeBtn.isChecked()){
+                                dislikeBtn.setChecked(false);
+                                dislikeonoff[rowpos] = false;
+                                sendNewsObjectPosition(myitems.get(pos), -1);
+                            }
+                        }
+                        else if(!likeBtn.isChecked()){
+                            likeonoff[rowpos] = false;
+                            editor.remove(myitems.get(pos).getTitle());
+                            editor.commit();
+                            sendNewsObjectPosition(myitems.get(pos), 1);
                         }
                     }
-                    else if(!likeBtn.isChecked()){
-//                        likes.remove(myitems.get(pos).getTitle());
-//                        editor.putStringSet(Likes,likes);
-//                        editor.commit();
-                        sendNewsObjectPosition(myitems.get(pos), 1);
-                    }
-                }
-            });
+                });
         }
         if(dislikeBtn!=null){
             dislikeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View view) {
                     if(dislikeBtn.isChecked()){
-//                        dislikes.add(myitems.get(pos).getTitle());
-//                        editor.putStringSet(Dislikes,dislikes);
-//                        editor.commit();
+                        dislikeonoff[rowpos] = true;//save state
+                        editor.putBoolean(myitems.get(pos).getTitle(),false);
+                        editor.commit();
                         sendNewsObjectPosition(myitems.get(pos), -1);
                         if(likeBtn.isChecked()){
                             likeBtn.setChecked(false);
-//                            likes.remove(myitems.get(pos).getTitle());
-//                            editor.putStringSet(Likes,likes);
-//                            editor.commit();
+                            likeonoff[rowpos] = false;
                             sendNewsObjectPosition(myitems.get(pos), 1);
                         }
                     }
                     else if(!dislikeBtn.isChecked()){
-//                        dislikes.remove(myitems.get(pos).getTitle());
-//                        editor.putStringSet(Dislikes,dislikes);
-//                        editor.commit();
+                        dislikeonoff[rowpos] = false;// save state
+                        editor.remove(myitems.get(pos).getTitle());
+                        editor.commit();
                         sendNewsObjectPosition(myitems.get(pos), -1);
                     }
                 }
             });
         }
 
+        likeBtn.setChecked(likeonoff[pos]);
+        dislikeBtn.setChecked(dislikeonoff[pos]);
         return view;
     }
     public void filterlist(List<NewsObject> filterlist, ArrayList<File> filterfile){

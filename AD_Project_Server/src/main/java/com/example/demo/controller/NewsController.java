@@ -130,13 +130,12 @@ public class NewsController {
 		System.out.println("Fetched Articles size: "+alist.get(1).getPublishedAt());
 		List<Articles> android = new ArrayList<>();
 		List<LikedArticle> likes = larepo.findAll();
-		if(likes.size()>0) {android = mlfunction(likes);}
+		if(likes.size()>2) {android = mlfunction(likes);}
 		
 		else {
-		for(int i = 0; i<80; i++) {
+		for(int i = 0; i<50; i++) {
 			android.add(alist.get(i));}
 		} 
-		Collections.shuffle(android,new Random(5));
 		System.out.println("Articles for Android size: "+android.size());
 		return new ResponseEntity<List<Articles>>(android, HttpStatus.OK);
 	}
@@ -185,8 +184,7 @@ public class NewsController {
 	          List<String> likes = new ArrayList<>();
 	          alist.stream()
 	          		.forEach(x-> {
-		          		if(!titles.contains(x.getTitle())) {
-		          			titles.add(x.getTitle());}
+	          			titles.add(x.getTitle());
 		          			});
 	         
 	          llist.stream()
