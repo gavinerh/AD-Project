@@ -24,7 +24,7 @@ import com.example.demo.model.UserCredential;
 import com.example.demo.service.ArticlesService;
 import com.example.demo.service.CommentService;
 import com.example.demo.service.NewsService;
-import com.example.demo.service.SearchService;
+
 
 @CrossOrigin()
 @RestController
@@ -50,7 +50,14 @@ public class CommentController {
 	@PostMapping(path="/comment")
 	public void comment(@RequestBody Comment comment){
 		System.out.println(comment);
-	    commentRepo.save(comment);
+	    String symbol = comment.getUsername();
+	    int pos = symbol.indexOf("@");
+	    System.out.println(symbol.substring(0, pos));
+		
+		comment.setUsername(symbol.substring(0, pos));
+		
+		
+		commentRepo.save(comment);
 	    
 	    Articles a = aService.findbytitle(comment.getTitle());
 	    System.out.println(a.getDescription());
@@ -66,8 +73,8 @@ public class CommentController {
 	public List<Comment> getComments(@RequestBody Comment comment) {
 	    
 		
-		System.out.println(comment.getTitle());
-		System.out.println(cService.findcommtbytitle(comment.getTitle()));
+	//	System.out.println(comment.getTitle());
+	//	System.out.println(cService.findcommtbytitle(comment.getTitle()));
 		
 		return	cService.findcommtbytitle(comment.getTitle());
 		
