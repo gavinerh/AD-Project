@@ -3,6 +3,8 @@ package com.example.demo.model;
 
 
 
+import java.text.SimpleDateFormat;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -30,7 +32,7 @@ public class Comment {
     // @ManyToOne(fetch=FetchType.EAGER)
 	private String username;
     private String title;
-    
+    private String commenttime;
     
 	
 

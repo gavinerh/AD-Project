@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +26,7 @@ import com.example.demo.model.UserCredential;
 import com.example.demo.service.ArticlesService;
 import com.example.demo.service.CommentService;
 import com.example.demo.service.NewsService;
+import java.util.Date;
 
 
 @CrossOrigin()
@@ -48,7 +51,7 @@ public class CommentController {
 	
 	
 	@PostMapping(path="/comment")
-	public void comment(@RequestBody Comment comment){
+	public List<Comment> comment(@RequestBody Comment comment){
 		System.out.println(comment);
 	    String symbol = comment.getUsername();
 	    int pos = symbol.indexOf("@");
@@ -56,13 +59,17 @@ public class CommentController {
 		
 		comment.setUsername(symbol.substring(0, pos));
 		
+		 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		    
+			
+		   comment.setCommenttime(df.format(new Date()));
 		
 		commentRepo.save(comment);
 	    
 	    Articles a = aService.findbytitle(comment.getTitle());
-	    System.out.println(a.getDescription());
-	
-	
+	    
+	    return cService.findcommtbytitle(comment.getTitle());
+	   
 	}
 	
 	
