@@ -10,83 +10,114 @@ export default class CommentList extends Component{
 
     constructor(props) {
         super(props);
-       
         this.retrievecomment = this.retrievecomment.bind(this);
-       
-        
-       
+        this.inputChangeHandler = this.inputChangeHandler.bind(this);
+        this.submitCommentHandler = this.submitCommentHandler.bind(this);
         this.state = {
-           
-            comment:[],
+            comment: [],
             isLoading: true,
             errors: null,
-           
+            title: this.props.title,
+            newComment: ''
         };
     }
 
 
     componentDidMount() {
-        this.retrievecomment(this.props.title);
+        console.log("componentDidMount ran again");
+        this.retrievecomment();
     }
 
 
+    inputChangeHandler(event) {
+        this.setState({
+            newComment: event.target.value,
+        })
+        console.log(this.state.newComment);
+    }
 
-    
-
-
-    retrievecomment(title){
-        
-        ArticleService.getcomment(title)
-        .then(response =>
-           
-            response.data.map(comment=>({
-                 commentcontent:`${comment.commentcontent}`,
-                 id:`${comment.id}`,
-                 ctitle:`${comment.title}`,
-                 username:`${comment.username}`,
-
-            }))
-            
-            )
-            .then(comment => {
+    submitCommentHandler() {
+        ArticleService.makecomment(this.state.title, this.state.newComment,AuthenticationService.getUserEmail())
+            .then(response => {
                 this.setState({
-                    comment,
-                    isLoading:false,
+                    comment: response.data,
+                    newComment: '',
+                    username :""
+                })
+                this.retrievecomment();
+            });
+        console.log("hihi");
+    }
+
+    retrievecomment() {
+        let storedtitle = this.state.title;
+        ArticleService.getcomment(storedtitle)
+            .then(response => {
+                this.setState({
+                    comment: response.data,
+                    isLoading: false,
+                  
                 });
-            })
+                console.log(response);
+            }
+
+                // response.data.map(comment=>({
+                //      commentcontent:`${comment.commentcontent}`,
+                //      id:`${comment.id}`,
+                //      ctitle:`${comment.title}`,
+
+                // })
+            )
             .catch(error => this.setState({ error, isLoading: false }));
 
     }
 
 
     render() {
-        const { isLoading, comment } = this.state;
+        let isLoading = this.state.isLoading;
         return (
-            <React.Fragment>
-                <div className="list-group-item d-flex row">
-                    {!isLoading ? (
-                        comment.map(comment => {
-                            const { title,commentcontent,username  } = comment;
-                            
-
-                            return (
-                                <div className="container g-3 flex-fill" >
+            <div className="list-group-item d-flex row">
+                {!isLoading ? (
+                    <div>
+                        <h4>Comment List</h4>
+                        {
+                            this.state.comment.map(c => {
+                                return (
                                     <ul>
-                                       
-                                        <li>{username}:  {commentcontent}</li>
+                                      <li> {c.username}   :   {c.commentcontent}</li>   <div>{c.commenttime}</div>
                                     </ul>
-                                   
+                                )
 
-                                </div>
-                            );
-                        })
-                    ) : (
-                        <p>Loading...</p>
-                    )}
-                </div>   
-             </React.Fragment>
-      );
-    
+                            })
+                        }
+
+                        <input type="text" onChange={this.inputChangeHandler} value={this.state.newComment} />
+                        <button className="py-2 mb-2 btn btn-outline-danger rounded-4" onClick={this.submitCommentHandler}>Submit Comment</button>
+
+                    </div>
+                    // comment.map(comment => {
+                    //     const { title, commentcontent } = comment;
+
+
+                    //     return (
+                    //         <div className="container g-3 flex-fill" >
+                    //             <button className="py-2 mb-2 btn btn-outline-danger rounded-4" onClick={() => this.onsubmitCommentListener(title)}>
+                    //                 comment
+                    //             </button>
+                    //             <ul>
+                    //                 <li>{this.props.setDisplay}</li>
+                    //                 <li>Someone:  {commentcontent}</li>
+                    //             </ul>
+
+                    //         </div>
+                    //     );
+                    // })
+                ) : (
+                    <p>Loading...</p>
+                )}
+            </div>
+        );
+
     }
 
 
