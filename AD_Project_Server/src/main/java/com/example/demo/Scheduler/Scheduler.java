@@ -19,6 +19,8 @@ import com.example.demo.model.Category;
 import com.example.demo.service.ArticlesService;
 import com.example.demo.service.NewsService;
 
+import Enumerates.category;
+
 @Configuration
 @EnableScheduling
 public class Scheduler {
@@ -29,16 +31,16 @@ public class Scheduler {
 	@Autowired
 	SourceRepo srepo;
 	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("h:mm:ss a");
-	@Scheduled(cron = "00 08 10 * * ?")
+	@Scheduled(cron = "00 48 17 * * ?")
 	public void scheduleTaskUsingCronExpression() {
 		
 	    System.out.println(
 	      "Starting scheduled tasks using cron jobs_1 - " + dateTimeFormatter.format(LocalDateTime.now()));
 	    
 	    List<Articles> nlist = new ArrayList<>();
-	    List<Category> cats = crepo.findAll();
-		for(Category s:cats) {
-			nlist.addAll(NewsService.getNewsByCountryCategory(s.getName(),null));
+	    List<category> cats = Arrays.asList(category.values());
+		for(category s:cats) {
+			nlist.addAll(NewsService.getNewsByCountryCategory(s.name(),null));
 		}
 		System.out.println("Fetched Articles (size): "+nlist.size());
 		List<Articles> alist = new ArrayList<>();

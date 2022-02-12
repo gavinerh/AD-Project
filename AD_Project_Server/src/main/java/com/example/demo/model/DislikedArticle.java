@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,15 +19,18 @@ public class DislikedArticle {
 	private String title;
 	private String description;
 	private String url;
+	@ManyToOne
+	private UserCredential user;
 
-	public DislikedArticle(String title, String description, String url) {
+	public DislikedArticle(String title, String description, String url, UserCredential user) {
 		super();
 		this.title = title;
 		this.description = description;
 		this.url = url;
+		this.user = user;
 	}
-	public DislikedArticle(String title, String url) {
-		this(title,null,url);
+	public DislikedArticle(String title, String url,UserCredential user) {
+		this(title,null,url,user);
 	}
 
 }

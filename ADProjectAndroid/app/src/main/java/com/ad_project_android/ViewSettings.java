@@ -44,7 +44,7 @@ public class ViewSettings extends AppCompatActivity implements AdapterView.OnIte
         listOfSetting = new ArrayList<>();
         listOfSetting.add(new SettingModel("preference", "Set Preference"));
         listOfSetting.add(new SettingModel("setting", "Account Settings"));
-        listOfSetting.add(new SettingModel("history", "View History"));
+        listOfSetting.add(new SettingModel("history", "Like/Dislike History"));
         listOfSetting.add(new SettingModel("feedback", "Feedback"));
         listOfSetting.add(new SettingModel("ic_baseline_logout_24", "Logout"));
     }
@@ -67,7 +67,7 @@ public class ViewSettings extends AppCompatActivity implements AdapterView.OnIte
                 return new Intent(this, Preference.class);
             case "Account Settings":
                 return new Intent(this, AccountActivity.class);
-            case "View History":
+            case "Like/Dislike History":
                 return new Intent(this, History.class);
             case "Feedback":
                 return new Intent(this, Feedback.class);

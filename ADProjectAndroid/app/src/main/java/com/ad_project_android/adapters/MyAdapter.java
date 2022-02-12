@@ -23,6 +23,7 @@ import androidx.cardview.widget.CardView;
 
 import com.ad_project_android.AdapterInterface;
 import com.ad_project_android.R;
+import com.ad_project_android.model.Bookmark;
 import com.ad_project_android.model.NewsObject;
 
 import java.io.File;
@@ -34,13 +35,17 @@ import java.util.Set;
 public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface {
     private final Context context;
     protected List<NewsObject> myitems = new ArrayList<>();
+    private List<String> likes = new ArrayList<>();
+    private List<String> dislikes = new ArrayList<>();
+    private List<Bookmark> bms = new ArrayList<>();
     private ArrayList<File> files = null;
     private AdapterInterface adapterInterface;
     private Boolean[] likeonoff;
     private Boolean[] dislikeonoff;
     private Boolean[] bookmarkonoff;
     Animation ani;
-  public MyAdapter(Context context, List<NewsObject> myitems, ArrayList<File> files, Boolean[] onff,
+
+    public MyAdapter(Context context, List<NewsObject> myitems, ArrayList<File> files, Boolean[] onff,
                      Boolean[] donff, Boolean[] bmonff, AdapterInterface adapterInterface) {
         super(context, R.layout.row);
         this.adapterInterface = adapterInterface;
@@ -62,7 +67,7 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
             // then attachToRoot should be 'false' (which is in our case)
             view = inflater.inflate(R.layout.row, parent, false);
         }
-        if(myitems.size() == 0){
+        if (myitems.size() == 0) {
             return view;
         }
 
@@ -112,66 +117,53 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
         });
 
 
-            ToggleButton likeBtn = view.findViewById(R.id.like);
-            ToggleButton dislikeBtn = view.findViewById(R.id.dislike);
-	    ToggleButton bookmarkBtn = view.findViewById(R.id.bookmark);
+        ToggleButton likeBtn = view.findViewById(R.id.like);
+        ToggleButton dislikeBtn = view.findViewById(R.id.dislike);
+        ToggleButton bookmarkBtn = view.findViewById(R.id.bookmark);
 
-            final SharedPreferences pref = context.getSharedPreferences("LikeDislike",Context.MODE_PRIVATE);
-            if(pref.contains(myitems.get(pos).getTitle())){
-                Boolean ld = pref.getBoolean(myitems.get(pos).getTitle(),false);
-                if(ld){
-                    likeBtn.setChecked(true);
-                    likeonoff[rowpos] = true;}
-                else if(!ld){
-                    dislikeBtn.setChecked(true);
-                    dislikeonoff[rowpos] = true;
-                }
-            }
+        if (likes.contains(myitems.get(pos).getTitle())) {
 
-            final SharedPreferences.Editor editor = pref.edit();
-            if(likeBtn!=null){
-                likeBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if(likeBtn.isChecked()){
-                            likeonoff[rowpos] = true; //save state
-                            editor.putBoolean(myitems.get(pos).getTitle(),true);
-                            editor.commit();
-                            sendNewsObjectPosition(myitems.get(pos), 1);
-                            if(dislikeBtn.isChecked()){
-                                dislikeBtn.setChecked(false);
-                                dislikeonoff[rowpos] = false;
-                                sendNewsObjectPosition(myitems.get(pos), -1);
-                            }
-                        }
-                        else if(!likeBtn.isChecked()){
-                            likeonoff[rowpos] = false;
-                            editor.remove(myitems.get(pos).getTitle());
-                            editor.commit();
-                            sendNewsObjectPosition(myitems.get(pos), 1);
-                        }
-                    }
-                });
+            likeBtn.setChecked(true);
+            likeonoff[rowpos] = true;
         }
-        if(dislikeBtn!=null){
+        if (dislikes.contains(myitems.get(pos).getTitle())) {
+            dislikeBtn.setChecked(true);
+            dislikeonoff[rowpos] = true;
+        }
+
+        if (likeBtn != null) {
+            likeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (likeBtn.isChecked()) {
+                        likeonoff[rowpos] = true; //save state
+                        sendNewsObjectPosition(myitems.get(pos), 1);
+                        if (dislikeBtn.isChecked()) {
+                            dislikeBtn.setChecked(false);
+                            dislikeonoff[rowpos] = false;
+                            sendNewsObjectPosition(myitems.get(pos), -1);
+                        }
+                    } else if (!likeBtn.isChecked()) {
+                        likeonoff[rowpos] = false;
+                        sendNewsObjectPosition(myitems.get(pos), 1);
+                    }
+                }
+            });
+        }
+        if (dislikeBtn != null) {
             dislikeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(dislikeBtn.isChecked()){
+                    if (dislikeBtn.isChecked()) {
                         dislikeonoff[rowpos] = true;//save state
-                        editor.putBoolean(myitems.get(pos).getTitle(),false);
-                        editor.commit();
                         sendNewsObjectPosition(myitems.get(pos), -1);
-                        if(likeBtn.isChecked()){
+                        if (likeBtn.isChecked()) {
                             likeBtn.setChecked(false);
                             likeonoff[rowpos] = false;
                             sendNewsObjectPosition(myitems.get(pos), 1);
                         }
-                    }
-                    else if(!dislikeBtn.isChecked()){
+                    } else if (!dislikeBtn.isChecked()) {
                         dislikeonoff[rowpos] = false;// save state
-                        editor.remove(myitems.get(pos).getTitle());
-                        editor.commit();
                         sendNewsObjectPosition(myitems.get(pos), -1);
                     }
                 }
@@ -181,29 +173,22 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
         likeBtn.setChecked(likeonoff[pos]);
         dislikeBtn.setChecked(dislikeonoff[pos]);
 
-	    //bookmark sharedpref and onclick
-        final SharedPreferences bmpref = context.getSharedPreferences("bookmarkOrNot",Context.MODE_PRIVATE);
-        if(bmpref.contains(myitems.get(pos).getTitle())){
-            Boolean ld = bmpref.getBoolean(myitems.get(pos).getTitle(),false);
-            if(ld){
-                bookmarkBtn.setChecked(true);
-                bookmarkonoff[rowpos]=true;}
+        //bookmark sharedpref and onclick
+        if (bms.contains(new Bookmark(myitems.get(pos).getTitle()))) {
+            bookmarkBtn.setChecked(true);
+            bookmarkonoff[rowpos] = true;
         }
-        if(bookmarkBtn!=null) {
+
+        if (bookmarkBtn != null) {
             bookmarkBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(bookmarkBtn.isChecked()) { //check if already bookmarked
-                        bookmarkonoff[rowpos]=true;
-                        editor.putBoolean(myitems.get(pos).getTitle(),false);
-                        editor.commit();
-                        sendNewsObjectPosition(myitems.get(pos),  2);
-                    }
-                    else if(!bookmarkBtn.isChecked()){ //unbookmark
-                        bookmarkonoff[rowpos]=false;
-                        editor.putBoolean(myitems.get(pos).getTitle(),false);
-                        editor.commit();
-                        sendNewsObjectPosition(myitems.get(pos),  2);
+                    if (bookmarkBtn.isChecked()) { //check if already bookmarked
+                        bookmarkonoff[rowpos] = true;
+                        sendNewsObjectPosition(myitems.get(pos), 2);
+                    } else if (!bookmarkBtn.isChecked()) { //unbookmark
+                        bookmarkonoff[rowpos] = false;
+                        sendNewsObjectPosition(myitems.get(pos), 2);
                     }
                 }
             });
@@ -213,7 +198,7 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
         return view;
     }
 
-    public void filterlist(List<NewsObject> filterlist, ArrayList<File> filterfile){
+    public void filterlist(List<NewsObject> filterlist, ArrayList<File> filterfile) {
         myitems = filterlist;
         files = filterfile;
         notifyDataSetChanged();
@@ -224,9 +209,9 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
         return myitems.size();
     }
 
-    private void setImageBitmap(File f, ImageView imgView, NewsObject newsObject){
+    private void setImageBitmap(File f, ImageView imgView, NewsObject newsObject) {
         Bitmap bitmap = null;
-        if(newsObject.getBitmap() != null){
+        if (newsObject.getBitmap() != null) {
             bitmap = newsObject.getBitmap();
         }
         imgView.setImageBitmap(bitmap);
@@ -245,5 +230,29 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
     @Override
     public void launchWebview(String url) {
         adapterInterface.launchWebview(url);
+    }
+
+    public List<String> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<String> likes) {
+        this.likes = likes;
+    }
+
+    public List<String> getDislikes() {
+        return dislikes;
+    }
+
+    public void setDislikes(List<String> dislikes) {
+        this.dislikes = dislikes;
+    }
+
+    public List<Bookmark> getBms() {
+        return bms;
+    }
+
+    public void setBms(List<Bookmark> bms) {
+        this.bms = bms;
     }
 }
