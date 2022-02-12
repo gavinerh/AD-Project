@@ -20,4 +20,8 @@ public interface NewsService {
 
     @POST("newsapi/dislike")
     Call<Void> postDislike(@Body NewsObject newsObject, @Header("Authorization") String token);
+
+  @POST("newsapi/bookmark/{email}")
+    Call<Void> saveBookmark(@Body NewsObject newsObject, @Path("email") String email,
+    @Header("Authorization") String token);
 }

@@ -72,13 +72,24 @@
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/share" />
+                app:layout_constraintEnd_toStartOf="@id/bookmark" />
+
+            <ToggleButton
+                android:id="@+id/bookmark"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/ic_toggle_bg_2"
+                android:src="@drawable/bookmark"
+                style="@style/toggleButton2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/share"  />
 
             <ImageView
                 android:id="@+id/share"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginEnd="5dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="2dp"
                 android:layout_marginBottom="3dp"
                 android:src="@drawable/ic_baseline_share_24"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -92,7 +103,7 @@
                 android:layout_marginTop="2dp"
                 android:background="@drawable/ic_toggle_bg_1"
                 android:src="@drawable/ic_hand_thumbs_up"
-                style="@style/toggleButton"
+                style="@style/toggleButton1"
                 app:layout_constraintEnd_toStartOf="@id/dislike"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
@@ -110,4 +121,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

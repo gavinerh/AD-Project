@@ -38,10 +38,10 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
     private AdapterInterface adapterInterface;
     private Boolean[] likeonoff;
     private Boolean[] dislikeonoff;
+    private Boolean[] bookmarkonoff;
     Animation ani;
-
-    public MyAdapter(Context context, List<NewsObject> myitems, ArrayList<File> files, Boolean[] onff,
-                     Boolean[] donff, AdapterInterface adapterInterface) {
+  public MyAdapter(Context context, List<NewsObject> myitems, ArrayList<File> files, Boolean[] onff,
+                     Boolean[] donff, Boolean[] bmonff, AdapterInterface adapterInterface) {
         super(context, R.layout.row);
         this.adapterInterface = adapterInterface;
         this.context = context;
@@ -49,6 +49,7 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
         this.files = files;
         this.likeonoff = onff;
         this.dislikeonoff = donff;
+        this.bookmarkonoff = bmonff;
     }
 
     public View getView(int pos, View view, @NonNull ViewGroup parent) {
@@ -113,6 +114,8 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
 
             ToggleButton likeBtn = view.findViewById(R.id.like);
             ToggleButton dislikeBtn = view.findViewById(R.id.dislike);
+	    ToggleButton bookmarkBtn = view.findViewById(R.id.bookmark);
+
             final SharedPreferences pref = context.getSharedPreferences("LikeDislike",Context.MODE_PRIVATE);
             if(pref.contains(myitems.get(pos).getTitle())){
                 Boolean ld = pref.getBoolean(myitems.get(pos).getTitle(),false);
@@ -177,8 +180,39 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
 
         likeBtn.setChecked(likeonoff[pos]);
         dislikeBtn.setChecked(dislikeonoff[pos]);
+
+	    //bookmark sharedpref and onclick
+        final SharedPreferences bmpref = context.getSharedPreferences("bookmarkOrNot",Context.MODE_PRIVATE);
+        if(bmpref.contains(myitems.get(pos).getTitle())){
+            Boolean ld = bmpref.getBoolean(myitems.get(pos).getTitle(),false);
+            if(ld){
+                bookmarkBtn.setChecked(true);
+                bookmarkonoff[rowpos]=true;}
+        }
+        if(bookmarkBtn!=null) {
+            bookmarkBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(bookmarkBtn.isChecked()) { //check if already bookmarked
+                        bookmarkonoff[rowpos]=true;
+                        editor.putBoolean(myitems.get(pos).getTitle(),false);
+                        editor.commit();
+                        sendNewsObjectPosition(myitems.get(pos),  2);
+                    }
+                    else if(!bookmarkBtn.isChecked()){ //unbookmark
+                        bookmarkonoff[rowpos]=false;
+                        editor.putBoolean(myitems.get(pos).getTitle(),false);
+                        editor.commit();
+                        sendNewsObjectPosition(myitems.get(pos),  2);
+                    }
+                }
+            });
+        }
+        bookmarkBtn.setChecked(bookmarkonoff[pos]);
+
         return view;
     }
+
     public void filterlist(List<NewsObject> filterlist, ArrayList<File> filterfile){
         myitems = filterlist;
         files = filterfile;

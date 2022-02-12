@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
     public static final String EXTERNAL_URL = "externalUrl";
     private Boolean[] likeonoff;
     private Boolean[] dislikeonoff;
+   private Boolean[] bookmarkonoff;
     private static String tokenString = null;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -138,10 +139,12 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
                         newsObjects = (ArrayList<NewsObject>) response.body();
                         likeonoff = new Boolean[newsObjects.size()];
                         dislikeonoff = new Boolean[newsObjects.size()];
+ 			bookmarkonoff = new Boolean[newsObjects.size()];
                         Log.d("News OnResponse",""+newsObjects.size());
                         for(int i =0; i<newsObjects.size(); i++){
                             likeonoff[i] = false;
                             dislikeonoff[i]=false;
+			    bookmarkonoff[i]=false;
                         }
                         initFilesList();
                         setadaptor(dynamicNewsObject);
@@ -216,13 +219,16 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         launchwebview(url);
     }
 
-    private void postLikeOrDislike(NewsObject newsObject, int preference){
+    private void postLikeOrDislikeOrsaveBM(NewsObject newsObject, int preference){
         NewsService newsService = getNewsServiceInstance();
         Call<Void> call = null;
         if(preference == 1){
             call = newsService.postLike(newsObject, tokenString);
-        } else{
+        } else if (preference == -1) {
             call = newsService.postDislike(newsObject, tokenString);
+        } else if (preference == 2) {
+            String email = checkEmail();
+            call = newsService.saveBookmark(newsObject, email, tokenString);
         }
         call.enqueue(new Callback<Void>() {
             @Override
@@ -283,4 +289,14 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         editor.commit();
         finish();
     }
+	 private String checkEmail(){
+        SharedPreferences pref = getSharedPreferences(LoginActivity.USER_CREDENTIAL, MODE_PRIVATE);
+        String email = pref.getString("email", "");
+        if(email != null && !email.equals("")){
+            //toast message that method failed
+            Toast.makeText(MainActivity.this, "Please register to save preferences", Toast.LENGTH_SHORT).show();
+        }
+        return email;
+    }
+
 }
