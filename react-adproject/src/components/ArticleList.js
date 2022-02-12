@@ -67,12 +67,7 @@ export default class ArticleList extends Component{
   this.setState({
       displayComment: title
   })
- //       console.log(comment);
- //       let name = AuthenticationService.getUserEmail();
- //       ArticleService.makecomment(title,comment,name);
- //       document.getElementById(title).value ="";
-
-  //      var id= title+"comment";
+ 
        
         
    }
@@ -88,7 +83,7 @@ export default class ArticleList extends Component{
         //    display: prevState.isOn ? 'none' : 'block'
 
       //  }));
-        // console.log(id);
+     
 
       //   var area =   document.getElementById(id);
         // console.log(area);
@@ -96,9 +91,7 @@ export default class ArticleList extends Component{
         
       //   area.style ="display:block";
         
-      //    if(area.style=="display:block"){
-       //     area.style ="display:none";
-     //     }
+    
      this.setState((prevState) => ({
         displayComment: !prevState.displayComment
     }))
@@ -294,6 +287,11 @@ export default class ArticleList extends Component{
                                             <path
                                                 d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z" />
                                         </symbol>
+
+                                        <symbol id="show comment" viewBox="0 0 16 16">
+                                           <path fillRule="evenodd" d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1H5z"/>
+                                            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                                             </symbol>
                                     </svg>
 
 
@@ -337,7 +335,9 @@ export default class ArticleList extends Component{
                                                         </div>
                                                         <div className="col">
                                                             <button className="py-2 mb-2 btn btn-outline-danger rounded-4" type="submit" onClick={() => this.onCommentListener(title+"comment",title)}>
-
+                                                            <svg className="show comment" width="1em" height="1em">
+                                                                    <use xlinkHref="#show comment" />
+                                                                </svg>
                                                                 Comments
                                                             </button>
                                                         </div>

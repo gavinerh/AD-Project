@@ -69,12 +69,11 @@
 }
 
 
-.liusername{
-float: left;
-}
 
-.licomment{
-float: left;
-margin-left: 40px;
+
+
+
+.commenttime{
+float: right;
 
 }
