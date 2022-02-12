@@ -26,11 +26,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Repository.ArticlesRepo;
+import com.example.demo.Repository.BookmarkedArticlesRepository;
 import com.example.demo.Repository.CategoryRepo;
 import com.example.demo.Repository.DislikedArticleRepository;
 import com.example.demo.Repository.LikedArticleRepository;
 import com.example.demo.Repository.SourceRepo;
 import com.example.demo.model.Articles;
+import com.example.demo.model.BookmarkedArticles;
 import com.example.demo.model.Category;
 import com.example.demo.model.DislikedArticle;
 import com.example.demo.model.LikedArticle;
@@ -39,6 +41,7 @@ import com.example.demo.model.UserCredential;
 import com.example.demo.model.JsonModel.MLJson;
 import com.example.demo.service.ArticlesService;
 import com.example.demo.service.NewsService;
+import com.example.demo.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Enumerates.category;
@@ -48,7 +51,10 @@ import Enumerates.category;
 @CrossOrigin()
 @RequestMapping(path="/newsapi")
 public class NewsController {
-	
+	@Autowired
+	UserService uService;
+	@Autowired
+	BookmarkedArticlesRepository bmrepo;
 	@Autowired
 	ArticlesService aService;
 	@Autowired
@@ -138,6 +144,23 @@ public class NewsController {
 		} 
 		System.out.println("Articles for Android size: "+android.size());
 		return new ResponseEntity<List<Articles>>(android, HttpStatus.OK);
+	}
+	
+	@PostMapping(path="/bookmark/{email}")
+	public ResponseEntity<Void> bookmarkNews(@RequestBody Articles article, 
+			@PathVariable("email") String email){
+
+		UserCredential user = uService.findUserByEmail(email);
+		BookmarkedArticles bookmarked = bmrepo.findByTitle(article.getTitle());
+		
+		if(bookmarked==null) {
+			bmrepo.saveAndFlush(new BookmarkedArticles(article.getTitle(), 
+					article.getUrl(), user));}
+		else {
+			bmrepo.delete(bookmarked);
+		}
+		System.out.println(article);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
 	@PostMapping(path="/like")
