@@ -39,7 +39,7 @@ function Login() {
                 AuthenticationService.storeUserSession(userCredential.username);
                 AuthenticationService.registerSuccessfulLogin(response.data.jwt);
                 setErrorStatement('');
-                history.push("/main");
+                history.push('/main');
             }).catch(response => {
                 setErrorStatement('Wrong email or password');
             })
@@ -70,8 +70,10 @@ function Login() {
                             <button onClick={loginFormHandler} className="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Login</button>
                         </form>
                         <hr className="my-4"></hr>
-                        <h2 className="fs-5 fw-bold mb-3">Create a new account</h2>
-                        <Link className="w-100 py-2 mb-2 btn btn-outline-primary rounded-4" to="/register">Sign up for free</Link>
+                        <div>
+                            <h2 className="fs-5 fw-bold mb-3">Create a new account</h2>
+                            <Link className="w-100 py-2 mb-2 btn btn-outline-primary rounded-4" to="/register">Sign up for free</Link>
+                        </div>
                     </div>
                 </div>
             </div>

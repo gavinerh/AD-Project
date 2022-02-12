@@ -28,6 +28,7 @@ public class Articles {
 	@ManyToOne(fetch=FetchType.EAGER)
 	private Source source;	
 	private String author;
+	@Column(length=512)
 	private String title;
 	@Column(length=512)
 	private String description;

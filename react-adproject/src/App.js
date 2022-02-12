@@ -18,9 +18,10 @@ function App() {
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
           <AuthenticatedRoute path="/main" component={MainPage} />
-          <AuthenticatedRoute path="/settings" component={Settings} />
-          <AuthenticatedRoute path="/updateuser" component={UserDetails} />
-          <Route path='/ArticleList' component={ArticleList} />
+          <AuthenticatedRoute path="/main/settings" component={Settings} />
+          <AuthenticatedRoute path="/main/updateuser" component={UserDetails} />
+          <Route path='/main/ArticleList' component={ArticleList} />
+
           <Route path="*" component={PageError} />
         </Switch>
       </BrowserRouter>
