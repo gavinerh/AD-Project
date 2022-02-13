@@ -30,6 +30,7 @@ import com.ad_project_android.services.ImageDownloader;
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -122,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
     public void viewSetting(){
         Intent intent = new Intent(getApplicationContext(), ViewSettings.class);
         startActivity(intent);
+        finish();
     }
 
     private NewsService getNewsServiceInstance() {
@@ -142,16 +144,16 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
                 public void onResponse(Call<Map> call, Response<Map> response) {
                     if(response.code() == 200){
                         // populate the form
-                        Map<String,List<?>> ob =  response.body();
-                        List<Object> lo = (List<Object>) ob.get("news");
-                        List<Object> bm = (List<Object>) ob.get("bookmarks");
-                        likes = (List<String>) ob.get("likes");
-                        dislikes = (List<String>) ob.get("dislikes");
-                        for(Object o:lo){
-                            String s = new Gson().toJson(o);
+                        ArrayList<Object> lo = (ArrayList<Object>) response.body().get("news");
+                        List<Object> bm = (List<Object>) response.body().get("bookmarks");
+                        likes = (List<String>) response.body().get("likes");
+                        dislikes = (List<String>) response.body().get("dislikes");
+                        lo.stream().forEach(x-> {
+                            String s = new Gson().toJson(x);
                             NewsObject no = new Gson().fromJson(s,NewsObject.class);
                             newsObjects.add(no);
-                        }
+                        });
+
                         if(bm!=null){
                         bm.stream().forEach(x->{
                             String st = new Gson().toJson(x);

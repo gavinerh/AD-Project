@@ -46,6 +46,7 @@ import com.example.demo.security.JwtUtil;
 import com.example.demo.service.ArticlesService;
 import com.example.demo.service.NewsService;
 import com.example.demo.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Enumerates.category;
@@ -86,6 +87,7 @@ public class NewsController {
 				aService.save(art); //save articles to DB
 			}
 		}
+		System.out.println("News Articles "+alist.size());
 		return alist;
 	}
 	
@@ -131,20 +133,19 @@ public class NewsController {
 	//For ANDROID TEMPORARY
 	@GetMapping("/news")
 	public ResponseEntity<?> newsPage() {
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
+///////////////////////////////////////////////////////////////////////	
 		//Fetch News from database
 
 		alist = aService.findAll();
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////			
+///////////////////////////////////////////////////////////////////////
 
 		System.out.println("Fetched Articles size: "+alist.size());
-		System.out.println("Fetched Articles size: "+alist.get(1).getPublishedAt());
 		List<Articles> android = new ArrayList<>();
 		List<LikedArticle> likes = larepo.findAll();
 		List<DislikedArticle> dislikes = darepo.findAll();
 		List<BookmarkedArticles> bms = bmrepo.findAll();
 		
-		if(likes.size()>9) {android = mlfunction(likes);}
+		if(likes.size()>9 || dislikes.size()>0) {android = mlfunction(likes,dislikes);}
 		
 		else {
 		for(int i = 0; i<50; i++) {
@@ -161,8 +162,24 @@ public class NewsController {
 		aj.put("likes", like);
 		aj.put("dislikes", dislike);
 		aj.put("bookmarks", bms);
+		
 		System.out.println("Articles for Android size: "+android.size());
 		return new ResponseEntity<Map<String,List<?>>>(aj, HttpStatus.OK);
+	}
+	
+	@GetMapping(path="/preference")
+	public ResponseEntity<?> getpref(){
+		List<LikedArticle> likes = larepo.findAll();
+		List<DislikedArticle> dislikes = darepo.findAll();
+		List<String> like = new ArrayList<>();
+		List<String> dislike = new ArrayList<>();
+		if(likes!=null)likes.stream().forEach(x-> like.add(x.getTitle()));
+		if(dislikes!=null)dislikes.stream().forEach(x-> dislike.add(x.getTitle()));
+		Map<String,List<String>> pref = new HashMap<String,List<String>>();
+		pref.put("likes", like);
+		pref.put("dislikes", dislike);
+		
+		return new ResponseEntity<Map<String,List<String>>>(pref,HttpStatus.OK);
 	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -228,8 +245,9 @@ public class NewsController {
 	
 /////////////////////////////Private Methods///////////////////////////////////////
 
-	private List<Articles> mlfunction(List<LikedArticle> llist) {
+	private List<Articles> mlfunction(List<LikedArticle> llist, List<DislikedArticle> dlist) {
 		List<Articles> mlList = new ArrayList<>();
+		
 		try {
 	          URL url = new URL("http://127.0.0.1:5000/like");
 	          HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -237,23 +255,28 @@ public class NewsController {
 	          conn.setRequestProperty("Content-Type", "application/json; utf-8");
 	          conn.setRequestProperty("Accept","application/json");
 	          conn.setDoOutput(true);
-	          
 	          ObjectMapper mapper = new ObjectMapper();      
 	          MLJson ldlike = new MLJson();
 	          
 	          List<String> titles = new ArrayList<>();
 	          List<String> likes = new ArrayList<>();
+	          List<String> dislikes = new ArrayList<>();
 	          alist.stream()
 	          		.forEach(x-> {
 	          			titles.add(x.getTitle());
-		          			});
-	         
+	  	          			});
+	         if(llist!=null) {
 	          llist.stream()
-	          		.forEach(x-> likes.add(x.getTitle()));
+	          		.forEach(x-> likes.add(x.getTitle()));}
+	         if(dlist!=null) {
+	      	   dlist.stream().forEach(x-> dislikes.add(x.getTitle()));
+	         }
 	          
 	          ldlike.setTitles(titles);
 	          ldlike.setLikedNews(likes);
+	          ldlike.setDislikedNews(dislikes);
 	          System.out.println(ldlike.getLikedNews().size()+"\n"+ldlike.getTitles().size());
+	          
 	          OutputStream os = conn.getOutputStream();
 	          byte[] input = mapper.writeValueAsBytes(ldlike);
 	          os.write(input,0,input.length);

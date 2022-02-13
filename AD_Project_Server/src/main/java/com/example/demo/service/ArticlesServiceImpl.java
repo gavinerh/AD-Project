@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.Repository.ArticlesRepo;
 import com.example.demo.model.Articles;
@@ -33,6 +34,7 @@ public class ArticlesServiceImpl implements ArticlesService {
 	public List<Articles> findAll() {
 		return aRepo.findAll();
 	}
+	@Transactional
 	@Override
 	public void deleteAll() {
 		aRepo.deleteAll();
@@ -41,6 +43,26 @@ public class ArticlesServiceImpl implements ArticlesService {
 	public Articles findbytitle(String title) {
 		
 		return aRepo.findArticlesBytitle(title);
+	}
+	@Transactional
+	@Override
+	public void delete(Articles art) {
+		// TODO Auto-generated method stub
+		aRepo.delete(art);
+		
+	}
+	@Transactional
+	@Override
+	public void deleteAll(List<Articles> art) {
+		// TODO Auto-generated method stub
+		aRepo.deleteAll(art);
+		
+	}
+	@Override
+	public void saveall(List<Articles> alist) {
+		// TODO Auto-generated method stub
+		aRepo.saveAllAndFlush(alist);
+		
 	}
 	
 	

@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class NewsService {
 	
-	private static final String myKey = "&apiKey=dbc6375daa754b3695d78bc9ce2853ea";
+	private static final String myKey = "&apiKey=fbbc757feb5b441b805c38dc2ad94bd3";
 	private static final String myLang = "&language=en";
 	private static final String myPageSize = "&pageSize=30";
 	
@@ -29,14 +29,14 @@ public class NewsService {
 	    
 	    if(localdate == null) {
 //	    	LocalDate temp = LocalDate.now();
-//	    	localdate = temp.minusDays(7).toString();
+//	    	localdate = temp.minusDays(3).toString();
 	    	localdate=LocalDate.now().toString(); //retrieve latest news
 	    }
 	    
 	    String domain = "https://newsapi.org/v2/everything";
 	    String query = "?q=" + category;
 	    String date = "&from=" + localdate;
-	    String sortBy = "&sortBy=publishedAt";
+	    String sortBy = "&sortBy=relevancy";
 	    String urlString = domain + query + date + sortBy + myLang + myPageSize + key; 
 		    try {
 		    	return queryApi(urlString);    

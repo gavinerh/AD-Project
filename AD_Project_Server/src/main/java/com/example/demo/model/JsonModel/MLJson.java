@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class MLJson {
 	private List<String> titles=new ArrayList<>();
 	private List<String> likedNews=new ArrayList<>();
+	private List<String> dislikedNews = new ArrayList<>();
 	private List<Integer> result=new ArrayList<>();
 	
     @Override

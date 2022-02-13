@@ -1,6 +1,7 @@
 
 package com.example.demo.Scheduler;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import com.example.demo.Repository.CategoryRepo;
 import com.example.demo.Repository.SourceRepo;
 import com.example.demo.model.Articles;
 import com.example.demo.model.Category;
+import com.example.demo.model.NewsSet;
 import com.example.demo.service.ArticlesService;
 import com.example.demo.service.NewsService;
 
@@ -31,7 +33,7 @@ public class Scheduler {
 	@Autowired
 	SourceRepo srepo;
 	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("h:mm:ss a");
-	@Scheduled(cron = "00 48 17 * * ?")
+	@Scheduled(cron = "00 36 22 * * ?")
 	public void scheduleTaskUsingCronExpression() {
 		
 	    System.out.println(
@@ -40,45 +42,46 @@ public class Scheduler {
 	    List<Articles> nlist = new ArrayList<>();
 	    List<category> cats = Arrays.asList(category.values());
 		for(category s:cats) {
-			nlist.addAll(NewsService.getNewsByCountryCategory(s.name(),null));
+			NewsSet ns = NewsService.getNewsHome(s.name(), null, null);
+			nlist.addAll(ns.getArticles());
 		}
 		System.out.println("Fetched Articles (size): "+nlist.size());
-		List<Articles> alist = new ArrayList<>();
-		List<String> st = new ArrayList<>();
-		List<Integer> index = new ArrayList<>();
-		for(Articles art:nlist) {
-			String[] t = art.getTitle().split("-");
-			t = Arrays.copyOf(t,t.length-1);
-			String u = String.join("", t);
-			if(!st.contains(u)) {
-				st.add(u);
-				index.add(nlist.indexOf(art));
-			}
-		}
-		for(int i:index) {
-			alist.add(nlist.get(i));
-		}
-		aService.deleteAll();
-		srepo.deleteAll();
-		for(Articles art:alist) {
-			srepo.save(art.getSource()); //save sources to DB
-			aService.save(art); //save articles to DB
-		}
+
+		List<Articles> clean = checkDupes(nlist);
+		aService.saveall(clean);
 		List<Articles> db = aService.findAll();
 		if(db.size()>0) {
 			System.out.println("Articles from Database (size): "+db.size());
+			System.out.println("Cleaned articles : "+clean.size());
 		}
 		else {
 			System.out.println("No Articles from Database");
 		}
+		
 		System.out.println(
 			      "Scheduled tasks Done - " + dateTimeFormatter.format(LocalDateTime.now()));
 	}
-	@Scheduled(cron = "10 51 22 * * ?")
-	public void scheduleTaskUsingCronExpression_2() {
+	@Scheduled(cron = "00 41 16 * * ?")
+	public void scheduleTaskToDeleteOldArticles() {
 		
 	    System.out.println(
 	      "Starting scheduled tasks using cron jobs_2 - " + dateTimeFormatter.format(LocalDateTime.now()));
+	    List<Articles> db = aService.findAll();
+	    List<Articles> toDelete = new ArrayList<>();
+	    System.out.println("Fetched Articles from database size: "+db.size());
+	    DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+	    LocalDate now = LocalDate.now();
+	    db.stream().forEach(x-> {
+	    	LocalDate date = LocalDate.parse(x.getPublishedAt(), df);
+	    	if(date.plusDays(3).isEqual(now)) {
+	    		toDelete.add(x);
+	    	}
+	    });
+	    System.out.println("Articles to Delete Size: "+toDelete.size());
+	    aService.deleteAll(toDelete);
+	    System.out.println("Articles from database after Delete: "+aService.findAll().size());
+	    
+	    
 	    
 //	    List<Articles> nlist = new ArrayList<>();
 //	    List<Category> cats = crepo.findAll();
@@ -101,6 +104,28 @@ public class Scheduler {
 //		}
 		System.out.println(
 			      "Scheduled tasks Done - " + dateTimeFormatter.format(LocalDateTime.now()));
+	}
+	private List<Articles> checkDupes(List<Articles> artlist){
+		List<Articles> alist = new ArrayList<>();
+		List<Integer> index = new ArrayList<>();
+		List<String> st = new ArrayList<>();
+		for(Articles art:artlist) {
+			String[] t = art.getTitle().split("-");
+			String u = "";
+			if(t.length>1) {
+			t = Arrays.copyOf(t,t.length-1);
+			u = String.join("", t);
+			}
+			else {u=t[0];}
+			if(!st.contains(u)) {
+				st.add(u);
+				index.add(artlist.indexOf(art));
+			}
+		}
+		for(int i:index) {
+			alist.add(artlist.get(i));
+		}
+		return alist;
 	}
 
 }

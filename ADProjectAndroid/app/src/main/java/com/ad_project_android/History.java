@@ -2,24 +2,30 @@ package com.ad_project_android;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.ad_project_android.DataService.NewsService;
 import com.ad_project_android.adapters.LikeDislikeAdapter;
+import com.ad_project_android.adapters.MyAdapter;
 import com.ad_project_android.model.NewsObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import retrofit2.Call;
@@ -30,19 +36,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class History extends AppCompatActivity {
     LikeDislikeAdapter adapter;
-    List<String> like = MainActivity.likes;
-    List<String > dislike = MainActivity.dislikes;
+    List<String> like = new ArrayList<>();
+    List<String > dislike = new ArrayList<>();
     String tokenString;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-        ListView listView = findViewById(R.id.listView);
         populateTokenString();
-        if (listView != null) {
-            adapter = new LikeDislikeAdapter(this,like,dislike,this);
-            listView.setAdapter(adapter);
-        }
+        getPreference();
     }
 
     public void postLikeOrDislike(String like, int preference){
@@ -51,11 +53,9 @@ public class History extends AppCompatActivity {
         NewsObject newsObject = new NewsObject();
         newsObject.setTitle(like);
 
-        TimeZone tz = TimeZone.getTimeZone("UTC");
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
-        df.setTimeZone(tz);
-        String nowAsISO = df.format(new Date());
-        newsObject.setPublishedAt(nowAsISO);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        String zt = ZonedDateTime.now().format(dateTimeFormatter);
+        newsObject.setPublishedAt(zt);
 
         Call<Void> call = null;
         if(preference == 1){
@@ -123,5 +123,37 @@ public class History extends AppCompatActivity {
         });
         AlertDialog dialog =  builder.create();
         dialog.show();
+    }
+
+    private void getPreference(){
+        NewsService newsService = getNewsServiceInstance();
+
+        Call<Map> call = newsService.getPreference(tokenString);
+        call.enqueue(new Callback<Map>() {
+            @Override
+            public void onResponse(Call<Map> call, Response<Map> response) {
+                if(response.code() == 200){
+                    like  = (List<String>) response.body().get("likes");
+                    dislike = (List<String>) response.body().get("dislikes");
+                    setadaptor();
+                }
+                else{
+                    Toast.makeText(History.this,"Server error, Try again later!",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Map> call, Throwable t) {
+                Toast.makeText(History.this,"Server error, Try again later!",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void setadaptor(){
+        ListView listView = findViewById(R.id.listView);
+        if (listView != null) {
+            adapter = new LikeDislikeAdapter(this,like,dislike,this);
+            listView.setAdapter(adapter);
+        }
+
     }
 }

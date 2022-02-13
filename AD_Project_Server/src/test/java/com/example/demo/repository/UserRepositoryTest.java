@@ -8,6 +8,10 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -66,51 +70,39 @@ public class UserRepositoryTest {
 //		List<User> users = uService.findAll();
 //		assertEquals(1, users.size());
 		
-//		category[] cats = category.values();
-//		List<Category> Cats = crepo.findAll();
-//	    //crepo.saveAllAndFlush(Cats);
-//		System.out.println(Cats.get(0).getName());
-//		List<Category> pref = new ArrayList<>();
-//		Category pref1 = new Category(category.business.name());
-//		Category pref2 = new Category(category.sports.name());
-//		pref.add(Cats.get(4));
-//		pref.add(Cats.get(5));
-//		UserCredential user = urepo.findById((long) 59).orElse(null);
-//		user.addCat(Cats.get(0));
-//		System.out.println(user.getName());
-//		urepo.save(user);
-//		category[] cats = category.values();
-//		List<Category> Cats = crepo.findAll();
-//	    //crepo.saveAllAndFlush(Cats);
-//		System.out.println(Cats.get(0).getName());
-//		List<Category> pref = new ArrayList<>();
-//		Category pref1 = new Category(category.business.name());
-//		Category pref2 = new Category(category.sports.name());
-//		pref.add(Cats.get(4));
-//		pref.add(Cats.get(5));
-//		User user = urepo.findById((long) 59).orElse(null);
-//		user.addCat(Cats.get(0));
-//		System.out.println(user.getName());
-//		urepo.save(user);
-		List<Articles> arlist = arepo.findAll();
-		List<Articles> alist = new ArrayList<>();
-		List<String> st = new ArrayList<>();
-		List<Integer> index = new ArrayList<>();
-		for(Articles art:arlist) {
-			String[] t = art.getTitle().split("-");
-			t = Arrays.copyOf(t,t.length-1);
-			String u = String.join("", t);
-			if(!st.contains(u)) {
-				st.add(u);
-				index.add(arlist.indexOf(art));
-			}
-		}
-		for(int i:index) {
-			alist.add(arlist.get(i));
-		}
-//		arepo.deleteAll();
+
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+		String zt = ZonedDateTime.now().format(dateTimeFormatter);
+		
+//		List<Articles> artlist = arepo.findAll();
+//		List<Articles> alist = new ArrayList<>();
+//		List<Integer> index = new ArrayList<>();
+//		List<String> st = new ArrayList<>();
+//		System.out.println(artlist.get(1).getTitle());
+//
+//		for(Articles art:artlist) {
+//			String[] t = art.getTitle().split("-");
+//			String u = "";
+//			if(t.length>1) {
+//			t = Arrays.copyOf(t,t.length-1);
+//			u = String.join("", t);
+//			}
+//			else {u=t[0];}
+//			if(!st.contains(u)) {
+//				st.add(u);
+//			}
+//			else if(st.contains(u)) {index.add(artlist.indexOf(art));}
+//		}
+//		for(int i:index) {
+//			alist.add(artlist.get(i));
+//		}
+		arepo.deleteAll();
 //		arepo.saveAllAndFlush(alist);
-		System.out.println(arlist.size()+"\n"+alist.size()+"\n"+st.size()+"\n"+index.size());
+//		System.out.println(artlist.get(1).getTitle()+"\n"+alist.get(1).getTitle());
+//		System.out.println(alist.size()+"\t\t"+index.size());
+//		System.out.println(zt);
+		
+//		System.out.println(arlist.size()+"\n"+alist.size()+"\n"+st.size()+"\n"+index.size());
 //		arlist.stream().forEach(x->{
 //			System.out.println(x.getTitle());		
 //			});

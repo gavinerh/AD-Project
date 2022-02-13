@@ -58,6 +58,7 @@ public class ViewSettings extends AppCompatActivity implements AdapterView.OnIte
         else{
         Intent intent = getLinkedIntent(textView.getText().toString());
         startActivity(intent);
+        finish();
         }
     }
 
