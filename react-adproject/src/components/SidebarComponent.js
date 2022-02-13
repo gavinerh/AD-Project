@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import './Sidebar.css';
 import AuthenticationService from "../service/AuthenticationService";
 import WeatherComponent from './WeatherComponent';
@@ -7,20 +7,20 @@ import useEventListener from '@use-it/event-listener';
 
 
 class SidebarComponent extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.logoutProcess = this.logoutProcess.bind(this);
     }
 
-    logoutProcess(){
+    logoutProcess() {
         AuthenticationService.removeJwtToken();
         AuthenticationService.removeUserSession();
+        return (<Redirect to="/login" />)
     }
 
     render() {
         let username = AuthenticationService.getUserEmail();
 
-        
         return (
             <div>
                 {/* SIDEBAR ICONS */}
@@ -66,7 +66,7 @@ class SidebarComponent extends Component {
                                 <svg className="bi me-2" width="16" height="16">
                                     <use xlinkHref="#home" />
                                 </svg>
-                                Home
+                                <Link to="/main">Home</Link>
                             </a>
                         </li>
                         <li>
@@ -74,7 +74,7 @@ class SidebarComponent extends Component {
                                 <svg className="bi me-2" width="16" height="16">
                                     <use xlinkHref="#speedometer2" />
                                 </svg>
-                                Navigation
+                                <Link to="/main/bookmark">Bookmark</Link>
                             </a>
                         </li>
                         <li>
@@ -104,8 +104,8 @@ class SidebarComponent extends Component {
                             <strong>{username}</strong>
                         </a>
                         <ul className="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                            <li><a className="dropdown-item" href="#">News preferences</a></li>
-                            <li><Link className='dropdown-item' to="/updateuser">Settings</Link></li>
+                            <li><a className="dropdown-item" href="/main/settings">News preferences</a></li>
+                            <li><Link className='dropdown-item' to="/main/updateuser">Settings</Link></li>
                             <li>
                                 <hr className="dropdown-divider" />
                             </li>

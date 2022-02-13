@@ -3,6 +3,8 @@ package com.example.demo.model;
 
 
 
+import java.text.SimpleDateFormat;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -27,9 +29,11 @@ public class Comment {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	int id;
 	private String commentcontent;
-   // @ManyToOne(fetch=FetchType.EAGER)
-	//private UserCredential user;
+    // @ManyToOne(fetch=FetchType.EAGER)
+	private String username;
     private String title;
+    private String commenttime;
+    
 	
 
     

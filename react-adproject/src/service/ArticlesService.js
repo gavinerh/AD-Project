@@ -62,11 +62,11 @@ class ArticleDataService {
     }
 
 
-    makecomment(title,content){
+    makecomment(title,content,username){
         let comment ={
             title: title,
             commentcontent:content,
-           
+           username:username,
         }
         console.log(comment);
 

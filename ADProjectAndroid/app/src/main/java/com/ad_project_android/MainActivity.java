@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.BoringLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,12 +24,15 @@ import android.widget.Toast;
 
 import com.ad_project_android.DataService.NewsService;
 import com.ad_project_android.adapters.MyAdapter;
+import com.ad_project_android.model.Bookmark;
 import com.ad_project_android.model.NewsObject;
 import com.ad_project_android.services.ImageDownloader;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,8 +45,14 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
     public static ArrayList<NewsObject> newsObjects = new ArrayList<NewsObject>();
     private ArrayList<File> listOfFiles = new ArrayList<>();
     private ArrayList<NewsObject> dynamicNewsObject = new ArrayList<>();
+    public static List<String> likes = new ArrayList<>();
+    public static List<String> dislikes = new ArrayList<>();
+    List<Bookmark> bms = new ArrayList<>();
     private MyAdapter adapter = null;
     public static final String EXTERNAL_URL = "externalUrl";
+    private Boolean[] likeonoff;
+    private Boolean[] dislikeonoff;
+    private Boolean[] bookmarkonoff;
     private static String tokenString = null;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -125,25 +135,48 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
             // create instance of UserService api class
             NewsService newsService = getNewsServiceInstance();
 
-            Call<List<NewsObject>> call = newsService.getNews(tokenString);
+            Call<Map> call = newsService.getNews(tokenString);
 
-            call.enqueue(new Callback<List<NewsObject>>() {
+            call.enqueue(new Callback<Map>() {
                 @Override
-                public void onResponse(Call<List<NewsObject>> call, Response<List<NewsObject>> response) {
+                public void onResponse(Call<Map> call, Response<Map> response) {
                     if(response.code() == 200){
                         // populate the form
-                        newsObjects = (ArrayList<NewsObject>) response.body();
+                        Map<String,List<?>> ob =  response.body();
+                        List<Object> lo = (List<Object>) ob.get("news");
+                        List<Object> bm = (List<Object>) ob.get("bookmarks");
+                        likes = (List<String>) ob.get("likes");
+                        dislikes = (List<String>) ob.get("dislikes");
+                        for(Object o:lo){
+                            String s = new Gson().toJson(o);
+                            NewsObject no = new Gson().fromJson(s,NewsObject.class);
+                            newsObjects.add(no);
+                        }
+                        if(bm!=null){
+                        bm.stream().forEach(x->{
+                            String st = new Gson().toJson(x);
+                            Bookmark b = new Gson().fromJson(st,Bookmark.class);
+                            bms.add(b);
+                        });}
+                        likeonoff = new Boolean[newsObjects.size()];
+                        dislikeonoff = new Boolean[newsObjects.size()];
+ 			            bookmarkonoff = new Boolean[newsObjects.size()];
+
                         Log.d("News OnResponse",""+newsObjects.size());
+                        for(int i =0; i<newsObjects.size(); i++){
+                            likeonoff[i] = false;
+                            dislikeonoff[i]=false;
+			                bookmarkonoff[i]=false;
+                        }
                         initFilesList();
                         setadaptor(dynamicNewsObject);
                         populateAdaptor();
-//                        setadaptor(newsObjects);
                     }else{
                         logout();
                     }
                 }
                 @Override
-                public void onFailure(Call<List<NewsObject>> call, Throwable t) {
+                public void onFailure(Call<Map> call, Throwable t) {
                     Toast.makeText(getApplicationContext(), "Server error, please try again later", Toast.LENGTH_SHORT).show();
 
                 }
@@ -153,7 +186,10 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         Toolbar mToolbar;
         ListView listView = findViewById(R.id.listView);
         if (listView != null) {
-            adapter = new MyAdapter(this,newsObjects, listOfFiles, this);
+            adapter = new MyAdapter(this,newsObjects, listOfFiles,likeonoff,dislikeonoff,bookmarkonoff, this);
+            adapter.setLikes(likes);
+            adapter.setDislikes(dislikes);
+            adapter.setBms(bms);
             listView.setAdapter(adapter);
         }
         mToolbar = findViewById(R.id.main_toolbar);
@@ -178,7 +214,6 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
     }
 
     private void populateAdaptor(){
-        List<NewsObject> newsObjectCopy = new ArrayList<>();
         for(int i=0; i<newsObjects.size(); i++){
             startService(newsObjects.get(i), listOfFiles.get(i));
 
@@ -196,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
 
     @Override
     public void sendNewsObjectPosition(NewsObject position, int preference) {
-        postLikeOrDislike(position, preference);
+        postLikeOrDislikeOrsaveBM(position, preference);
     }
 
     @Override
@@ -209,13 +244,16 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         launchwebview(url);
     }
 
-    private void postLikeOrDislike(NewsObject newsObject, int preference){
+    private void postLikeOrDislikeOrsaveBM(NewsObject newsObject, int preference){
         NewsService newsService = getNewsServiceInstance();
         Call<Void> call = null;
         if(preference == 1){
             call = newsService.postLike(newsObject, tokenString);
-        } else{
+        } else if (preference == -1) {
             call = newsService.postDislike(newsObject, tokenString);
+        } else if (preference == 2) {
+            String email = checkEmail();
+            call = newsService.saveBookmark(newsObject, email, tokenString);
         }
         call.enqueue(new Callback<Void>() {
             @Override
@@ -276,4 +314,14 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         editor.commit();
         finish();
     }
+	 private String checkEmail(){
+        SharedPreferences pref = getSharedPreferences(LoginActivity.USER_CREDENTIAL, MODE_PRIVATE);
+        String email = pref.getString("email", "");
+        if(email != null && email.equals("")){
+            //toast message that method failed
+            Toast.makeText(MainActivity.this, "Please register to save preferences", Toast.LENGTH_SHORT).show();
+        }
+        return email;
+    }
+
 }

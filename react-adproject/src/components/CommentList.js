@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import ArticlesService from "../service/ArticlesService";
 import ArticleService from '../service/ArticlesService';
 import AuthenticationService from "../service/AuthenticationService";
+import './Sidebar.css';
 
 
 
@@ -10,82 +11,113 @@ export default class CommentList extends Component{
 
     constructor(props) {
         super(props);
-       
         this.retrievecomment = this.retrievecomment.bind(this);
-       
-        
-       
+        this.inputChangeHandler = this.inputChangeHandler.bind(this);
+        this.submitCommentHandler = this.submitCommentHandler.bind(this);
         this.state = {
-           
-            comment:[],
+            comment: [],
             isLoading: true,
             errors: null,
-           
+            title: this.props.title,
+            newComment: ''
         };
     }
 
 
     componentDidMount() {
-        this.retrievecomment(this.props.title);
+        console.log("componentDidMount ran again");
+        this.retrievecomment();
     }
 
 
+    inputChangeHandler(event) {
+        this.setState({
+            newComment: event.target.value,
+        })
+        console.log(this.state.newComment);
+    }
 
-    
-
-
-    retrievecomment(title){
-        
-        ArticleService.getcomment(title)
-        .then(response =>
-           
-            response.data.map(comment=>({
-                 commentcontent:`${comment.commentcontent}`,
-                 id:`${comment.id}`,
-                 ctitle:`${comment.title}`,
-
-            }))
-            
-            )
-            .then(comment => {
+    submitCommentHandler() {
+        ArticleService.makecomment(this.state.title, this.state.newComment,AuthenticationService.getUserEmail())
+            .then(response => {
                 this.setState({
-                    comment,
-                    isLoading:false,
+                    comment: response.data,
+                    newComment: '',
+                    username :""
+                })
+                this.retrievecomment();
+            });
+        console.log("hihi");
+    }
+
+    retrievecomment() {
+        let storedtitle = this.state.title;
+        ArticleService.getcomment(storedtitle)
+            .then(response => {
+                this.setState({
+                    comment: response.data,
+                    isLoading: false,
+                  
                 });
-            })
+                console.log(response);
+            }
+
+                // response.data.map(comment=>({
+                //      commentcontent:`${comment.commentcontent}`,
+                //      id:`${comment.id}`,
+                //      ctitle:`${comment.title}`,
+
+                // })
+            )
             .catch(error => this.setState({ error, isLoading: false }));
 
     }
 
 
     render() {
-        const { isLoading, comment } = this.state;
+        let isLoading = this.state.isLoading;
         return (
-            <React.Fragment>
-                <div className="list-group-item d-flex row">
-                    {!isLoading ? (
-                        comment.map(comment => {
-                            const { title,commentcontent  } = comment;
-                            
+            
 
-                            return (
-                                <div className="container g-3 flex-fill" >
-                                    <ul>
-                                       
-                                        <li>Someone:  {commentcontent}</li>
-                                    </ul>
-                                   
+            <div className="list-group-item d-flex row">
+                 <svg xmlns="http://www.w3.org/2000/svg"  class="bi bi-file-person-fill" viewBox="0 0 16 16" style={{ display: 'none' }}>
+                     <symbol id="bi bi-file-person-fill" viewBox="0 0 16 16"> 
+                   <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm-1 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm-3 4c2.623 0 4.146.826 5 1.755V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-1.245C3.854 11.825 5.377 11 8 11z"/>
+                        </symbol >
+                        </svg>
+                {!isLoading ?    (
+                    <div>
+                        <h4>Comment List</h4>
+                        <h5>Username</h5>
+                    
+                        {
+                            this.state.comment.map(c => {
+                                return (
+                                    <ul className="licomment">
+                                      <li className="licomment">
+                                      <svg className="bi bi-file-person-fill" width="1em" height="1em">
+                                         <use xlinkHref="#bi bi-file-person-fill" />
+                                       </svg>
+                                          
+                                          {c.username}   :   {c.commentcontent}<div className="commenttime">{c.commenttime}</div></li>   
+                                      
+                                      </ul>
+                                )
 
-                                </div>
-                            );
-                        })
-                    ) : (
-                        <p>Loading...</p>
-                    )}
-                </div>   
-             </React.Fragment>
-      );
-    
+                            })
+                        }
+                       
+                        <input type="text" onChange={this.inputChangeHandler} value={this.state.newComment} />
+                        <button className="py-2 mb-2 btn btn-outline-danger rounded-4" onClick={this.submitCommentHandler}>Submit Comment</button>
+
+                    </div>
+                   
+                ) : (
+                    <p>Loading...</p>
+                )}
+            </div>
+        );
+
     }
 
 
