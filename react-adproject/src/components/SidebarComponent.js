@@ -62,28 +62,28 @@ class SidebarComponent extends Component {
                     {/* navigation links */}
                     <ul className="nav nav-pills flex-column mb-auto">
                         <li className="nav-item">
-                            <a href="#" className="nav-link link-dark" aria-current="page">
+                            <span className="nav-link link-dark" aria-current="page">
                                 <svg className="bi me-2" width="16" height="16">
                                     <use xlinkHref="#home" />
                                 </svg>
                                 <Link to="/main">Home</Link>
-                            </a>
+                            </span>
                         </li>
                         <li>
-                            <a href="#" className="nav-link link-dark">
+                            <span className="nav-link link-dark">
                                 <svg className="bi me-2" width="16" height="16">
                                     <use xlinkHref="#speedometer2" />
                                 </svg>
                                 <Link to="/main/bookmark">Bookmark</Link>
-                            </a>
+                            </span>
                         </li>
                         <li>
-                            <a href="#" className="nav-link link-dark">
+                            <span href="#" className="nav-link link-dark">
                                 <svg className="bi me-2" width="16" height="16">
                                     <use xlinkHref="#table" />
                                 </svg>
                                 Navigation
-                            </a>
+                            </span>
                         </li>
                         <li>
                             <a href="#" className="nav-link link-dark">
@@ -96,15 +96,15 @@ class SidebarComponent extends Component {
                     </ul>
                     <hr />
                     <div className="dropdown">
-                        <a href="#" className="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <span className="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
+                            data-bs-toggle="dropdown" role="button" aria-expanded="false">
                             <svg className="bi me-2" width="32" height="32">
                                 <use xlinkHref="#people-circle" />
                             </svg>
                             <strong>{username}</strong>
-                        </a>
+                        </span>
                         <ul className="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                            <li><a className="dropdown-item" href="/main/settings">News preferences</a></li>
+                            <li><Link className="dropdown-item" to="/main/settings">News preferences</Link></li>
                             <li><Link className='dropdown-item' to="/main/updateuser">Settings</Link></li>
                             <li>
                                 <hr className="dropdown-divider" />

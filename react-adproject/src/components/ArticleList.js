@@ -9,7 +9,6 @@ import CommentList from "./CommentList";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
 export default class ArticleList extends Component {
-    // constructor
     constructor(props) {
         super(props);
         this.retrieveArticles = this.retrieveArticles.bind(this);
@@ -72,11 +71,6 @@ export default class ArticleList extends Component {
 
     }
 
-
-
-
-
-
     onCommentListener(id, title) {
         //  this.setState(prevState => ({
         //     isOn: !prevState.isOn,
@@ -96,12 +90,7 @@ export default class ArticleList extends Component {
             displayComment: !prevState.displayComment
         }))
 
-
-
     }
-
-
-
 
     // set fnx to 'save' state of keyword
     keywordChangeHandler = (e) => {
@@ -176,15 +165,7 @@ export default class ArticleList extends Component {
                 });
             })
             .catch(error => this.setState({ error, isLoading: false }));
-
-
-
     }
-
-
-
-
-
 
     render() {
         const { isLoading, articles } = this.state;
@@ -303,9 +284,9 @@ export default class ArticleList extends Component {
                 </div>
 
                 {/* Search bar */}
-                <div className='col-3'>
+                <div className='col-3 flex-column'>
                     <div className="container my-3">
-                        <div className='p-3 card card-cover  bg-light rounded-5 shadow-sm'>
+                        <div className='p-3 card card-cover bg-light rounded-5 shadow-sm'>
                             <form onSubmit={this.searchFormHandler} >
                                 <input type="keyword" value={this.state.keyword} onChange={this.keywordChangeHandler}
                                     className="form-control" placeholder="Search..." aria-label="Search" />
