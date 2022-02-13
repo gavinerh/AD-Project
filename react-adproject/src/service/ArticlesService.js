@@ -38,7 +38,7 @@ class ArticleDataService {
             }
         }
         console.log(request)
-        return axios.get(ARTICLE_API_BASE_URL + "kw/updateKeyword", request);
+        return instance.get(ARTICLE_API_BASE_URL + "kw/updateKeyword", request);
     }
 
     dislikeArticle(article) {
@@ -80,7 +80,7 @@ class ArticleDataService {
          
       }
           
-        return axios.post(`http://localhost:8080/getComment`,custom);
+        return axios.post(`http://localhost:8080/getComment`,custom, AuthenticationService.setupHeader());
     }
 
 
