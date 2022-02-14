@@ -1,11 +1,8 @@
-// will contain the news app
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ArticleList from '../components/ArticleList';
 import SidebarComponent from "../components/SidebarComponent";
 import './MainPage.css';
 import Settings from './Settings';
-
-import AuthenticationService from "../service/AuthenticationService";
 import UserDetails from "../components/UserDetails";
 
 function MainPage() {
@@ -54,15 +51,15 @@ function MainPage() {
 
   return (
 
-    <div className='wrapper align'>
+    <div className='wrapper'>
 
       {/* display sidebar */}
-      <div className='col-sidebar col-xs-3 col-sm-3 col-md-3 col-lg-2'>
+      <div className='col-sidebar col-md-3 .d-none .d-md-block'>
         <SidebarComponent />
       </div>
 
       {/* main container to display the relevant page */}
-      <div className='col-maincontainer col-xs-9 col-sm-9 col-md-9 col-lg-10 justify-content-center'>
+      <div className='col-maincontainer col-md-9 justify-content-center mb-3'>
         <Switch>
           {routes.map((route, index) => (
             // Render <Route>s path to this component

@@ -1,35 +1,17 @@
-import axios from "axios";
 import React, { Component } from "react";
 import ArticlesService from "../service/ArticlesService";
 import ArticleService from '../service/ArticlesService';
-import AuthenticationService from "../service/AuthenticationService";
-import './Sidebar.css';
+import './ArticleList.css';
 import noImage from '../assets/no-image-placeholder.svg';
 import CommentList from "./CommentList";
-import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
 export default class ArticleList extends Component {
     constructor(props) {
         super(props);
         this.retrieveArticles = this.retrieveArticles.bind(this);
-        //  this.retrievecomment = this.retrievecomment.bind(this);
-        this.keywordChangeHandler = this.keywordChangeHandler.bind(this);
-        this.searchFormHandler = this.searchFormHandler.bind(this);
         this.onLikeClickListener = this.onLikeClickListener.bind(this);
         this.onDislikeClickListener = this.onDislikeClickListener.bind(this);
         this.onCommentListener = this.onCommentListener.bind(this);
-        //   this.onsubmitCommentListener = this.onsubmitCommentListener.bind(this);
-
-        this.sortByInputHandler = this.sortByInputHandler.bind(this);
-
-        // axios.interceptors.request.use(
-        //     (config) => {
-        //         if (AuthenticationService.isUserLoggedIn() === 'true') {
-        //             config.headers.authorization = AuthenticationService.createJWTToken();
-        //         }
-        //         return config;
-        //     }
-        // )
 
         this.state = {
             articles: [],
@@ -66,17 +48,10 @@ export default class ArticleList extends Component {
         this.setState({
             displayComment: title
         })
-
-
-
     }
 
     onCommentListener(id, title) {
-        //  this.setState(prevState => ({
-        //     isOn: !prevState.isOn,
-        //    display: prevState.isOn ? 'none' : 'block'
 
-        //  }));
 
 
         var area =   document.getElementById(id);
@@ -86,6 +61,7 @@ export default class ArticleList extends Component {
            area.style ="display:block";
 
     
+
         this.setState((prevState) => ({
             displayComment: !prevState.displayComment
         }))
@@ -100,7 +76,7 @@ export default class ArticleList extends Component {
     }
 
     //sorting articles handler
-    sortByInputHandler(e) {
+    sortByInputHandler = (e) => {
         this.setState({
             sortBy: e.target.value
         })
@@ -172,7 +148,7 @@ export default class ArticleList extends Component {
         return (
             <div className="d-flex">
                 {/* Articles column */}
-                <div className='col-9 border-0 flex-column'>
+                <div className='col-md-9 border-0 flex-column'>
                     {!isLoading ? (
                         articles.map(article => {
                             const { sourceid, id, sourcename, title, description, url, imageurl, prettytime } = article;
@@ -204,9 +180,14 @@ export default class ArticleList extends Component {
                                                 d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z" />
                                         </symbol>
 
-                                        <symbol id="show comment" viewBox="0 0 16 16">
+                                        <symbol id="comment" viewBox="0 0 16 16">
                                             <path fillRule="evenodd" d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1H5z" />
                                             <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z" />
+                                        </symbol>
+
+                                        <symbol id="clock" viewBox="0 0 16 16">
+                                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
                                         </symbol>
                                     </svg>
 
@@ -214,61 +195,68 @@ export default class ArticleList extends Component {
                                     {/*start of one news box*/}
                                     <div className="list-group-item rounded-5 d-flex gap-3 p-3" aria-current="true">
                                         {/* display image */}
-                                        <img src={imageurl} alt={title} width="128" height="128" className="rounded flex-shrink-0"
-                                            onError={(e) => { e.target.onerror = null; e.target.src = `${noImage}` }} />
+                                        <div class="d-flex justify-content-start">
+                                            <a href={url} target="_blank" rel="noopener noreferrer"><img src={imageurl} alt={title} width="128" height="128" className="rounded flex-shrink-0"
+                                                onError={(e) => { e.target.onerror = null; e.target.src = `${noImage}` }} /></a>
+                                        </div>
                                         {/* display article text */}
-                                        <div className="d-flex gap-2 w-100 justify-content-between ">
+                                        <div className="d-flex w-100 justify-content-between">
                                             <div className="flex-fill">
-                                                <h5 className="mb-0">{title}</h5>
-                                                <small className="opacity-75">{sourcename}</small>
-                                                <p className="mb-0">{description}</p>
+                                                <a href={url} target="_blank" rel="noopener noreferrer" className="text-decoration-none text-dark"><h5 className="mb-0">{title}</h5>
+                                                    <small className="opacity-75 py-1">{sourcename}&nbsp;&nbsp;
+                                                        <svg className="bi " width="1em" height="1em">
+                                                            <use xlinkHref="#clock" />
+                                                        </svg>
+                                                        &nbsp;{prettytime}
+                                                    </small>
+                                                    <p className="mb-0">{description}</p></a>
                                                 {/* buttons */}
-                                                <div className="container mt-3">
-                                                    <div className="row">
-                                                        <div className="col order-first">
-                                                            <button className="py-2 mb-2 btn btn-outline-dark rounded-4" type="submit">
-                                                                <svg className="bi bi-bookmark-heart mx-1" width="1em" height="1em">
-                                                                    <use xlinkHref="#bookmark-heart" />
-                                                                </svg>
-                                                                Bookmark
-                                                            </button>
-                                                        </div>
-                                                        <div className="col">
-                                                            <button className="py-2 mb-2 btn btn-outline-success rounded-4" type="submit" onClick={() => this.onLikeClickListener(article)}>
-                                                                <svg className="bi bi-hand-thumbs-up mx-1" width="1em" height="1em">
-                                                                    <use xlinkHref="#hand-thumbs-up" />
-                                                                </svg>
-                                                                Like
-                                                            </button>
-                                                        </div>
-                                                        <div className="col">
-                                                            <button className="py-2 mb-2 btn btn-outline-danger rounded-4" type="submit" onClick={() => this.onDislikeClickListener(article)}>
-                                                                <svg className="bi bi-hand-thumbs-down mx-1" width="1em" height="1em">
-                                                                    <use xlinkHref="#hand-thumbs-down" />
-                                                                </svg>
-                                                                Dislike
-                                                            </button>
-                                                        </div>
-                                                        <div className="col">
-                                                            <button className="py-2 mb-2 btn btn-outline-danger rounded-4" type="submit" onClick={() => this.onCommentListener(title + "comment", title)}>
-                                                                <svg className="show comment" width="1em" height="1em">
-                                                                    <use xlinkHref="#show comment" />
-                                                                </svg>
-                                                                Comments
-                                                            </button>
-                                                        </div>
-                                                        <div className="col order-last">
-                                                            <a href={url} target="_blank" rel="noopener noreferrer" className="py-2 mb-2 btn btn-outline-secondary rounded-4">
-                                                                <svg className="bi bi-link mx-1" width="1em" height="1em">
-                                                                    <use xlinkHref="#link" />
-                                                                </svg>
-                                                                Full article
-                                                            </a>
-                                                        </div>
+                                                <div className="d-flex justify-content-end mt-3">
+                                                    <div>
+                                                        <button className="py-1 mb-1 btn btn-sm btn-outline-dark" type="submit" onClick={() => this.onCommentListener(title + "comment", title)}>
+                                                            <svg className="bi mx-1" width="1em" height="1em">
+                                                                <use xlinkHref="#comment" />
+                                                            </svg>
+                                                            Comment
+                                                        </button>
+                                                    </div>
+                                                    <div>
+                                                        <button className="py-1 mb-1 btn btn-sm btn-outline-dark" type="submit">
+                                                            <svg className="bi mx-1" width="1em" height="1em">
+                                                                <use xlinkHref="#link" />
+                                                            </svg>
+                                                            Share
+                                                        </button>
+                                                    </div>
+                                                    <div>
+                                                        <button className="py-1 mb-1 btn btn-sm btn-outline-success" type="submit" data-bs-toggle="button"
+                                                            onClick={() => this.onLikeClickListener(article)}>
+                                                            <svg className="bi mx-1" width="1em" height="1em">
+                                                                <use xlinkHref="#hand-thumbs-up" />
+                                                            </svg>
+                                                            Like
+                                                        </button>
+                                                    </div>
+                                                    <div>
+                                                        <button className="py-1 mb-1 btn btn-sm btn-outline-danger" type="submit" data-bs-toggle="button"
+                                                            onClick={() => this.onDislikeClickListener(article)}>
+                                                            <svg className="bi mx-1" width="1em" height="1em">
+                                                                <use xlinkHref="#hand-thumbs-down" />
+                                                            </svg>
+                                                            Dislike
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <small className="opacity-50 text-nowrap">{prettytime}</small>
+                                        </div>
+                                        <div className="d-flex justify-content-end">
+                                            <div>
+                                                <button className="btn btn-sm btn-outline-warning" data-bs-toggle="button" type="submit">
+                                                    <svg className="bi" width="1.5em" height="1.5em">
+                                                        <use xlinkHref="#bookmark-heart" />
+                                                    </svg>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                     <div id = {title+"comment"} style={{display:"none"}}>
@@ -287,7 +275,7 @@ export default class ArticleList extends Component {
                 </div>
 
                 {/* Search bar */}
-                <div className='col-3 flex-column'>
+                <div className='col-md-3 .d-none .d-md-block flex-column'>
                     <div className="container my-3">
                         <div className='p-3 card card-cover bg-light rounded-5 shadow-sm'>
                             <form onSubmit={this.searchFormHandler} >
