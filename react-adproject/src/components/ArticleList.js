@@ -54,13 +54,13 @@ export default class ArticleList extends Component {
 
 
 
-        var area =   document.getElementById(id);
+        var area = document.getElementById(id);
         // console.log(area);
         // console.log(area.style);
 
-           area.style ="display:block";
+        area.style = "display:block";
 
-    
+
 
         this.setState((prevState) => ({
             displayComment: !prevState.displayComment
@@ -213,7 +213,7 @@ export default class ArticleList extends Component {
                                                 {/* buttons */}
                                                 <div className="d-flex justify-content-end mt-3">
                                                     <div>
-                                                        <button className="py-1 mb-1 btn btn-sm btn-outline-dark" type="submit" onClick={() => this.onCommentListener(title + "comment", title)}>
+                                                        <button className="py-1 mb-1 btn btn-custom btn-sm btn-outline-dark" type="submit" onClick={() => this.onCommentListener(title + "comment", title)}>
                                                             <svg className="bi mx-1" width="1em" height="1em">
                                                                 <use xlinkHref="#comment" />
                                                             </svg>
@@ -221,7 +221,7 @@ export default class ArticleList extends Component {
                                                         </button>
                                                     </div>
                                                     <div>
-                                                        <button className="py-1 mb-1 btn btn-sm btn-outline-dark" type="submit">
+                                                        <button className="py-1 mb-1 btn btn-custom btn-sm btn-outline-dark" type="submit">
                                                             <svg className="bi mx-1" width="1em" height="1em">
                                                                 <use xlinkHref="#link" />
                                                             </svg>
@@ -229,7 +229,7 @@ export default class ArticleList extends Component {
                                                         </button>
                                                     </div>
                                                     <div>
-                                                        <button className="py-1 mb-1 btn btn-sm btn-outline-success" type="submit" data-bs-toggle="button"
+                                                        <button className="py-1 mb-1 btn btn-custom btn-sm btn-outline-success" type="submit" data-bs-toggle="button"
                                                             onClick={() => this.onLikeClickListener(article)}>
                                                             <svg className="bi mx-1" width="1em" height="1em">
                                                                 <use xlinkHref="#hand-thumbs-up" />
@@ -238,7 +238,7 @@ export default class ArticleList extends Component {
                                                         </button>
                                                     </div>
                                                     <div>
-                                                        <button className="py-1 mb-1 btn btn-sm btn-outline-danger" type="submit" data-bs-toggle="button"
+                                                        <button className="py-1 mb-1 btn btn-custom btn-sm btn-outline-danger" type="submit" data-bs-toggle="button"
                                                             onClick={() => this.onDislikeClickListener(article)}>
                                                             <svg className="bi mx-1" width="1em" height="1em">
                                                                 <use xlinkHref="#hand-thumbs-down" />
@@ -251,7 +251,7 @@ export default class ArticleList extends Component {
                                         </div>
                                         <div className="d-flex justify-content-end">
                                             <div>
-                                                <button className="btn btn-sm btn-outline-warning" data-bs-toggle="button" type="submit">
+                                                <button className="btn btn-custom btn-sm btn-outline-warning" data-bs-toggle="button" type="submit">
                                                     <svg className="bi" width="1.5em" height="1.5em">
                                                         <use xlinkHref="#bookmark-heart" />
                                                     </svg>
@@ -259,9 +259,9 @@ export default class ArticleList extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    <div id = {title+"comment"} style={{display:"none"}}>
-                                       
-                                        <CommentList title = {title} >
+                                    <div id={title + "comment"} style={{ display: "none" }}>
+
+                                        <CommentList title={title} >
 
                                         </CommentList>
                                     </div>

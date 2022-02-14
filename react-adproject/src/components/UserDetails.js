@@ -8,7 +8,8 @@ function UserDetails() {
         email: '',
         password: '',
         phone: '',
-        name: ''
+        name: '',
+        error: null
     });
     useEffect(() => {
         UserDataService.getUser(UserDataService)
@@ -47,20 +48,24 @@ function UserDetails() {
     const submitHandler = (event) => {
         // get user details and send to server
         event.preventDefault()
-        UserDataService.updateUser(userCredential.name, userCredential.phone, userCredential.email, userCredential.password)
-            .then(response => {
-                console.log(response);
-                history.push('/main');
-            }).catch(response => {
-                // stay at this page
-                console.log(response);
+        if (userCredential.password === null || userCredential.password === "") {
+            setUserCredential({
+                ...userCredential,
+                error: "Please fill in password"
             })
+        } else {
+            UserDataService.updateUser(userCredential.name, userCredential.phone, userCredential.email, userCredential.password)
+                .then(response => {
+                    console.log(response);
+                    history.push('/main');
+                }).catch(response => {
+                    // stay at this page
+                    console.log(response);
+                })
+        }
     }
 
-
-    //validation of password
     return (
-
         <div className="container p-3">
             <main>
                 <div className="row g-5">
@@ -75,7 +80,8 @@ function UserDetails() {
 
                                 <div className="col-12">
                                     <label htmlFor="password" className="form-label">Password</label>
-                                    <input type="password" className="form-control" id="password" value={userCredential.password || ""} onChange={passwordChangeHandler} />
+                                    <input type="password" className="form-control" id="password" value={userCredential.password || ""} onChange={passwordChangeHandler} required />
+                                    {userCredential.error && <span className="fw-bold text-danger">{userCredential.error}</span>}
                                 </div>
 
                                 <div className="col-12">
