@@ -79,13 +79,13 @@ export default class ArticleList extends Component {
         //  }));
 
 
-        //   var area =   document.getElementById(id);
+        var area =   document.getElementById(id);
         // console.log(area);
         // console.log(area.style);
 
-        //   area.style ="display:block";
+           area.style ="display:block";
 
-
+    
         this.setState((prevState) => ({
             displayComment: !prevState.displayComment
         }))
@@ -271,8 +271,11 @@ export default class ArticleList extends Component {
                                             <small className="opacity-50 text-nowrap">{prettytime}</small>
                                         </div>
                                     </div>
-                                    <div>
-                                        {this.state.displayComment && <span className="rounded"><CommentList title={title} /></span>}
+                                    <div id = {title+"comment"} style={{display:"none"}}>
+                                       
+                                        <CommentList title = {title} >
+
+                                        </CommentList>
                                     </div>
 
                                 </div>

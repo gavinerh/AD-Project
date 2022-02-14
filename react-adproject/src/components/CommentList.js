@@ -11,6 +11,7 @@ export default class CommentList extends Component {
 
     constructor(props) {
         super(props);
+        this.hidecomment = this.hidecomment.bind(this);
         this.retrievecomment = this.retrievecomment.bind(this);
         this.inputChangeHandler = this.inputChangeHandler.bind(this);
         this.submitCommentHandler = this.submitCommentHandler.bind(this);
@@ -50,6 +51,13 @@ export default class CommentList extends Component {
         console.log("hihi");
     }
 
+
+    hidecomment(id){
+     var area = document.getElementById(id);
+     area.style ="display:none";
+
+    }
+
     retrievecomment() {
         let storedtitle = this.state.title;
         ArticleService.getcomment(storedtitle)
@@ -85,9 +93,8 @@ export default class CommentList extends Component {
                 </svg>
                 {!isLoading ? (
                     <div>
-                        <h4>Comment List</h4>
-                        <h5>Username</h5>
-
+                        <h4>Comment List  </h4>
+                       
                         {
                             this.state.comment.map(c => {
                                 return (
@@ -105,9 +112,12 @@ export default class CommentList extends Component {
                             })
                         }
 
-                        <input type="text" onChange={this.inputChangeHandler} value={this.state.newComment} />
-                        <button className="py-2 mb-2 btn btn-outline-danger rounded-4" onClick={this.submitCommentHandler}>Submit Comment</button>
-
+                                 <div>
+                        <input className="inputcomment" type="text" onChange={this.inputChangeHandler} value={this.state.newComment} />
+                        </div>
+                      <div>  <button className="submitcomment" onClick={this.submitCommentHandler}>Submit Comment</button></div>
+                       <div> <button className="hidecomment" type="submit" onClick={() => this.hidecomment(this.state.title + "comment")}>
+                           hide all</button></div>
                     </div>
 
                 ) : (
