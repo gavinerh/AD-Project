@@ -16,7 +16,7 @@ public interface UserService {
     Call<TokenJWT> authenticateUser(@Body User user);
 
     @POST("account/register")
-    Call<User> registerUser(@Body User user);
+    Call<Void> registerUser(@Body User user);
 
     @GET("account/{email}")
     Call<User> getUser(@Path("email") String email, @Header("Authorization") String token);
