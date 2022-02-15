@@ -1,6 +1,8 @@
 import UserDataService from "../service/UserDataService";
 import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
+import AuthenticationService from "../service/AuthenticationService";
+import Modal from "./Modal";
 
 function UserDetails() {
     const history = useHistory();
@@ -10,6 +12,7 @@ function UserDetails() {
         phone: '',
         name: ''
     });
+    const [isloading, setIsloading] = useState('');
     useEffect(() => {
         UserDataService.getUser(UserDataService)
             .then(response => {
@@ -22,7 +25,15 @@ function UserDetails() {
                     name: userDetails.name
                 });
             })
-            .catch()
+            .catch(error => {
+                if(!AuthenticationService.checkJwtValidity()){
+                    setIsloading(<div><Modal/></div>)
+                }else{
+                    this.setState({
+                        isLoading: <p>Server not responding...</p>
+                    })
+                }
+            })
     }, [])
 
     const nameChangeHandler = (event) => {
@@ -51,16 +62,21 @@ function UserDetails() {
             .then(response => {
                 console.log(response);
                 history.push('/main');
-            }).catch(response => {
-                // stay at this page
-                console.log(response);
+            }).catch(error => {
+                if(!AuthenticationService.checkJwtValidity()){
+                    setIsloading(<div><Modal/></div>)
+                }else{
+                    this.setState({
+                        isLoading: <p>Server not responding...</p>
+                    })
+                }
             })
     }
 
 
     return (
         <form>
-            <table>
+            {!isloading ? <table>
                 <tr>
                     <td>Email: </td>
                     <td><input disabled type="email" value={userCredential.email} /></td>
@@ -80,7 +96,7 @@ function UserDetails() {
                 <tr>
                     <td><button onClick={submitHandler}>Submit</button></td>
                 </tr>
-            </table>
+            </table> : isloading}
             {/* Email:<input disabled type="email" value={userCredential.email} />
             Name: <input type="text" value={userCredential.name} onChange={nameChangeHandler} />
             Password: <input type="password" value={userCredential.password} onChange={passwordChangeHandler} />

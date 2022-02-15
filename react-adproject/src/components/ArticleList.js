@@ -4,6 +4,9 @@ import ArticleService from '../service/ArticlesService';
 import './ArticleList.css';
 import noImage from '../assets/no-image-placeholder.svg';
 import CommentList from "./CommentList";
+import { Link, Redirect } from 'react-router-dom';
+import AuthenticationService from "../service/AuthenticationService";
+import Modal from "./Modal";
 
 export default class ArticleList extends Component {
     constructor(props) {
@@ -12,6 +15,7 @@ export default class ArticleList extends Component {
         this.onLikeClickListener = this.onLikeClickListener.bind(this);
         this.onDislikeClickListener = this.onDislikeClickListener.bind(this);
         this.onCommentListener = this.onCommentListener.bind(this);
+        
 
         this.state = {
             articles: [],
@@ -23,6 +27,8 @@ export default class ArticleList extends Component {
             keyword: '',
             sortBy: '',
             displayComment: false,
+            errorcontent: '',
+            isModalOpen: false,
         };
     }
 
@@ -54,13 +60,13 @@ export default class ArticleList extends Component {
 
 
 
-        var area =   document.getElementById(id);
+        var area = document.getElementById(id);
         // console.log(area);
         // console.log(area.style);
 
-           area.style ="display:block";
+        area.style = "display:block";
 
-    
+
 
         this.setState((prevState) => ({
             displayComment: !prevState.displayComment
@@ -80,6 +86,12 @@ export default class ArticleList extends Component {
         this.setState({
             sortBy: e.target.value
         })
+    }
+
+    logoutProcess() {
+        AuthenticationService.removeJwtToken();
+        AuthenticationService.removeUserSession();
+        return (<Redirect to="/login" />)
     }
 
     //on Submit use curr keyword to retrieve articles
@@ -108,11 +120,19 @@ export default class ArticleList extends Component {
                     // keyword: '', //clear search field
                 });
             })
-            .then(response => {
-                console.log("no error");
-                // console.log(response);
-            })
-            .catch(error => this.setState({ error, isLoading: false }));
+            .catch(error => {
+                if(!AuthenticationService.checkJwtValidity()){
+                    this.setState({
+                        isLoading: <div>
+                            <Modal />
+                        </div>
+                    })
+                }else{
+                    this.setState({
+                        isLoading: <p>Loading...</p>
+                    })
+                }
+            });
     }
 
     //HOMEPAGE (TEMPORARY)
@@ -140,7 +160,20 @@ export default class ArticleList extends Component {
                     isLoading: false
                 });
             })
-            .catch(error => this.setState({ error, isLoading: false }));
+            .catch(error => {
+                if(!AuthenticationService.checkJwtValidity()){
+                    this.setState({
+                        isLoading: <div>
+                            <Modal />
+                        </div>
+                    })
+                }else{
+                    this.setState({
+                        isLoading: <p>Loading...</p>
+                    })
+                }
+                
+            });
     }
 
     render() {
@@ -259,9 +292,9 @@ export default class ArticleList extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    <div id = {title+"comment"} style={{display:"none"}}>
-                                       
-                                        <CommentList title = {title} >
+                                    <div id={title + "comment"} style={{ display: "none" }}>
+
+                                        <CommentList title={title} >
 
                                         </CommentList>
                                     </div>
@@ -270,7 +303,8 @@ export default class ArticleList extends Component {
                             );
                         })
                     ) : (
-                        <p>Loading articles...</p>
+                        this.state.isLoading
+
                     )}
                 </div>
 

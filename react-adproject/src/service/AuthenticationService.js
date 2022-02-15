@@ -67,6 +67,17 @@ class AuthenticationService {
             return false;
         }
     }
+
+    checkJwtValidity(){
+        let token = sessionStorage.getItem(this.TOKEN_KEY);
+        let decodedObject = JSON.parse(atob(token.split('.')[1]));
+        console.log(Date.now()/1000);
+        console.log(decodedObject);
+        if(decodedObject.exp < Date.now()/1000){
+            return false;
+        }
+        return true;
+    }
 }
 
 export default new AuthenticationService()
