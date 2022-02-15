@@ -74,8 +74,10 @@ class AuthenticationService {
         console.log(Date.now()/1000);
         console.log(decodedObject);
         if(decodedObject.exp < Date.now()/1000){
+            
             return false;
         }
+        console.log("token is still valid");
         return true;
     }
 }
