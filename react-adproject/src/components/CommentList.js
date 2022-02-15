@@ -116,8 +116,8 @@ export default class CommentList extends Component {
                                  <div>
                         <input className="inputcomment" type="text" onChange={this.inputChangeHandler} value={this.state.newComment} />
                         </div>
-                      <div>  <button className="submitcomment" onClick={this.submitCommentHandler}>Submit Comment</button></div>
-                       <div> <button className="hidecomment" type="submit" onClick={() => this.hidecomment(this.state.title + "comment")}>
+                      <div>  <button className="submitcomment" onClick={this.submitCommentHandler}>Submit Comment</button>
+                       <button className="hidecomment" type="submit" onClick={() => this.hidecomment(this.state.title + "comment")}>
                            hide all</button></div>
                     </div>
 
