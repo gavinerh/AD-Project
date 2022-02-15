@@ -132,7 +132,8 @@ public class NewsController {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	//For ANDROID TEMPORARY
 	@GetMapping("/news")
-	public ResponseEntity<?> newsPage() {
+	public ResponseEntity<?> newsPage(HttpServletRequest request) {
+		UserCredential user = finduser(request);
 ///////////////////////////////////////////////////////////////////////	
 		//Fetch News from database
 
@@ -141,15 +142,17 @@ public class NewsController {
 
 		System.out.println("Fetched Articles size: "+alist.size());
 		List<Articles> android = new ArrayList<>();
-		List<LikedArticle> likes = larepo.findAll();
-		List<DislikedArticle> dislikes = darepo.findAll();
-		List<BookmarkedArticles> bms = bmrepo.findAll();
+		List<LikedArticle> likes = larepo.findByUser(user);
+		List<DislikedArticle> dislikes = darepo.findByUser(user);
+		List<BookmarkedArticles> bms = bmrepo.findByUser(user);
 		
 		if(likes.size()>9 || dislikes.size()>0) {android = mlfunction(likes,dislikes);}
 		
 		else {
+			if(alist.size()>50) {
 		for(int i = 0; i<50; i++) {
-			android.add(alist.get(i));}
+			android.add(alist.get(i));}}
+			else {android = alist;}
 		}
 		List<String> like = new ArrayList<>();
 		List<String> dislike = new ArrayList<>();
@@ -178,9 +181,11 @@ public class NewsController {
 			return new ResponseEntity<Map<String, List<?>>>(bmpref, HttpStatus.OK);
 		}	
 	@GetMapping(path="/preference")
-	public ResponseEntity<?> getpref(){
-		List<LikedArticle> likes = larepo.findAll();
-		List<DislikedArticle> dislikes = darepo.findAll();
+	public ResponseEntity<?> getpref(HttpServletRequest request){
+		UserCredential user = finduser(request);
+		
+		List<LikedArticle> likes = larepo.findByUser(user);
+		List<DislikedArticle> dislikes = darepo.findByUser(user);
 		List<String> like = new ArrayList<>();
 		List<String> dislike = new ArrayList<>();
 		if(likes!=null)likes.stream().forEach(x-> like.add(x.getTitle()));
@@ -198,7 +203,7 @@ public class NewsController {
 			@PathVariable("email") String email){
 
 		UserCredential user = uService.findUserByEmail(email);
-		BookmarkedArticles bookmarked = bmrepo.findByTitle(article.getTitle());
+		BookmarkedArticles bookmarked = bmrepo.findByUserAndTitle(user,article.getTitle());
 		
 		if(bookmarked==null) {
 			bmrepo.saveAndFlush(new BookmarkedArticles(article.getTitle(), 
@@ -210,18 +215,20 @@ public class NewsController {
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
+	@GetMapping(path="/bookmark")
+	public ResponseEntity<?> getbookmarks(HttpServletRequest request){
+		UserCredential user = finduser(request);
+		
+		List<BookmarkedArticles> bms = bmrepo.findByUser(user);
+		
+		return new ResponseEntity<List<BookmarkedArticles>>(bms,HttpStatus.OK);
+	}
+	
 	@PostMapping(path="/like")
 	public ResponseEntity<Void> likeNews(HttpServletRequest request,@RequestBody Articles article){
-		String authenticationHeader = request.getHeader("Authorization");
-		String email = null;
-		String jwt = null;
-		if(authenticationHeader != null && authenticationHeader.startsWith("Bearer")) {
-			jwt = authenticationHeader.substring(7);
-			email = jwtUtil.extractUsername(jwt);
-		}
-		UserCredential user = uService.findUserByEmail(email);
-		System.out.println(user.getEmail());
-		LikedArticle like = larepo.findByTitle(article.getTitle());
+		UserCredential user = finduser(request);
+		
+		LikedArticle like = larepo.findByUserAndTitle(user,article.getTitle());
 		if(like ==null) {
 		larepo.saveAndFlush(new LikedArticle(article.getTitle(),article.getUrl(),user));}
 		else {
@@ -233,16 +240,8 @@ public class NewsController {
 	
 	@PostMapping(path="/dislike")
 	public ResponseEntity<Void> dislikeNews(HttpServletRequest request,@RequestBody Articles article) {
-		String authenticationHeader = request.getHeader("Authorization");
-		String email = null;
-		String jwt = null;
-		if(authenticationHeader != null && authenticationHeader.startsWith("Bearer")) {
-			jwt = authenticationHeader.substring(7);
-			email = jwtUtil.extractUsername(jwt);
-		}
-		UserCredential user = uService.findUserByEmail(email);
-		System.out.println(user.getEmail());
-		DislikedArticle dislike = darepo.findByTitle(article.getTitle());
+		UserCredential user = finduser(request);
+		DislikedArticle dislike = darepo.findByUserAndTitle(user,article.getTitle());
 		if(dislike ==null) {
 		darepo.saveAndFlush(new DislikedArticle(article.getTitle(),article.getUrl(),user));}
 		else {
@@ -313,6 +312,20 @@ public class NewsController {
 	e.printStackTrace();
 	      }
 		return mlList;
+	}
+	
+	/////Find User/////
+	private UserCredential finduser(HttpServletRequest request) {
+		String authenticationHeader = request.getHeader("Authorization");
+		String email = null;
+		String jwt = null;
+		if(authenticationHeader != null && authenticationHeader.startsWith("Bearer")) {
+			jwt = authenticationHeader.substring(7);
+			email = jwtUtil.extractUsername(jwt);
+		}
+		UserCredential user = uService.findUserByEmail(email);
+		System.out.println(user.getEmail());
+		return user;
 	}
 }		
 

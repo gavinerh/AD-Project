@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -33,26 +34,26 @@ public class Scheduler {
 	@Autowired
 	SourceRepo srepo;
 	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("h:mm:ss a");
-	@Scheduled(cron = "00 36 22 * * ?")
+	@Scheduled(cron = "30 55 22 * * ?")
 	public void scheduleTaskUsingCronExpression() {
 		
 	    System.out.println(
-	      "Starting scheduled tasks using cron jobs_1 - " + dateTimeFormatter.format(LocalDateTime.now()));
+	      "Starting scheduled tasks using cron jobs (Fetch news from API) - " + dateTimeFormatter.format(LocalDateTime.now()));
 	    
 	    List<Articles> nlist = new ArrayList<>();
 	    List<category> cats = Arrays.asList(category.values());
 		for(category s:cats) {
-			NewsSet ns = NewsService.getNewsHome(s.name(), null, null);
-			nlist.addAll(ns.getArticles());
+			//NewsSet ns = NewsService.getNewsHome(s.name(), null, null);
+			nlist.addAll(NewsService.getNewsByCountryCategory(s.name(), null));
 		}
 		System.out.println("Fetched Articles (size): "+nlist.size());
 
 		List<Articles> clean = checkDupes(nlist);
+		System.out.println("Cleaned articles : "+clean.size());
 		aService.saveall(clean);
 		List<Articles> db = aService.findAll();
 		if(db.size()>0) {
 			System.out.println("Articles from Database (size): "+db.size());
-			System.out.println("Cleaned articles : "+clean.size());
 		}
 		else {
 			System.out.println("No Articles from Database");
@@ -107,6 +108,7 @@ public class Scheduler {
 	}
 	private List<Articles> checkDupes(List<Articles> artlist){
 		List<Articles> alist = new ArrayList<>();
+		List<Articles> dblist = aService.findAll();
 		List<Integer> index = new ArrayList<>();
 		List<String> st = new ArrayList<>();
 		for(Articles art:artlist) {
@@ -125,7 +127,13 @@ public class Scheduler {
 		for(int i:index) {
 			alist.add(artlist.get(i));
 		}
-		return alist;
+		if (dblist==null) {return alist;}
+		else {
+		List<Articles> clean = alist.stream()
+								.filter(x-> !dblist.contains(x))
+								.collect(Collectors.toList());
+		return clean;
+		}
 	}
 
 }
