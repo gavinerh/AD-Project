@@ -39,6 +39,7 @@ export default class CommentList extends Component {
     }
 
     submitCommentHandler() {
+       if(this.state.newComment != ''){
         ArticleService.makecomment(this.state.title, this.state.newComment, AuthenticationService.getUserEmail())
             .then(response => {
                 this.setState({
@@ -48,7 +49,7 @@ export default class CommentList extends Component {
                 })
                 this.retrievecomment();
             });
-        console.log("hihi");
+        console.log("hihi");}
     }
 
 
@@ -84,8 +85,8 @@ export default class CommentList extends Component {
         let isLoading = this.state.isLoading;
         return (
 
-
-            <div className="list-group-item d-flex row">
+        <div className="whole">
+            <div className="list-group-item d-flex row ">
                 <svg xmlns="http://www.w3.org/2000/svg" className="bi bi-file-person-fill" viewBox="0 0 16 16" style={{ display: 'none' }}>
                     <symbol id="bi bi-file-person-fill" viewBox="0 0 16 16">
                         <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm-1 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm-3 4c2.623 0 4.146.826 5 1.755V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-1.245C3.854 11.825 5.377 11 8 11z" />
@@ -93,7 +94,7 @@ export default class CommentList extends Component {
                 </svg>
                 {!isLoading ? (
                     <div>
-                        <h4>Comment List  </h4>
+                        <h5>Comment List  </h5>
                        
                         {
                             this.state.comment.map(c => {
@@ -123,6 +124,7 @@ export default class CommentList extends Component {
                 ) : (
                     <p>Loading...</p>
                 )}
+            </div>
             </div>
         );
 
