@@ -1,6 +1,5 @@
 package com.ad_project_android.model;
 
-import android.graphics.Bitmap;
 
 import androidx.annotation.Nullable;
 
@@ -11,7 +10,6 @@ public class Bookmark implements Serializable {
     private String title;
     private String desc;
     private String url;
-//    private Bitmap bitmap;
     private String imageurl;
 
     public Bookmark(){}
@@ -23,7 +21,6 @@ public class Bookmark implements Serializable {
         this.desc=desc;
         this.url=url;
         this.imageurl=imageurl;
-//        bitmap = null;
     }
 
 
@@ -43,21 +40,6 @@ public class Bookmark implements Serializable {
     public void setUrl(String url) {
         this.url = url;
     }
-
-    //for adding images
-//    public String getImageurl() {
-//        return imageurl;
-//    }
-//    public void setImageurl(String imageurl) {
-//        this.imageurl = imageurl;
-//    }
-//    public Bitmap getBitmap() {
-//        return bitmap;
-//    }
-//    public void setBitmap(Bitmap bitmap) {
-//        this.bitmap = bitmap;
-//    }
-
 
     @Override
     public int hashCode() {

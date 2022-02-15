@@ -46,34 +46,6 @@ public class BookmarkPage extends AppCompatActivity {
     List<Bookmark> bookmarks= new ArrayList<>();
     String tokenString;
 
-    //for images
-//    private ArrayList<File> listOfFiles = new ArrayList<>();
-////    private ArrayList<Bookmark> dynamicBkmark = new ArrayList<>();
-//
-//    private BroadcastReceiver receiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            File file = (File) intent.getSerializableExtra("FILE");
-//            Bookmark bookMark = (Bookmark) intent.getSerializableExtra
-//                    ("BOOKMARK");
-//            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-//            bookMark.setBitmap(bitmap);
-////            dynamicBkmark.add(bookMark);
-//            bmadapter.notifyDataSetChanged();
-//        }
-//    };
-    //do i need on resume/on pause?
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        registerReceiver(receiver, new IntentFilter(MyNewsService.NOTIFICATION));
-//    }
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        unregisterReceiver(receiver);
-//    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,7 +147,6 @@ public class BookmarkPage extends AppCompatActivity {
     //call data from Server
     private void getBMPreference(){
         NewsService newsService = getNewsServiceInstance();
-//        Call<Bookmark> call = newsService.getBMPreference(tokenString);
         Call<Map> call = newsService.getBMPreference(tokenString);
         call.enqueue(new Callback<Map>() {
             @Override
@@ -184,16 +155,12 @@ public class BookmarkPage extends AppCompatActivity {
                     List<Object> bm =(List<Object>) response.body().get("bookmarks");
                     if(bm!=null){
                         bm.stream().forEach(x->{
-//                            String st = new Gson().toJson(x);
                             Bookmark b = new Gson().fromJson
                                     (new Gson().toJson(x), Bookmark.class);
                             bookmarks.add(b);
                         });
                     }
                     Log.d("Bookmarks onCreate",""+bookmarks.size());
-//                    initFilesList(); //for images
-////                    setbmadapter(dynamicBkmark);
-//                    populatebmAdaptor(); //forimages
                     setbmadapter();
                 }
                 else{
@@ -213,34 +180,7 @@ public class BookmarkPage extends AppCompatActivity {
         if (listView != null) {
             bmadapter = new BookmarkAdapter(
                     this, bookmarks,this);
-//            bmadapter.setBookmarks(bookmarks);
             listView.setAdapter(bmadapter);
         }
     }
-//    private void populatebmAdaptor(){
-//        for(int i=0; i<bookmarks.size(); i++){
-//            startService(bookmarks.get(i), listOfFiles.get(i));
-//        }
-//    }
-//    private void startService(Bookmark bkMark, File file){
-//        Intent intent = new Intent(getApplicationContext(), MyNewsService.class);
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable("BOOKMARK", bkMark);
-//        bundle.putSerializable("FILE", file);
-//        intent.putExtra("BUNDLE", bundle);
-//        startService(intent);
-//    }
-//    private void initFilesList(){
-//        for(int i=0; i<bookmarks.size(); i++){
-//            String filename = "image";
-//            filename += String.format("%s", i);
-//            File f = initFile(filename);
-//            listOfFiles.add(f);
-//        }
-//    }
-//    private File initFile(String filename){
-//        File f = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-//        return new File(f, filename);
-//    }
-
 }
