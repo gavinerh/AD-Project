@@ -17,6 +17,11 @@ public interface NewsService {
     @GET("newsapi/news")
     Call<Map> getNews(@Header("Authorization") String token);
 
+    //create get method for bookmarked articles
+    //call list, bookmark
+    @GET("newsapi/bmpreference")
+    Call<Map> getBMPreference(@Header("Authorization") String token);
+
     @GET("newsapi/preference")
     Call<Map> getPreference(@Header("Authorization") String token);
 
