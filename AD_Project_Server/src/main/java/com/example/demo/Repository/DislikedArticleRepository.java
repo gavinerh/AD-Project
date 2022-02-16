@@ -11,12 +11,6 @@ import com.example.demo.model.UserCredential;
 
 public interface DislikedArticleRepository extends JpaRepository<DislikedArticle, Integer> {
 	public DislikedArticle findByTitle(String title);
-	
-	@Query("SELECT l FROM DislikedArticle l, UserCredential u WHERE u=:user"
-			+" AND l.title like :t")
-	public DislikedArticle findByUserAndTitle(@Param("user") UserCredential user, 
-			@Param("t") String title);
-	
-	@Query("SELECT l FROM DislikedArticle l, UserCredential u WHERE u.id =:id")
-	public List<DislikedArticle> findByUser(@Param("id") UserCredential userid);
+	public List<DislikedArticle> findByUser(UserCredential user);
+	public DislikedArticle findByUserAndTitle(UserCredential user, String title);
 }
