@@ -32,6 +32,9 @@
             android:name=".History"
             android:exported="false" />
         <activity
+            android:name=".BookmarkPage"
+            android:exported="false" />
+        <activity
             android:name=".AccountActivity"
             android:exported="false" />
         <activity

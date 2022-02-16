@@ -72,41 +72,45 @@ function MainPage() {
 
                   <hr />
                 </li>
-                <li className="nav-item">
-                  <span className="nav-link link-dark" aria-current="page">
-                    <svg className="bi me-2" width="16" height="16">
-                      <use xlinkHref="#home" />
-                    </svg>
-                    <Link to="/main" className="text-decoration-none text-dark">Home</Link>
-                  </span>
+                <li className="nav-item green-link">
+                  <Link to="/main" className="text-decoration-none text-dark">
+                    <span className="nav-link link-dark" aria-current="page">
+                      <svg className="bi me-2" width="16" height="16">
+                        <use xlinkHref="#home" />
+                      </svg>
+                      Home
+                    </span></Link>
                 </li>
-                <li className="nav-item">
-                  <span className="nav-link link-dark">
-                    <svg className="bi me-2" width="16" height="16">
-                      <use xlinkHref="#bookmark-heart" />
-                    </svg>
-                    <Link to="/main/bookmark" className="text-decoration-none text-dark">Bookmark</Link>
-                  </span>
+                <li className="nav-item green-link">
+                  <Link to="/main/bookmark" className="text-decoration-none text-dark">
+                    <span className="nav-link link-dark">
+                      <svg className="bi me-2" width="16" height="16">
+                        <use xlinkHref="#bookmark-heart" />
+                      </svg>
+                      Bookmark
+                    </span></Link>
                 </li>
-                <li className="nav-item">
-                  <span className="nav-link link-dark">
-                    <svg className="bi me-2" width="16" height="16">
-                      <use xlinkHref="#hand-thumbs-up" />
-                    </svg>
-                    <Link to="/main/bookmark" className="text-decoration-none text-dark">Like</Link>
-                  </span>
+                <li className="nav-item green-link">
+                  <Link to="/main/bookmark" className="text-decoration-none text-dark">
+                    <span className="nav-link link-dark">
+                      <svg className="bi me-2" width="16" height="16">
+                        <use xlinkHref="#hand-thumbs-up" />
+                      </svg>
+                      Like
+                    </span></Link>
                 </li>
-                <li className="nav-item">
-                  <span className="nav-link link-dark">
-                    <svg className="bi me-2" width="16" height="16">
-                      <use xlinkHref="#hand-thumbs-down" />
-                    </svg>
-                    <Link to="/main/bookmark" className="text-decoration-none text-dark">Dislike</Link>
-                  </span>
+                <li className="nav-item green-link">
+                  <Link to="/main/bookmark" className="text-decoration-none text-dark">
+                    <span className="nav-link link-dark">
+                      <svg className="bi me-2" width="16" height="16">
+                        <use xlinkHref="#hand-thumbs-down" />
+                      </svg>
+                      Dislike
+                    </span></Link>
                 </li>
                 <hr />
                 <li className="nav-item">
-                  <div class="collapsed" role="button" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false">
+                  <div className="collapsed" role="button" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false">
                     <span className="nav-link text-break">
                       <svg className="bi me-2" width="16" height="16">
                         <use xlinkHref="#people-circle" />
@@ -117,8 +121,8 @@ function MainPage() {
                       </svg>
                     </span>
                   </div>
-                  <div class="collapse" id="home-collapse">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1">
+                  <div className="collapse" id="home-collapse">
+                    <ul className="btn-toggle-nav list-unstyled fw-normal pb-1">
                       <li><Link className='link-dark' to="/main/settings">Preferences</Link></li>
                       <li><Link className='link-dark' to="/main/updateuser">My account</Link></li>
                       <li><Link className='link-dark' to="/login" onClick={logoutHandler}>Sign out</Link></li>

@@ -37,6 +37,11 @@
   color: #2470dc;
 }
 
+.green-link:hover {
+  background-color: #d2f4ea;
+  border-radius: 5px;
+}
+
 .sidebar .nav-link:hover .feather,
 .sidebar .nav-link.active .feather {
   color: inherit;

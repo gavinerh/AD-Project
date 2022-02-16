@@ -145,7 +145,8 @@ export default class ArticleList extends Component {
                     description: `${article.description}`,
                     url: `${article.url}`,
                     imageurl: `${article.urlToImage}`,
-                    prettytime: `${article.prettytime}`
+                    prettytime: `${article.prettytime}`,
+                    publishedAt: `${article.publishedAt}`
                 }))
             )
             //change loading state to display data--> set active article
@@ -179,10 +180,10 @@ export default class ArticleList extends Component {
                     <div className='col-md-9 border-0 flex-column'>
                         {!isLoading ? (
                             articles.map(article => {
-                                const { sourceid, id, sourcename, title, description, url, imageurl, prettytime } = article;
+                                const { sourceid, id, sourcename, title, description, url, imageurl, prettytime, publishedAt } = article;
 
                                 return (
-                                    <div className="container px-3 pt-3" key={sourceid, id, url}>
+                                    <div className="container px-3 pt-3" key={sourceid, id, title}>
                                         {/* article icons */}
                                         <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }}>
                                             <symbol id="hand-thumbs-up" viewBox="0 0 16 16">
