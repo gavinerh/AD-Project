@@ -237,7 +237,7 @@ public class NewsController {
 		darepo.saveAndFlush(new DislikedArticle(article.getTitle(),article.getUrl(),user));}
 		else {
 			darepo.delete(dislike);
-		}
+		}	
 		System.out.println(article);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

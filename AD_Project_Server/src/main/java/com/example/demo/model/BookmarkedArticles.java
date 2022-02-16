@@ -22,6 +22,7 @@ public class BookmarkedArticles {
 	private Integer id;
 	private String title;
 	private String url;
+	private String description;
 	
 	@ManyToOne
 //	@JoinColumns({
@@ -39,5 +40,6 @@ public class BookmarkedArticles {
 		this.title=title;
 		this.url=url;
 		this.user=user;
+		
 	}
 }

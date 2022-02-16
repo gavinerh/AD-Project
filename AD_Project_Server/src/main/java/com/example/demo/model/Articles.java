@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 public class Articles {
-
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	int id;
