@@ -1,7 +1,8 @@
-import {  useState } from 'react';
+import { useState } from 'react';
 import AuthenticationService from '../../service/AuthenticationService';
 import UserDataService from '../../service/UserDataService';
 import { useHistory, Link, Redirect } from 'react-router-dom';
+import './login_register.css';
 
 function Login() {
     const history = useHistory();

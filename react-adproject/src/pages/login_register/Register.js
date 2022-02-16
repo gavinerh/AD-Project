@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import UserDataService from '../../service/UserDataService';
+import './login_register.css';
 
 class RegisterComponent extends Component {
     constructor(props) {

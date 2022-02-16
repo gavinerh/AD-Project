@@ -72,3 +72,8 @@
   border-width: 0;
   border-radius: 0;
 }
+
+.my-brand-sidebar {
+  font-size: 2rem;
+  font-family: "Zen Kurenaido", sans-serif;
+}
