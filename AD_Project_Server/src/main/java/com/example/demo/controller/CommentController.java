@@ -72,6 +72,20 @@ public class CommentController {
 	   
 	}
 	
+	@PostMapping(path="/deletecomment")
+	public void delete(@RequestBody Comment decomment) {
+		
+		 String symbol = decomment.getUsername();
+		 int pos = symbol.indexOf("@");
+		 String username = symbol.substring(0, pos);
+		
+		//cService.deleteComment(comment.getId());
+		//System.out.println(comment.getId());
+		System.out.println(decomment);
+		
+		
+	cService.deleteComment(decomment.getTitle(), username, decomment.getCommentcontent(), decomment.getCommenttime());
+	}
 	
 	
 	

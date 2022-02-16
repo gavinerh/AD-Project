@@ -19,5 +19,14 @@ public class CommentServiceImpl implements CommentService {
 		return cRepo.findCommentsbytitle(title);
 		
 	};
+	
+	
+	@Override
+	public void deleteComment(String title,String username,String content,String commenttime) {
+		cRepo.delete(cRepo.deleteComment(title,username,content,commenttime));
+		
+		
+		
+	}
 
 }
