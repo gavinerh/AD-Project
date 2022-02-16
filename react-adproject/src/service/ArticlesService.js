@@ -74,6 +74,19 @@ class ArticleDataService {
     }
 
 
+    deletecomment(title,username,content,commenttime){
+       let decomment={
+        title: title,
+        commentcontent:content,
+       username:username,
+       commenttime:commenttime,
+       }
+         
+
+        return axios.post(`http://localhost:8080/deletecomment`, decomment,AuthenticationService.setupHeader());
+    }
+
+
     getcomment(title) {
       let custom = {
           title:title,

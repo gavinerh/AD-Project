@@ -15,6 +15,7 @@ export default class CommentList extends Component {
         this.retrievecomment = this.retrievecomment.bind(this);
         this.inputChangeHandler = this.inputChangeHandler.bind(this);
         this.submitCommentHandler = this.submitCommentHandler.bind(this);
+        this.deletecomment = this.deletecomment.bind(this);
         this.state = {
             comment: [],
             isLoading: true,
@@ -53,11 +54,45 @@ export default class CommentList extends Component {
     }
 
 
+    deletecomment(content,time,name){
+        
+        
+        
+        
+        var symbol = AuthenticationService.getUserEmail();
+        var pos = symbol.indexOf("@");
+        var username = symbol.substring(0, pos);
+
+
+        if(name==username){
+           
+
+     //   if(name==username)
+        ArticleService.deletecomment( this.state.title,  AuthenticationService.getUserEmail(),content,time)
+        .then(response => {
+            this.setState({
+               
+            })
+            this.retrievecomment();
+        });
+          }
+          else{
+              alert("you cannot delete other's comment");
+
+          }
+          
+        
+        }
+            
+
     hidecomment(id){
      var area = document.getElementById(id);
      area.style ="display:none";
 
     }
+
+
+   
 
     retrievecomment() {
         let storedtitle = this.state.title;
@@ -105,7 +140,13 @@ export default class CommentList extends Component {
                                                 <use xlinkHref="#bi bi-file-person-fill" />
                                             </svg>
 
-                                            {c.username}   :   {c.commentcontent}<div className="commenttime">{c.commenttime}</div></li>
+                                            {c.username}   :   {c.commentcontent}
+                                            <button className="delete" onClick={() => this.deletecomment(c.commentcontent,c.commenttime,c.username)}>delete</button>
+                                            <div className="commenttime">{c.commenttime}</div>
+                                            
+                                            
+                                            
+                                            </li>
 
                                     </ul>
                                 )

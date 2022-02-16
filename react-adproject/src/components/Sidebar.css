@@ -110,6 +110,7 @@ margin-top: 20px;
 
 .commenttime{
 float: right;
+margin-right: 15px;
 
 }
 
@@ -123,5 +124,13 @@ margin-right: 15px;
 
 .licomment{
  font-size: 12px;
+
+}
+
+
+.delete{
+ border: none;
+background-color: white;
+float: right;
 
 }
