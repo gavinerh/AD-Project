@@ -32,11 +32,12 @@
         <entry key="..\:/Users/sithu/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_toggle_bookmark.xml" value="0.1425" />
         <entry key="..\:/Users/sithu/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_toggle_like.xml" value="0.1425" />
         <entry key="..\:/Users/sithu/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/user_icon.xml" value="0.1375" />
+        <entry key="..\:/Users/sithu/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/activity_bookmark.xml" value="0.1546875" />
         <entry key="..\:/Users/sithu/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/activity_history.xml" value="0.1875" />
         <entry key="..\:/Users/sithu/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/activity_login.xml" value="0.14791666666666667" />
         <entry key="..\:/Users/sithu/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/activity_main.xml" value="0.11018518518518519" />
-        <entry key="..\:/Users/sithu/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/activity_preference.xml" value="0.14791666666666667" />
-        <entry key="..\:/Users/sithu/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/activity_register.xml" value="0.14791666666666667" />
+        <entry key="..\:/Users/sithu/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/activity_preference.xml" value="0.2857142857142857" />
+        <entry key="..\:/Users/sithu/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/activity_register.xml" value="0.2857142857142857" />
         <entry key="..\:/Users/sithu/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/activity_user_settings.xml" value="0.14791666666666667" />
         <entry key="..\:/Users/sithu/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/activity_view_settings.xml" value="0.14791666666666667" />
         <entry key="..\:/Users/sithu/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/activity_web_view.xml" value="0.19791666666666666" />

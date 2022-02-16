@@ -15,24 +15,21 @@ import androidx.annotation.Nullable;
 
 import com.ad_project_android.History;
 import com.ad_project_android.R;
-import com.ad_project_android.model.NewsObject;
+import com.ad_project_android.model.LikeDislike;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LikeDislikeAdapter extends ArrayAdapter<Object> {
     private Context context;
     private History history;
-    private List<String> likes = new ArrayList<>();
-    private List<String> dislikes = new ArrayList<>();
-    private List<String> lds = new ArrayList<>();
-    private Boolean[] likeonoff;
-    private Boolean[] dislikeonoff;
+    private List<LikeDislike> likes = new ArrayList<>();
+    private List<LikeDislike> dislikes = new ArrayList<>();
+    private List<LikeDislike> lds = new ArrayList<>();
     private ToggleButton likeBtn;
     private ToggleButton dislikeBtn;
 
-    public LikeDislikeAdapter(@NonNull Context context, @NonNull List<String> likes, List<String> dislike, History history) {
+    public LikeDislikeAdapter(@NonNull Context context, @NonNull List<LikeDislike> likes, List<LikeDislike> dislike, History history) {
         super(context, R.layout.row);
         this.context = context;
         this.history = history;
@@ -40,7 +37,6 @@ public class LikeDislikeAdapter extends ArrayAdapter<Object> {
         this.dislikes = dislike;
         lds.addAll(likes);
         lds.addAll(dislike);
-        getTogglelength();
     }
 
     @NonNull
@@ -52,7 +48,9 @@ public class LikeDislikeAdapter extends ArrayAdapter<Object> {
             convertView = inflater.inflate(R.layout.row, parent, false);
         }
         TextView textView = convertView.findViewById(R.id.headlineText);
-        textView.setText(lds.get(position));
+        textView.setText(lds.get(position).getTitle());
+        ImageView imageView = convertView.findViewById(R.id.imageView);
+        imageView.setImageBitmap(lds.get(position).getBitmap());
         ImageView mShare = convertView.findViewById(R.id.share);
         mShare.setVisibility(View.GONE);
         TextView mTime = convertView.findViewById(R.id.dateText);
@@ -66,13 +64,11 @@ public class LikeDislikeAdapter extends ArrayAdapter<Object> {
         if (likes.contains(lds.get(position))) {
             likeBtn.setVisibility(View.VISIBLE);
             likeBtn.setChecked(true);
-            likeonoff[rowpos] = true;
             dislikeBtn.setVisibility(View.GONE);
         }
         if (dislikes.contains(lds.get(position))) {
             dislikeBtn.setVisibility(View.VISIBLE);
             dislikeBtn.setChecked(true);
-            dislikeonoff[rowpos] = true;
             likeBtn.setVisibility(View.GONE);
         }
         likeBtn.setOnClickListener(new View.OnClickListener() {
@@ -88,8 +84,7 @@ public class LikeDislikeAdapter extends ArrayAdapter<Object> {
                 history.setDialog(lds.get(position), -1);
             }
         });
-        likeBtn.setChecked(likeonoff[position]);
-        dislikeBtn.setChecked(dislikeonoff[position]);
+       
         return convertView;
     }
 
@@ -98,52 +93,12 @@ public class LikeDislikeAdapter extends ArrayAdapter<Object> {
         return lds.size();
     }
 
-    public void getTogglelength() {
-        likeonoff = new Boolean[lds.size()];
-        dislikeonoff = new Boolean[lds.size()];
-        for (int i = 0; i < lds.size(); i++) {
-            likeonoff[i] = false;
-            dislikeonoff[i] = false;
-        }
-    }
-
-    public void setLds(List<String> lds) {
+    public void setLds(List<LikeDislike> lds) {
         this.lds = lds;
     }
 
-    public List<String> getLds() {
+    public List<LikeDislike> getLds() {
         return lds;
     }
 
-    public List<String> getLikes() {
-        return likes;
-    }
-
-    public void setLikes(List<String> likes) {
-        this.likes = likes;
-    }
-
-    public List<String> getDislikes() {
-        return dislikes;
-    }
-
-    public void setDislikes(List<String> dislikes) {
-        this.dislikes = dislikes;
-    }
-
-    public ToggleButton getLikeBtn() {
-        return likeBtn;
-    }
-
-    public void setLikeBtn(ToggleButton likeBtn) {
-        this.likeBtn = likeBtn;
-    }
-
-    public ToggleButton getDislikeBtn() {
-        return dislikeBtn;
-    }
-
-    public void setDislikeBtn(ToggleButton dislikeBtn) {
-        this.dislikeBtn = dislikeBtn;
-    }
 }

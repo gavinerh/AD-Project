@@ -13,4 +13,5 @@ public interface DislikedArticleRepository extends JpaRepository<DislikedArticle
 	public DislikedArticle findByTitle(String title);
 	public List<DislikedArticle> findByUser(UserCredential user);
 	public DislikedArticle findByUserAndTitle(UserCredential user, String title);
+
 }

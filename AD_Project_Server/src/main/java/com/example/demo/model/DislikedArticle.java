@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,21 +17,24 @@ public class DislikedArticle {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+	@Column(length=512)
 	private String title;
+	@Column(length=512)
 	private String description;
+	@Column(length=1000)
+	private String urlToImage;
+	@Column(length=512)
 	private String url;
 	@ManyToOne
 	private UserCredential user;
 
-	public DislikedArticle(String title, String description, String url, UserCredential user) {
+	public DislikedArticle(String title, String urlimg, String url,String desc, UserCredential user) {
 		super();
 		this.title = title;
-		this.description = description;
+		this.urlToImage = urlimg;
 		this.url = url;
 		this.user = user;
-	}
-	public DislikedArticle(String title, String url,UserCredential user) {
-		this(title,null,url,user);
+		this.description = desc;
 	}
 
 }

@@ -13,5 +13,5 @@ public interface BookmarkedArticlesRepository extends JpaRepository<BookmarkedAr
 	public BookmarkedArticles findByTitle(String title);
 	public List<BookmarkedArticles> findByUser(UserCredential user);
 	public BookmarkedArticles findByUserAndTitle(UserCredential user, String title);
-	
 }
+	

@@ -34,7 +34,9 @@ public class Scheduler {
 	@Autowired
 	SourceRepo srepo;
 	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("h:mm:ss a");
-	@Scheduled(cron = "30 55 22 * * ?")
+	
+	//// RETRIEVE ARTICLES FROM API/////
+	@Scheduled(cron = "00 20 09 * * ?")
 	public void scheduleTaskUsingCronExpression() {
 		
 	    System.out.println(
@@ -62,7 +64,10 @@ public class Scheduler {
 		System.out.println(
 			      "Scheduled tasks Done - " + dateTimeFormatter.format(LocalDateTime.now()));
 	}
-	@Scheduled(cron = "00 41 16 * * ?")
+	
+	/////DELETE OLD ARTICLES////
+	
+	@Scheduled(cron = "30 18 09 * * ?")
 	public void scheduleTaskToDeleteOldArticles() {
 		
 	    System.out.println(

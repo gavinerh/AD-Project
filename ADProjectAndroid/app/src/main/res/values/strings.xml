@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">NEWSBOOK</string>
+    <string name="welcome">Welcome to NEWSBOOK</string>
+    <string name="select">Please select your preferred Categories</string>
     <!--    login screen-->
     <string name="login">Login</string>
     <string name="createAcct">Create a new account</string>

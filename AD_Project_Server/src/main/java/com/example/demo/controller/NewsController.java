@@ -79,14 +79,14 @@ public class NewsController {
 	@RequestMapping(value="/")
 	public List<Articles> HomePage() {
 		NewsSet ns = NewsService.getNewsHome("technology", null, null);
-		List<Articles> alist = ns.getArticles();
-		for(Articles art:alist) {
-			//check if articles exist in  DB
-			if(aService.findExistngArticle(art.getTitle(), art.getDescription())==null) {
-				srepo.save(art.getSource()); //save sources to DB
-				aService.save(art); //save articles to DB
-			}
-		}
+		List<Articles> alist = aService.findAll();//ns.getArticles();
+//		for(Articles art:alist) {
+//			//check if articles exist in  DB
+//			if(aService.findExistngArticle(art.getTitle(), art.getDescription())==null) {
+//				srepo.save(art.getSource()); //save sources to DB
+//				aService.save(art); //save articles to DB
+//			}
+//		}
 		System.out.println("News Articles "+alist.size());
 		return alist;
 	}
@@ -146,7 +146,7 @@ public class NewsController {
 		List<DislikedArticle> dislikes = darepo.findByUser(user);
 		List<BookmarkedArticles> bms = bmrepo.findByUser(user);
 		
-		if(likes.size()>9 || dislikes.size()>0) {android = mlfunction(likes,dislikes);}
+		if(likes.size()>100 || dislikes.size()>100) {android = mlfunction(likes,dislikes);}
 		
 		else {
 			if(alist.size()>50) {
@@ -156,26 +156,27 @@ public class NewsController {
 		}
 		List<String> like = new ArrayList<>();
 		List<String> dislike = new ArrayList<>();
+		List<String> bm = new ArrayList<>();
 		likes.stream().forEach(x-> like.add(x.getTitle()));
 		dislikes.stream().forEach(x-> dislike.add(x.getTitle()));
+		bms.stream().forEach(x-> bm.add(x.getTitle()));
 		
 		
 		Map<String,List<?>> aj = new HashMap<String,List<?>>();
 		aj.put("news", android);
 		aj.put("likes", like);
 		aj.put("dislikes", dislike);
-		aj.put("bookmarks", bms);
+		aj.put("bookmarks", bm);
 		
 		System.out.println("Articles for Android size: "+android.size());
 		return new ResponseEntity<Map<String,List<?>>>(aj, HttpStatus.OK);
 	}
 	//create method to retrieve bookmarked articles
 		@GetMapping(path="/bmpreference")
-		public ResponseEntity<?> getbmpref() {
-			List<BookmarkedArticles> bookmarks = bmrepo.findAll();
-			List<String> bkmark = new ArrayList<>();
-			if(bookmarks!=null)bookmarks.stream().forEach
-				(x-> bkmark.add(x.getTitle()));
+		public ResponseEntity<?> getbmpref(HttpServletRequest request) {
+			UserCredential user = finduser(request);
+			List<BookmarkedArticles> bookmarks = bmrepo.findByUser(user);
+
 			Map<String,List<?>> bmpref = new HashMap<String,List<?>>();
 			bmpref.put("bookmarks", bookmarks);	
 			return new ResponseEntity<Map<String, List<?>>>(bmpref, HttpStatus.OK);
@@ -186,15 +187,12 @@ public class NewsController {
 		
 		List<LikedArticle> likes = larepo.findByUser(user);
 		List<DislikedArticle> dislikes = darepo.findByUser(user);
-		List<String> like = new ArrayList<>();
-		List<String> dislike = new ArrayList<>();
-		if(likes!=null)likes.stream().forEach(x-> like.add(x.getTitle()));
-		if(dislikes!=null)dislikes.stream().forEach(x-> dislike.add(x.getTitle()));
-		Map<String,List<String>> pref = new HashMap<String,List<String>>();
-		pref.put("likes", like);
-		pref.put("dislikes", dislike);
 		
-		return new ResponseEntity<Map<String,List<String>>>(pref,HttpStatus.OK);
+		Map<String,List<?>> pref = new HashMap<String,List<?>>();
+		pref.put("likes", likes);
+		pref.put("dislikes", dislikes);
+		
+		return new ResponseEntity<Map<String,List<?>>>(pref,HttpStatus.OK);
 	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -207,7 +205,7 @@ public class NewsController {
 		
 		if(bookmarked==null) {
 			bmrepo.saveAndFlush(new BookmarkedArticles(article.getTitle(), 
-					article.getUrl(), user));}
+					article.getUrl(),article.getUrlToImage(), user));}
 		else {
 			bmrepo.delete(bookmarked);
 		}
@@ -230,7 +228,8 @@ public class NewsController {
 		
 		LikedArticle like = larepo.findByUserAndTitle(user,article.getTitle());
 		if(like ==null) {
-		larepo.saveAndFlush(new LikedArticle(article.getTitle(),article.getUrl(),user));}
+		larepo.saveAndFlush(new LikedArticle(article.getTitle(),article.getUrlToImage(),
+				article.getUrl(),article.getDescription(),user));}
 		else {
 			larepo.delete(like);
 		}
@@ -243,7 +242,8 @@ public class NewsController {
 		UserCredential user = finduser(request);
 		DislikedArticle dislike = darepo.findByUserAndTitle(user,article.getTitle());
 		if(dislike ==null) {
-		darepo.saveAndFlush(new DislikedArticle(article.getTitle(),article.getUrl(),user));}
+		darepo.saveAndFlush(new DislikedArticle(article.getTitle(),article.getUrlToImage(),
+				article.getUrl(),article.getDescription(),user));}
 		else {
 			darepo.delete(dislike);
 		}
@@ -272,13 +272,13 @@ public class NewsController {
 	          List<String> dislikes = new ArrayList<>();
 	          alist.stream()
 	          		.forEach(x-> {
-	          			titles.add(x.getTitle());
+	          			titles.add(x.getTitle()+" "+x.getDescription()==null? "":x.getDescription());
 	  	          			});
 	         if(llist!=null) {
 	          llist.stream()
-	          		.forEach(x-> likes.add(x.getTitle()));}
+	          		.forEach(x-> likes.add(x.getTitle()+" "+x.getDescription()==null? "":x.getDescription()));}
 	         if(dlist!=null) {
-	      	   dlist.stream().forEach(x-> dislikes.add(x.getTitle()));
+	      	   dlist.stream().forEach(x-> dislikes.add(x.getTitle()+" "+x.getDescription()==null? "":x.getDescription()));
 	         }
 	          
 	          ldlike.setTitles(titles);

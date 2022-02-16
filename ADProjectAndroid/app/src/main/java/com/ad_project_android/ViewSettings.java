@@ -47,6 +47,7 @@ public class ViewSettings extends AppCompatActivity implements AdapterView.OnIte
         listOfSetting.add(new SettingModel("history", "Like/Dislike History"));
         listOfSetting.add(new SettingModel("bookmark_menuicon", "Bookmark Page"));
         listOfSetting.add(new SettingModel("feedback", "Feedback"));
+        listOfSetting.add(new SettingModel("bookmark", "Bookmarks"));
         listOfSetting.add(new SettingModel("ic_baseline_logout_24", "Logout"));
     }
 
@@ -59,7 +60,7 @@ public class ViewSettings extends AppCompatActivity implements AdapterView.OnIte
         else{
         Intent intent = getLinkedIntent(textView.getText().toString());
         startActivity(intent);
-        finish();
+
         }
     }
 
@@ -75,6 +76,8 @@ public class ViewSettings extends AppCompatActivity implements AdapterView.OnIte
                 return new Intent(this, BookmarkPage.class);
             case "Feedback":
                 return new Intent(this, Feedback.class);
+            case "Bookmarks":
+                return new Intent(this, BookmarkPage.class);
             default:
                 return null;
         }

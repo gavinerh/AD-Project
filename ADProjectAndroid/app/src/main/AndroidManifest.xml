@@ -14,6 +14,9 @@
         android:theme="@style/FullScreen"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".BookmarkPage"
+            android:exported="false" />
+        <activity
             android:name=".WebViewActivity"
             android:exported="false" />
 

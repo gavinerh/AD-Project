@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.ad_project_android.DataService.NewsService;
+import com.ad_project_android.model.Bookmark;
+import com.ad_project_android.model.LikeDislike;
 import com.ad_project_android.model.NewsObject;
 import com.ad_project_android.services.ImageDownloader;
 
@@ -28,6 +30,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MyNewsService extends IntentService {
     private NewsObject newsObject = null;
+    private LikeDislike ld;
     private File file = null;
     private int result = Activity.RESULT_CANCELED;
     public static final String NOTIFICATION = "com.ad_project_android.MyNewsService";
@@ -49,13 +52,21 @@ public class MyNewsService extends IntentService {
         // download images to file
         assert intent != null;
         Bundle bundle = intent.getBundleExtra("BUNDLE");
+        Bundle bundle2 = intent.getBundleExtra(History.LIKE_DISLIKE);
         if(bundle != null){
             newsObject = (NewsObject) bundle.getSerializable("NEWSOBJECT");
             file = (File) bundle.getSerializable("FILE");
             downloadImages();
             notifyDownloadComplete();
         }
+        if(bundle2!=null){
+            ld = (LikeDislike) bundle2.getSerializable(History.LIKE_DISLIKE);
+            file = (File) bundle2.getSerializable("LDFILE");
+            downloadImagesld();
+            notifyDownloadCompleteld();
+        }
     }
+
 
     private void downloadImages(){
         // download images from received image url
@@ -66,6 +77,17 @@ public class MyNewsService extends IntentService {
         Intent intent = new Intent(NOTIFICATION);
         intent.putExtra("FILE", file);
         intent.putExtra("NEWSOBJECT", newsObject);
+        sendBroadcast(intent);
+    }
+    private void downloadImagesld(){
+        // download images from received image url
+        ImageDownloader.downloadImage(ld.getUrlToImage(), file);
+    }
+
+    private void notifyDownloadCompleteld(){
+        Intent intent = new Intent(NOTIFICATION);
+        intent.putExtra("LDFILE", file);
+        intent.putExtra(History.LIKE_DISLIKE, ld);
         sendBroadcast(intent);
     }
 }

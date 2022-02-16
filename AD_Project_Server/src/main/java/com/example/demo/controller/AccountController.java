@@ -56,14 +56,14 @@ public class AccountController {
 	}
 	
 	@PostMapping(value="/register")
-	public ResponseEntity register(@RequestBody UserCredential user){
+	public ResponseEntity<?> register(@RequestBody UserCredential user){
 		if(uService.findUserByEmail(user.getEmail()) == null) {
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 			user.setPassword(encoder.encode(user.getPassword()));
 			uService.save(user);
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		}
-		return new ResponseEntity<>(HttpStatus.CONFLICT);
+		else{return new ResponseEntity<>(HttpStatus.CONFLICT);}
 	}
 	
 	@GetMapping("/{email}")

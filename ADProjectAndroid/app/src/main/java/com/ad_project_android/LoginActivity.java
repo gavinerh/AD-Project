@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         regBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+                Intent intent = new Intent(getApplicationContext(), Preference.class);
                 startActivity(intent);
             }
         });
@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if((pressTime+2000)>System.currentTimeMillis()){
+        if((pressTime+1000)>System.currentTimeMillis()){
             toast.cancel();
             super.onBackPressed();
             return;
@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startMainActivity(){
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 

@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -96,8 +97,14 @@ public class UserRepositoryTest {
 //		for(int i:index) {
 //			alist.add(artlist.get(i));
 //		}
-		arepo.deleteAll();
-//		arepo.saveAllAndFlush(alist);
+		
+		List<String> ls = new ArrayList<>();
+		Articles art = arepo.findById(3105).orElse(null);
+		String s = art.getTitle();
+		String t = art.getDescription()==null? "":art.getDescription();
+		ls.add(s+" "+t);
+		System.out.println(ls.get(0)+"HELLO");
+		
 //		System.out.println(artlist.get(1).getTitle()+"\n"+alist.get(1).getTitle());
 //		System.out.println(alist.size()+"\t\t"+index.size());
 //		System.out.println(zt);

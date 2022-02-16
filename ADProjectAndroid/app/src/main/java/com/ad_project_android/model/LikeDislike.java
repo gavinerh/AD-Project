@@ -1,51 +1,47 @@
 package com.ad_project_android.model;
 
-
 import android.graphics.Bitmap;
 
 import androidx.annotation.Nullable;
 
 import java.io.Serializable;
-import java.util.Objects;
 
-public class Bookmark implements Serializable {
+public class LikeDislike implements Serializable {
     private String title;
     private String desc;
     private String url;
     private String urlToImage;
     private Bitmap bitmap;
 
-    public Bookmark(){}
-    public Bookmark(String title) {
-        this.title=title;
-    }
-    public Bookmark(String title, String desc, String url, String imageurl){
+    public LikeDislike(String title, String url, String urlToImage, Bitmap bitmap) {
         this.title = title;
-        this.desc=desc;
-        this.url=url;
-        this.urlToImage=imageurl;
+        this.url = url;
+        this.urlToImage = urlToImage;
+        this.bitmap = bitmap;
     }
-
 
     public String getTitle() {
         return title;
     }
+
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public String getDesc() {return desc;}
-    public void setDesc(String desc) {this.desc= desc; }
-
     public String getUrl() {
         return url;
     }
+
     public void setUrl(String url) {
         this.url = url;
     }
 
     public String getUrlToImage() {
         return urlToImage;
+    }
+
+    public void setUrlToImage(String urlToImage) {
+        this.urlToImage = urlToImage;
     }
 
     public Bitmap getBitmap() {
@@ -55,7 +51,6 @@ public class Bookmark implements Serializable {
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
     }
-
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -67,7 +62,7 @@ public class Bookmark implements Serializable {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        Bookmark another = (Bookmark) obj;
+        LikeDislike another = (LikeDislike) obj;
         if(obj == null) return false;
         if(title.equals(another.title)){
             return true;

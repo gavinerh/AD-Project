@@ -1,5 +1,6 @@
 package com.ad_project_android.DataService;
 
+import com.ad_project_android.model.Bookmark;
 import com.ad_project_android.model.NewsObject;
 
 import java.util.List;
@@ -24,6 +25,9 @@ public interface NewsService {
 
     @GET("newsapi/preference")
     Call<Map> getPreference(@Header("Authorization") String token);
+
+    @GET("newsapi/bookmark")
+    Call<List<Bookmark>> getBookmark(@Header("Authorization") String token);
 
     @POST("newsapi/like")
     Call<Void> postLike(@Body NewsObject newsObject, @Header("Authorization") String token);

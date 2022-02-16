@@ -37,7 +37,7 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
     protected List<NewsObject> myitems = new ArrayList<>();
     private List<String> likes = new ArrayList<>();
     private List<String> dislikes = new ArrayList<>();
-    private List<Bookmark> bms = new ArrayList<>();
+    private List<String> bms = new ArrayList<>();
     private ArrayList<File> files = null;
     private AdapterInterface adapterInterface;
     private Boolean[] likeonoff;
@@ -88,7 +88,6 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
         // set the image for ImageView
         ImageView imageView = view.findViewById(R.id.imageView);
         imageView.setImageResource(R.drawable.ic_baseline_image_24);
-
         setImageBitmap(files.get(pos), imageView, myitems.get(pos));
         // set headline
         TextView textView = view.findViewById(R.id.headlineText);
@@ -174,7 +173,7 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
         dislikeBtn.setChecked(dislikeonoff[pos]);
 
         //bookmark sharedpref and onclick
-        if (bms.contains(new Bookmark(myitems.get(pos).getTitle()))) {
+        if (bms.contains(myitems.get(pos).getTitle())) {
             bookmarkBtn.setChecked(true);
             bookmarkonoff[rowpos] = true;
         }
@@ -232,27 +231,15 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
         adapterInterface.launchWebview(url);
     }
 
-    public List<String> getLikes() {
-        return likes;
-    }
-
     public void setLikes(List<String> likes) {
         this.likes = likes;
-    }
-
-    public List<String> getDislikes() {
-        return dislikes;
     }
 
     public void setDislikes(List<String> dislikes) {
         this.dislikes = dislikes;
     }
 
-    public List<Bookmark> getBms() {
-        return bms;
-    }
-
-    public void setBms(List<Bookmark> bms) {
+    public void setBms(List<String> bms) {
         this.bms = bms;
     }
 }

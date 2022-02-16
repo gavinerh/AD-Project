@@ -1,11 +1,13 @@
 package com.ad_project_android;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
     private ArrayList<NewsObject> dynamicNewsObject = new ArrayList<>();
     public static List<String> likes = new ArrayList<>();
     public static List<String> dislikes = new ArrayList<>();
-    List<Bookmark> bms = new ArrayList<>();
+    List<String> bms = new ArrayList<>();
     private MyAdapter adapter = null;
     public static final String EXTERNAL_URL = "externalUrl";
     private Boolean[] likeonoff;
@@ -86,9 +88,29 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         setContentView(R.layout.activity_main);
         populateTokenString();
         retrieveInfoFromServer();
-
-        Log.d("News onCreate",""+newsObjects.size());
+        Log.d("News Oncreate","hi");
     }
+
+    @Override
+    public void onBackPressed() {
+        setDialog();
+    }
+
+    @Override
+    protected void onDestroy() {
+        stopService(new Intent(this, MyNewsService.class));
+        newsObjects.clear();
+        dynamicNewsObject.clear();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+//        retrieveInfoFromServer();
+//        registerReceiver(receiver, new IntentFilter(MyNewsService.NOTIFICATION));
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -145,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
                     if(response.code() == 200){
                         // populate the form
                         ArrayList<Object> lo = (ArrayList<Object>) response.body().get("news");
-                        List<Object> bm = (List<Object>) response.body().get("bookmarks");
+                        bms = (List<String>) response.body().get("bookmarks");
                         likes = (List<String>) response.body().get("likes");
                         dislikes = (List<String>) response.body().get("dislikes");
                         lo.stream().forEach(x-> {
@@ -154,17 +176,12 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
                             newsObjects.add(no);
                         });
 
-                        if(bm!=null){
-                        bm.stream().forEach(x->{
-                            String st = new Gson().toJson(x);
-                            Bookmark b = new Gson().fromJson(st,Bookmark.class);
-                            bms.add(b);
-                        });}
                         likeonoff = new Boolean[newsObjects.size()];
                         dislikeonoff = new Boolean[newsObjects.size()];
  			            bookmarkonoff = new Boolean[newsObjects.size()];
 
                         Log.d("News OnResponse",""+newsObjects.size());
+
                         for(int i =0; i<newsObjects.size(); i++){
                             likeonoff[i] = false;
                             dislikeonoff[i]=false;
@@ -196,11 +213,6 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         }
         mToolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(mToolbar);
-        if(newsObjects.size()>0){
-            Log.d("News Links",newsObjects.get(1).getTitle());}
-        else {
-            Log.d("News Links","0 items");
-        }
 
     }
     private void filter(String text){
@@ -218,7 +230,6 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
     private void populateAdaptor(){
         for(int i=0; i<newsObjects.size(); i++){
             startService(newsObjects.get(i), listOfFiles.get(i));
-
         }
     }
 
@@ -315,6 +326,28 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         editor.clear();
         editor.commit();
         finish();
+    }
+    public void setDialog(){
+        // 1. Instantiate an Builder with its constructor
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+// 2. Chain together various setter methods to set the dialog characteristics
+        builder.setTitle("LogOut!")
+                .setMessage("Do you want to logOut?");
+        // Add the buttons
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+                logout();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+                return;
+            }
+        });
+        AlertDialog dialog =  builder.create();
+        dialog.show();
     }
 	 private String checkEmail(){
         SharedPreferences pref = getSharedPreferences(LoginActivity.USER_CREDENTIAL, MODE_PRIVATE);

@@ -46,8 +46,10 @@ class ArticleDataService {
             title: article.title,
             description: article.description,
             url: article.url,
+            publishedAt:'2022-02-14T11:01:15Z',
+             
         }
-        axios.post(`http://localhost:8080/dislike`, customArticle, AuthenticationService.setupHeader())
+        axios.post(`http://localhost:8080/newsapi/dislike`, customArticle, AuthenticationService.setupHeader())
             .catch(error => console.log(error));
     }
 
@@ -57,8 +59,9 @@ class ArticleDataService {
             title: article.title,
             description: article.description,
             url: article.url,
+            publishedAt: '2022-02-14T11:01:15Z',
         }
-        axios.post(`http://localhost:8080/like`, customArticle, AuthenticationService.setupHeader());
+        axios.post(`http://localhost:8080/newsapi/like`, customArticle, AuthenticationService.setupHeader());
     }
 
 
