@@ -104,8 +104,8 @@ class SidebarComponent extends Component {
                             <strong>{username}</strong>
                         </span>
                         <ul className="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                            <li><Link className="dropdown-item" to="/main/settings">News preferences</Link></li>
-                            <li><Link className='dropdown-item' to="/main/updateuser">Settings</Link></li>
+                            <li><Link className="dropdown-item" to="/main/settings">Preferences</Link></li>
+                            <li><Link className='dropdown-item' to="/main/updateuser">Account</Link></li>
                             <li>
                                 <hr className="dropdown-divider" />
                             </li>

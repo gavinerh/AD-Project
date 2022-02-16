@@ -1,6 +1,8 @@
 import UserDataService from "../service/UserDataService";
 import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
+import AuthenticationService from "../service/AuthenticationService";
+import Modal from "./Modal";
 
 function UserDetails() {
     const history = useHistory();
@@ -8,8 +10,10 @@ function UserDetails() {
         email: '',
         password: '',
         phone: '',
-        name: ''
+        name: '',
+        error: null
     });
+    const [isloading, setIsloading] = useState('');
     useEffect(() => {
         UserDataService.getUser(UserDataService)
             .then(response => {
@@ -22,7 +26,14 @@ function UserDetails() {
                     name: userDetails.name
                 });
             })
-            .catch()
+            .catch(error => {
+                console.log("token has expired");
+                if(!AuthenticationService.checkJwtValidity()){
+                    setIsloading(<div><Modal/></div>)
+                }else{
+                    setIsloading(<p>Loading ...</p>)
+                }
+            })
     }, [])
 
     const nameChangeHandler = (event) => {
@@ -47,45 +58,63 @@ function UserDetails() {
     const submitHandler = (event) => {
         // get user details and send to server
         event.preventDefault()
-        UserDataService.updateUser(userCredential.name, userCredential.phone, userCredential.email, userCredential.password)
-            .then(response => {
-                console.log(response);
-                history.push('/main');
-            }).catch(response => {
-                // stay at this page
-                console.log(response);
+        if (userCredential.password === null || userCredential.password === "") {
+            setUserCredential({
+                ...userCredential,
+                error: "Please fill in password"
             })
+        } else {
+            UserDataService.updateUser(userCredential.name, userCredential.phone, userCredential.email, userCredential.password)
+                .then(response => {
+                    console.log(response);
+                    history.push('/main');
+                }).catch(error => {
+                    console.log("token has expired");
+                    if(!AuthenticationService.checkJwtValidity()){
+                        setIsloading(<div><Modal/></div>)
+                    }
+                })
+        }
     }
 
-
     return (
-        <form>
-            <table>
-                <tr>
-                    <td>Email: </td>
-                    <td><input disabled type="email" value={userCredential.email} /></td>
-                </tr>
-                <tr>
-                    <td>Name: </td>
-                    <td><input type="text" value={userCredential.name} onChange={nameChangeHandler} /></td>
-                </tr>
-                <tr>
-                    <td>Password: </td>
-                    <td><input type="password" value={userCredential.password} onChange={passwordChangeHandler} /></td>
-                </tr>
-                <tr>
-                    <td>Phone: </td>
-                    <td><input type="number" value={userCredential.phone} onChange={phoneChangeHandler} /></td>
-                </tr>
-                <tr>
-                    <td><button onClick={submitHandler}>Submit</button></td>
-                </tr>
-            </table>
-            {/* Email:<input disabled type="email" value={userCredential.email} />
-            Name: <input type="text" value={userCredential.name} onChange={nameChangeHandler} />
-            Password: <input type="password" value={userCredential.password} onChange={passwordChangeHandler} />
-            Phone:<input type="number" value={userCredential.phone} onChange={phoneChangeHandler} /><button onClick={submitHandler}>Submit</button> */}
-        </form>
+        <div className="container p-3">
+            <main>
+                <div className="row g-5">
+                {!isloading ? 
+                    <div className="col-md-6">
+                        <h4 className="mb-3">Update user details</h4>
+                        <form>
+                            <div className="row g-3">
+                                <div className="col-12">
+                                    <label htmlFor="email" className="form-label">Email</label>
+                                    <input type="email" readOnly className="form-control" id="email" value={userCredential.email || ""} />
+                                </div>
+
+                                <div className="col-12">
+                                    <label htmlFor="password" className="form-label">Password</label>
+                                    <input type="password" className="form-control" id="password" value={userCredential.password || ""} onChange={passwordChangeHandler} required />
+                                    {userCredential.error && <span className="fw-bold text-danger">{userCredential.error}</span>}
+                                </div>
+
+                                <div className="col-12">
+                                    <label htmlFor="name" className="form-label">Name <span className="text-muted">(Optional)</span></label>
+                                    <input type="text" className="form-control" id="name" value={userCredential.name || ""} onChange={nameChangeHandler} />
+                                </div>
+
+                                <div className="col-12">
+                                    <label htmlFor="phone" className="form-label">Phone <span className="text-muted">(Optional)</span></label>
+                                    <input type="text" className="form-control" id="phone" value={userCredential.phone || ""} onChange={phoneChangeHandler} />
+                                </div>
+
+                                <button className="btn btn-primary" type="submit" onClick={submitHandler}>Update</button>
+                            </div>
+                        </form>
+                    </div>
+                    : isloading}
+                </div>
+            </main>
+        </div>
     )
 }
 

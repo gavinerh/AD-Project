@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -77,12 +78,12 @@ public class RegisterActivity extends AppCompatActivity {
         User user = new User(null, null, email, password);
 
         // calling method to create a post and pass in model class
-        Call<User> call = userService.registerUser(user);
+        Call<Void> call = userService.registerUser(user);
 
         // execute post method
-        call.enqueue(new Callback<User>() {
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 if(response.code() == 201){
                     Toast.makeText(getApplicationContext(), "Sign up successful!", Toast.LENGTH_SHORT).show();
                     backToLogin();
@@ -93,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Error in connecting to server", Toast.LENGTH_SHORT).show();
             }
         });

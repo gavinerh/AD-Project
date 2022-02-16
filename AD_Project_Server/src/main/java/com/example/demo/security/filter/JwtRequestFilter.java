@@ -18,14 +18,15 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.example.demo.security.CustomUserDetailsService;
 import com.example.demo.security.JwtUtil;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import net.bytebuddy.asm.MemberSubstitution.Substitution.Chain;
 
 @Component
-public class JwtRequestFilter extends OncePerRequestFilter{
-	
+public class JwtRequestFilter extends OncePerRequestFilter {
+
 	@Autowired
 	private CustomUserDetailsService userDetailService;
-	
+
 	@Autowired
 	private JwtUtil jwtUtil;
 
@@ -35,20 +36,22 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 		String authenticationHeader = request.getHeader("Authorization");
 		String email = null;
 		String jwt = null;
-		if(authenticationHeader != null && authenticationHeader.startsWith("Bearer")) {
+		if (authenticationHeader != null && authenticationHeader.startsWith("Bearer")) {
 			jwt = authenticationHeader.substring(7);
 			email = jwtUtil.extractUsername(jwt);
 		}
-		if(email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+		if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			UserDetails userDetails = userDetailService.loadUserByUsername(email);
-			if(jwtUtil.validateToken(jwt, userDetails)) {
+			if (jwtUtil.validateToken(jwt, userDetails)) {
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());
-				usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+				usernamePasswordAuthenticationToken
+						.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 			}
 		}
 		filterChain.doFilter(request, response);
+
 	}
-	
+
 }
