@@ -51,17 +51,16 @@ function MainPage() {
       <div className="d-sm-block d-md-none navbar navbar-expand-sm navbar-light sticky-top bg-light" aria-label="navbar">
         <div className="container-fluid navbar-brand">
           <span className="my-brand-sidebar fw-normal">NEWSBOOK</span>
-          <button className="navbar-toggler d-sm-block d-md-none " type="button" data-bs-toggle="collapse"
+          <button className="navbar-toggler d-sm-block d-md-none" type="button" data-bs-toggle="collapse"
             data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
             aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span></button>
         </div>
-
       </div>
       {/* sidebar */}
       <div className="container-fluid">
         <div className="row">
-          <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-light position-sticky sidebar collapse">
+          <div id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-light position-sticky sidebar collapse">
             <div className="pt-3">
               <ul className="nav flex-column">
                 <li className="nav-item">
@@ -72,7 +71,7 @@ function MainPage() {
 
                   <hr />
                 </li>
-                <li className="nav-item green-link">
+                <li className="nav-item grey-link" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
                   <Link to="/main" className="text-decoration-none text-dark">
                     <span className="nav-link link-dark" aria-current="page">
                       <svg className="bi me-2" width="16" height="16">
@@ -81,7 +80,7 @@ function MainPage() {
                       Home
                     </span></Link>
                 </li>
-                <li className="nav-item green-link">
+                <li className="nav-item grey-link" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
                   <Link to="/main/bookmark" className="text-decoration-none text-dark">
                     <span className="nav-link link-dark">
                       <svg className="bi me-2" width="16" height="16">
@@ -90,7 +89,7 @@ function MainPage() {
                       Bookmark
                     </span></Link>
                 </li>
-                <li className="nav-item green-link">
+                <li className="nav-item grey-link" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
                   <Link to="/main/bookmark" className="text-decoration-none text-dark">
                     <span className="nav-link link-dark">
                       <svg className="bi me-2" width="16" height="16">
@@ -99,7 +98,7 @@ function MainPage() {
                       Like
                     </span></Link>
                 </li>
-                <li className="nav-item green-link">
+                <li className="nav-item grey-link" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
                   <Link to="/main/bookmark" className="text-decoration-none text-dark">
                     <span className="nav-link link-dark">
                       <svg className="bi me-2" width="16" height="16">
@@ -110,31 +109,43 @@ function MainPage() {
                 </li>
                 <hr />
                 <li className="nav-item">
-                  <div className="collapsed" role="button" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false">
-                    <span className="nav-link text-break">
+                  <span className="nav-link text-break">
+                    <svg className="bi me-2" width="16" height="16">
+                      <use xlinkHref="#people-circle" />
+                    </svg>
+                    {username}
+                  </span>
+                </li>
+                <li className="nav-item grey-link" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+                  <Link to="/main/settings" className="text-decoration-none text-dark">
+                    <span className="nav-link link-dark">
                       <svg className="bi me-2" width="16" height="16">
-                        <use xlinkHref="#people-circle" />
+                        <use xlinkHref="#caret-right" />
                       </svg>
-                      {username}&nbsp;
+                      Preferences
+                    </span></Link>
+                </li>
+                <li className="nav-item grey-link" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+                  <Link to="/main/updateuser" className="text-decoration-none text-dark">
+                    <span className="nav-link link-dark">
                       <svg className="bi me-2" width="16" height="16">
-                        <use xlinkHref="#caret-down-fill" />
+                        <use xlinkHref="#caret-right" />
                       </svg>
-                    </span>
-                  </div>
-                  <div className="collapse" id="home-collapse">
-                    <ul className="btn-toggle-nav list-unstyled fw-normal pb-1">
-                      <li><Link className='link-dark' to="/main/settings">Preferences</Link></li>
-                      <li><Link className='link-dark' to="/main/updateuser">My account</Link></li>
-                      <li><Link className='link-dark' to="/login" onClick={logoutHandler}>Sign out</Link></li>
-                    </ul>
-                  </div>
+                      My Account
+                    </span></Link>
+                </li>
+                <li className="nav-item grey-link">
+                  <Link to="/login" onClick={logoutHandler} className="text-decoration-none text-dark">
+                    <span className="nav-link link-dark">
+                      <svg className="bi me-2" width="16" height="16">
+                        <use xlinkHref="#caret-right" />
+                      </svg>
+                      Logout
+                    </span></Link>
                 </li>
               </ul>
-
-
-
             </div>
-          </nav>
+          </div>
           {/* main container */}
           <div className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div>
@@ -183,8 +194,8 @@ function MainPage() {
             d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
         </symbol>
 
-        <symbol id="caret-down-fill" viewBox="0 0 16 16">
-          <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+        <symbol id="caret-right" viewBox="0 0 16 16">
+          <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z" />
         </symbol>
       </svg>
     </div>
