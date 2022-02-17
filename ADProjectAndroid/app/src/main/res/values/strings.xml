@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">NEWSBOOK</string>
-    <string name="welcome">Welcome to NEWSBOOK</string>
-    <string name="select">Please select your preferred Categories</string>
     <!--    login screen-->
     <string name="login">Login</string>
     <string name="createAcct">Create a new account</string>
@@ -11,11 +9,15 @@
     <!--    register screen-->
     <string name="name">Name</string>
     <string name="confirmPassword">Confirm password</string>
+    <string name="welcome">Welcome to NEWSBOOK</string>
+    <string name="select">Please select your preferred Categories</string>
     <!--    main NEWS screen-->
     <string name="bullet">•</string>
     <!--    bookmark screen-->
     <string name="bookmark">Bookmarks</string>
     <!--    like/dislike screen-->
     <string name="likedisliketitle">like/dislike History</string>
+    <!--    view settings screen-->
+    <string name="viewsettingstitle">Settings</string>
 
 </resources>

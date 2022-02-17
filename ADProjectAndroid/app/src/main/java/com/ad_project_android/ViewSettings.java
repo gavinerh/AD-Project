@@ -42,12 +42,10 @@ public class ViewSettings extends AppCompatActivity implements AdapterView.OnIte
 
     private void populateSettingList(){
         listOfSetting = new ArrayList<>();
-        listOfSetting.add(new SettingModel("preference", "Set Preference"));
-        listOfSetting.add(new SettingModel("setting", "Account Settings"));
-        listOfSetting.add(new SettingModel("history", "Like/Dislike History"));
-        listOfSetting.add(new SettingModel("bookmark_menuicon", "Bookmark Page"));
-        listOfSetting.add(new SettingModel("feedback", "Feedback"));
-        listOfSetting.add(new SettingModel("bookmark", "Bookmarks"));
+        listOfSetting.add(new SettingModel("ic_baseline_bookmark_added_grey_24", "Bookmarks"));
+        listOfSetting.add(new SettingModel("ic_baseline_history_24", "Like/Dislike History"));
+        listOfSetting.add(new SettingModel("ic_baseline_checklist_24", "News Preference"));
+        listOfSetting.add(new SettingModel("ic_baseline_settings_24", "Account"));
         listOfSetting.add(new SettingModel("ic_baseline_logout_24", "Logout"));
     }
 
@@ -66,16 +64,12 @@ public class ViewSettings extends AppCompatActivity implements AdapterView.OnIte
 
     private Intent getLinkedIntent(String text){
         switch (text) {
-            case "Set Preference":
+            case "News Preference":
                 return new Intent(this, Preference.class);
-            case "Account Settings":
+            case "Account":
                 return new Intent(this, AccountActivity.class);
             case "Like/Dislike History":
                 return new Intent(this, History.class);
-            case "Bookmark Page":
-                return new Intent(this, BookmarkPage.class);
-            case "Feedback":
-                return new Intent(this, Feedback.class);
             case "Bookmarks":
                 return new Intent(this, BookmarkPage.class);
             default:
