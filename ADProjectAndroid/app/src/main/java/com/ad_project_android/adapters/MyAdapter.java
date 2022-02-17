@@ -97,7 +97,7 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
         mSource.setText(myitems.get(pos).getSource().getName());
         // set time published
         TextView mTime = view.findViewById(R.id.dateText);
-        mTime.setText(myitems.get(pos).getPrettytime());
+        mTime.setText("• " + myitems.get(pos).getPrettytime());
         // set share to social media
         ImageView mShare = view.findViewById(R.id.share);
         mShare.setOnClickListener(new View.OnClickListener() {

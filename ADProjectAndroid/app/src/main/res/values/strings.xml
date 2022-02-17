@@ -11,6 +11,7 @@
     <!--    register screen-->
     <string name="name">Name</string>
     <string name="confirmPassword">Confirm password</string>
-
+    <!--    main NEWS screen-->
+    <string name="bullet">•</string>
 
 </resources>
