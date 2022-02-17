@@ -42,6 +42,9 @@ public class AccountActivity extends AppCompatActivity {
         updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(collateUserInfo() == null) {
+                    return;
+                }
                 User user = collateUserInfo();
                 UserService userService = getUserServiceInstance();
                 Call<User> call = userService.updateUser(user, tokenString);
@@ -55,7 +58,7 @@ public class AccountActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), "Server Error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Server error, please update account later", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -82,21 +85,20 @@ public class AccountActivity extends AppCompatActivity {
                     if(response.code() == 200){
                         // populate the form
                         User user = response.body();
-                        populateEditText(user.getEmail(), user.getPassword(), user.getPhone(), user.getName());
+                        populateEditText(user.getEmail(), user.getPhone(), user.getName());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<User> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(), "Apologies, Server is currently experiencing some unknown error, try again later", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Server error, please update account later", Toast.LENGTH_SHORT).show();
                 }
             });
         }
     }
 
-    private void populateEditText(String emailStr, String passwordStr, String phoneStr, String nameStr){
-        email.setText(emailStr); password.setText(passwordStr); phone.setText(phoneStr);
-        name.setText(nameStr);
+    private void populateEditText(String emailStr, String phoneStr, String nameStr){
+        email.setText(emailStr); phone.setText(phoneStr); name.setText(nameStr);
     }
 
     private String getFromSharedPreference(){
@@ -113,7 +115,17 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     private User collateUserInfo(){
-        return new User(name.getText().toString(), phone.getText().toString(), email.getText().toString(), password.getText().toString());
+        if(password.getText().toString().equals("") || password.getText() == null) {
+            Toast.makeText(getApplicationContext(), "Please fill in password", Toast.LENGTH_SHORT).show();
+            return null;
+        } if(password.getText().length() < 3) {
+            Toast.makeText(getApplicationContext(), "Password should be at least 3 characters", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+        else {
+            return new User(name.getText().toString(), phone.getText().toString(), email.getText().toString(), password.getText().toString());
+
+        }
     }
 
     private void populateTokenString(){

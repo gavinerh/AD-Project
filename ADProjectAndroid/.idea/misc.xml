@@ -3,6 +3,41 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_baseline_bookmark_add_24.xml" value="0.248" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_baseline_bookmark_added_24.xml" value="0.216" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_baseline_bookmark_added_grey_24.xml" value="0.3395" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_baseline_checklist_24.xml" value="0.3395" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_baseline_history_24.xml" value="0.3395" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_baseline_image_24.xml" value="0.1" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_baseline_logout_24.xml" value="0.3395" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.3395" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_baseline_share_24.xml" value="0.1065" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_baseline_thumb_down_24.xml" value="0.216" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_baseline_thumb_up_24.xml" value="0.19" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_hand_thumbs_down.xml" value="0.1085" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_hand_thumbs_down_fill.xml" value="0.1085" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_hand_thumbs_up.xml" value="0.248" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_outline_thumb_down_24.xml" value="0.216" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_outline_thumb_up_24.xml" value="0.17" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_toggle_bg.xml" value="0.1085" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_toggle_bg_1.xml" value="0.1085" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_toggle_bg_2.xml" value="0.1085" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_toggle_bookmark.xml" value="0.1085" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_toggle_dislike.xml" value="0.1085" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/drawable/ic_toggle_like.xml" value="0.1085" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/activity_account.xml" value="0.2866847826086957" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/activity_bookmarked.xml" value="0.2866847826086957" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/activity_feedback.xml" value="0.16145307769929365" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/activity_history.xml" value="0.2866847826086957" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/activity_login.xml" value="0.33" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/activity_main.xml" value="0.14907407407407408" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/activity_preference.xml" value="0.2866847826086957" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/activity_register.xml" value="0.33" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/activity_user_settings.xml" value="0.16145307769929365" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/activity_view_settings.xml" value="0.33" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/activity_web_view.xml" value="0.19293478260869565" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/row.xml" value="0.33" />
+        <entry key="..\:/Users/filza/git/AD-Project/ADProjectAndroid/app/src/main/res/layout/settings_item.xml" value="0.33" />
         <entry key="..\:/Users/gavin/AndroidStudioProjects/ADProjectAndroid/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/gavin/AndroidStudioProjects/ADProjectAndroid/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/gavin/AndroidStudioProjects/ADProjectAndroid/app/src/main/res/layout/activity_view_settings.xml" value="0.25" />

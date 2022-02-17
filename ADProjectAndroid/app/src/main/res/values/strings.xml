@@ -19,5 +19,11 @@
     <string name="likedisliketitle">like/dislike History</string>
     <!--    view settings screen-->
     <string name="viewsettingstitle">Settings</string>
+    <!--    account screen-->
+    <string name="accounttitle">Account</string>
+    <string name="accountdesc">Update my details</string>
+    <string name="accountname">Name (optional)</string>
+    <string name="phone">Phone (optional)</string>
+    <string name="update">Update</string>
 
 </resources>
