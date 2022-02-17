@@ -6,6 +6,7 @@ import UserDetails from "../components/UserDetails";
 import WeatherComponent from '../components/WeatherComponent';
 import AuthenticationService from "../service/AuthenticationService";
 import Bookmark from "./Bookmark";
+import UpdateCategory from "../components/UpdateCategory";
 
 function MainPage() {
 
@@ -34,6 +35,11 @@ function MainPage() {
       path: "/main/updateuser",
       exact: true,
       main: () => <UserDetails />
+    },
+    {
+      path: "/main/settings/updateCategory",
+      exact: true,
+      main: () => <UpdateCategory/>
     }
   ];
 

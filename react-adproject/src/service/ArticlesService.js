@@ -99,6 +99,15 @@ class ArticleDataService {
         return axios.post(`http://localhost:8080/getComment`,custom, AuthenticationService.setupHeader());
     }
 
+    getCategories(){
+        return axios.get("http://localhost:8080/newsapi/category", AuthenticationService.setupHeader());
+    }
+
+    setCategories(categories){
+        console.log(categories);
+        return axios.post("http://localhost:8080/newsapi/category", categories, AuthenticationService.setupHeader());
+    }
+
 
 
 

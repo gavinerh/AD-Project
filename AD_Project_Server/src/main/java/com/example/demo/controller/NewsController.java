@@ -7,12 +7,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.Repository.ArticlesRepo;
 import com.example.demo.Repository.BookmarkedArticlesRepository;
 import com.example.demo.Repository.CategoryRepo;
 import com.example.demo.Repository.DislikedArticleRepository;
@@ -36,20 +32,18 @@ import com.example.demo.Repository.LikedArticleRepository;
 import com.example.demo.Repository.SourceRepo;
 import com.example.demo.model.Articles;
 import com.example.demo.model.BookmarkedArticles;
-import com.example.demo.model.Category;
 import com.example.demo.model.DislikedArticle;
 import com.example.demo.model.LikedArticle;
 import com.example.demo.model.NewsSet;
 import com.example.demo.model.UserCredential;
+import com.example.demo.model.JsonModel.CategoryJson;
 import com.example.demo.model.JsonModel.MLJson;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.ArticlesService;
+import com.example.demo.service.CategoryService;
 import com.example.demo.service.NewsService;
 import com.example.demo.service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import Enumerates.category;
 
 
 @RestController
@@ -72,6 +66,8 @@ public class NewsController {
 	DislikedArticleRepository darepo;
 	@Autowired
 	JwtUtil jwtUtil;
+	@Autowired
+	CategoryService cService;
 	
 	private List<Articles> alist = new ArrayList<>();
 	
@@ -249,6 +245,24 @@ public class NewsController {
 		}
 		System.out.println(article);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping(path="/category")
+	public List<CategoryJson> getCategories(HttpServletRequest request){
+		String email = finduser(request).getEmail();
+		HashMap<String, Boolean> map = cService.getAllCategoriesByUser(email);
+		List<CategoryJson> list = new ArrayList<>();
+		for(String s : map.keySet()) {
+			CategoryJson cj = new CategoryJson(s, map.get(s));
+			list.add(cj);
+		}
+		return list;
+	}
+	
+	@PostMapping(path="/category")
+	public ResponseEntity<Void> postCategories(HttpServletRequest request, @RequestBody List<CategoryJson> res){
+		System.out.println(res);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
 	

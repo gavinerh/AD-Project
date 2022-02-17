@@ -8,6 +8,7 @@ import AuthenticatedRoute from './components/AuthenticatedRoute';
 import Settings from './pages/Settings';
 import UserDetails from './components/UserDetails';
 import ArticleList from './components/ArticleList'
+import UpdateCategory from './components/UpdateCategory';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <AuthenticatedRoute path="/main" component={MainPage} />
           <AuthenticatedRoute path="/main/settings" component={Settings} />
           <AuthenticatedRoute path="/main/updateuser" component={UserDetails} />
+          <Route path="/main/settings/updateCategory" component={UpdateCategory} />
           <Route path='/main/ArticleList' component={ArticleList} />
 
           <Route path="*" component={PageError} />
