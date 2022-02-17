@@ -19,12 +19,12 @@ public class Category {
 	private long id;
 	private String name;
 	
-	@ManyToMany(mappedBy="cats", fetch = FetchType.EAGER)
-	private Collection<UserCredential> users;
+//	@ManyToMany(mappedBy="cats", fetch = FetchType.LAZY)
+//	private Collection<UserCredential> users;
 	
 	public Category() {
 		super();
-		users = new ArrayList<>();
+		//users = new ArrayList<>();
 	}
 
 	public Category(String name) {
@@ -48,13 +48,13 @@ public class Category {
 		this.name = name;
 	}
 
-	public Collection<UserCredential> getUsers() {
-		return users;
-	}
-
-	public void setUsers(Collection<UserCredential> users) {
-		this.users = users;
-	}
+//	public Collection<UserCredential> getUsers() {
+//		return users;
+//	}
+//
+//	public void setUsers(Collection<UserCredential> users) {
+//		this.users = users;
+//	}
 	
 	
 	

@@ -42,25 +42,26 @@ public class LikeDislikeAdapter extends ArrayAdapter<Object> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        final int rowpos = position;
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.row, parent, false);
         }
-        TextView textView = convertView.findViewById(R.id.headlineText);
-        textView.setText(lds.get(position).getTitle());
-        ImageView imageView = convertView.findViewById(R.id.imageView);
-        imageView.setImageBitmap(lds.get(position).getBitmap());
-        ImageView mShare = convertView.findViewById(R.id.share);
-        mShare.setVisibility(View.GONE);
-        TextView mTime = convertView.findViewById(R.id.dateText);
-        mTime.setVisibility(View.GONE);
-        TextView mSource = convertView.findViewById(R.id.sourceText);
-        mSource.setVisibility(View.GONE);
-        likeBtn = convertView.findViewById(R.id.like);
-        dislikeBtn = convertView.findViewById(R.id.dislike);
-        ToggleButton bm = convertView.findViewById(R.id.bookmark);
-        bm.setVisibility(View.GONE);
+        if(lds.get(position)!=null) {
+            TextView textView = convertView.findViewById(R.id.headlineText);
+            textView.setText(lds.get(position).getTitle());
+            ImageView imageView = convertView.findViewById(R.id.imageView);
+            imageView.setImageBitmap(lds.get(position).getBitmap());
+            ImageView mShare = convertView.findViewById(R.id.share);
+            mShare.setVisibility(View.GONE);
+            TextView mTime = convertView.findViewById(R.id.dateText);
+            mTime.setVisibility(View.GONE);
+            TextView mSource = convertView.findViewById(R.id.sourceText);
+            mSource.setVisibility(View.GONE);
+            likeBtn = convertView.findViewById(R.id.like);
+            dislikeBtn = convertView.findViewById(R.id.dislike);
+            ToggleButton bm = convertView.findViewById(R.id.bookmark);
+            bm.setVisibility(View.GONE);
+        }
         if (likes.contains(lds.get(position))) {
             likeBtn.setVisibility(View.VISIBLE);
             likeBtn.setChecked(true);

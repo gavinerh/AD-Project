@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ad_project_android.DataService.NewsService;
@@ -65,6 +66,7 @@ public class BookmarkPage extends AppCompatActivity {
     private ArrayList<Bookmark> dynamicbms = new ArrayList<>();
 
     BookmarkAdapter  bmadapter;
+    TextView bmtxt;
 //    ListView listView;
     List<Bookmark> bookmarks= new ArrayList<>();
     String tokenString;
@@ -98,6 +100,8 @@ public class BookmarkPage extends AppCompatActivity {
         setContentView(R.layout.activity_bookmarked);
         populateTokenString();
         getBMPreference();
+        bmtxt = findViewById(R.id.bmtxt);
+        bmtxt.setVisibility(View.GONE);
     }
     @Override
     protected void onDestroy() {
@@ -215,10 +219,14 @@ public class BookmarkPage extends AppCompatActivity {
                     }
                     Log.d("Bookmarks onCreate",""+bookmarks.size());
                     bms.addAll(bookmarks);
-                    initFilesList();
-//                    setBMadapter(dynamicBookMark);
-                    setBMadapter();
-                    populateBMAdapter();
+                    if(bms.size()>0){
+                        initFilesList();
+                        setBMadapter();
+                        populateBMAdapter();
+                    }
+                    else{
+                        bmtxt.setVisibility(View.VISIBLE);
+                    }
                 }
                 else{
                     Toast.makeText(BookmarkPage.this,"(BM) Server error, Try again later!",Toast.LENGTH_SHORT).show();

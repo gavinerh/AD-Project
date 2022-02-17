@@ -97,13 +97,12 @@ public class UserRepositoryTest {
 //		for(int i:index) {
 //			alist.add(artlist.get(i));
 //		}
-		
-		List<String> ls = new ArrayList<>();
-		Articles art = arepo.findById(3105).orElse(null);
-		String s = art.getTitle();
-		String t = art.getDescription()==null? "":art.getDescription();
-		ls.add(s+" "+t);
-		System.out.println(ls.get(0)+"HELLO");
+		category[] cat = category.values();
+		List<Category> cats = new ArrayList<>();
+		for(category c:cat) {
+			cats.add(new Category(c.name()));
+		}
+		crepo.saveAll(cats);
 		
 //		System.out.println(artlist.get(1).getTitle()+"\n"+alist.get(1).getTitle());
 //		System.out.println(alist.size()+"\t\t"+index.size());

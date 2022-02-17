@@ -36,9 +36,11 @@ public class MyNewsService extends IntentService {
     private int result = Activity.RESULT_CANCELED;
     public static final String NOTIFICATION = "com.ad_project_android.MyNewsService";
     public String tag = "Download service";
+    boolean stop;
 
     public MyNewsService() {
         super("MyNewsService");
+        stop = false;
     }
 
     @Override
@@ -52,6 +54,7 @@ public class MyNewsService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         // download images to file
         assert intent != null;
+        if(stop){stopSelf();return;}
         Bundle bundle = intent.getBundleExtra("BUNDLE");
         Bundle bundle1=intent.getBundleExtra(BookmarkPage.BOOK_MARK);
         Bundle bundle2 = intent.getBundleExtra(History.LIKE_DISLIKE);
@@ -75,6 +78,11 @@ public class MyNewsService extends IntentService {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        stop = true;
+        super.onDestroy();
+    }
 
     private void downloadImages(){
         // download images from received image url

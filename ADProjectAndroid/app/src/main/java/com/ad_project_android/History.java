@@ -14,7 +14,9 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ad_project_android.DataService.NewsService;
@@ -45,6 +47,7 @@ public class History extends AppCompatActivity {
     List<LikeDislike> lds = new ArrayList<>();
     List<LikeDislike> dynlds = new ArrayList<>();
     private ArrayList<File> listOfFiles = new ArrayList<>();
+    TextView textView;
     String tokenString;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -52,8 +55,9 @@ public class History extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             File file = (File) intent.getSerializableExtra("LDFILE");
             LikeDislike ld = (LikeDislike) intent.getSerializableExtra(LIKE_DISLIKE);
-            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-            ld.setBitmap(bitmap);
+            if(file!=null) {
+                Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                ld.setBitmap(bitmap);}
             dynlds.add(ld);
             adapter.notifyDataSetChanged();
         }
@@ -74,6 +78,8 @@ public class History extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+        textView = findViewById(R.id.txt);
+        textView.setVisibility(View.GONE);
         populateTokenString();
         getPreference();
     }
@@ -187,9 +193,11 @@ public class History extends AppCompatActivity {
                     }
                     lds.addAll(like);
                     lds.addAll(dislike);
+                    if(lds.size()>0){
                     initFilesList();
                     setadaptor();
-                    populateAdaptor();
+                    populateAdaptor();}
+                    else{textView.setVisibility(View.VISIBLE);}
                 }
                 else{
                     Toast.makeText(History.this,"Server error, Try again later!",Toast.LENGTH_SHORT).show();

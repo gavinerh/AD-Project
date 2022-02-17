@@ -1,5 +1,9 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +21,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.Repository.CategoryRepo;
+import com.example.demo.model.Category;
 import com.example.demo.model.UserCredential;
 import com.example.demo.security.AuthenticationResponse;
 import com.example.demo.security.CustomUserDetailsService;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @CrossOrigin()
@@ -36,6 +44,8 @@ public class AccountController {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	
+	@Autowired
+	CategoryRepo crepo;
 	
 	@Autowired
 	private JwtUtil jwtUtil;
@@ -56,10 +66,17 @@ public class AccountController {
 	}
 	
 	@PostMapping(value="/register")
-	public ResponseEntity<?> register(@RequestBody UserCredential user){
+	public ResponseEntity<?> register(@RequestBody Map regist){
+		ObjectMapper map = new ObjectMapper();
+		UserCredential user = map.convertValue(regist.get("user"), UserCredential.class);
+		List<String> ca = map.convertValue(regist.get("categories"), new TypeReference<List<String>>() {});
+		List<Category> cats = new ArrayList<>();
+		ca.stream().forEach(x-> cats.add(crepo.findByName(x)));
+		
 		if(uService.findUserByEmail(user.getEmail()) == null) {
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 			user.setPassword(encoder.encode(user.getPassword()));
+			user.setCats(cats);
 			uService.save(user);
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		}

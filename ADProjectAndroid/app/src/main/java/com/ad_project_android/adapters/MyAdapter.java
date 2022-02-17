@@ -67,9 +67,9 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
             // then attachToRoot should be 'false' (which is in our case)
             view = inflater.inflate(R.layout.row, parent, false);
         }
-        if (myitems.size() == 0) {
-            return view;
-        }
+//        if (myitems.size() == 0) {
+//            return view;
+//        }
 
         CardView mCardView = view.findViewById(R.id.card_view);
         mCardView.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +88,8 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
         // set the image for ImageView
         ImageView imageView = view.findViewById(R.id.imageView);
         imageView.setImageResource(R.drawable.ic_baseline_image_24);
-        setImageBitmap(files.get(pos), imageView, myitems.get(pos));
+        Bitmap bitmap = myitems.get(pos).getBitmap();
+        if(bitmap!=null) imageView.setImageBitmap(bitmap);
         // set headline
         TextView textView = view.findViewById(R.id.headlineText);
         textView.setText(myitems.get(pos).getTitle());
@@ -206,14 +207,6 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
     @Override
     public int getCount() {
         return myitems.size();
-    }
-
-    private void setImageBitmap(File f, ImageView imgView, NewsObject newsObject) {
-        Bitmap bitmap = null;
-        if (newsObject.getBitmap() != null) {
-            bitmap = newsObject.getBitmap();
-        }
-        imgView.setImageBitmap(bitmap);
     }
 
     @Override

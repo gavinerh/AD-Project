@@ -36,7 +36,7 @@ public class Scheduler {
 	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("h:mm:ss a");
 	
 	//// RETRIEVE ARTICLES FROM API/////
-	@Scheduled(cron = "00 20 09 * * ?")
+	@Scheduled(cron = "50 31 01 * * ?")
 	public void scheduleTaskUsingCronExpression() {
 		
 	    System.out.println(
@@ -67,7 +67,7 @@ public class Scheduler {
 	
 	/////DELETE OLD ARTICLES////
 	
-	@Scheduled(cron = "30 18 09 * * ?")
+	@Scheduled(cron = "00 31 01 * * ?")
 	public void scheduleTaskToDeleteOldArticles() {
 		
 	    System.out.println(

@@ -44,6 +44,10 @@ import com.example.demo.service.CategoryService;
 import com.example.demo.service.NewsService;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+//<<<<<<< Updated upstream
+//=======
+//import Enumerates.category;
+//>>>>>>> Stashed changes
 
 
 @RestController
@@ -142,11 +146,11 @@ public class NewsController {
 		List<DislikedArticle> dislikes = darepo.findByUser(user);
 		List<BookmarkedArticles> bms = bmrepo.findByUser(user);
 		
-		if(likes.size()>100 || dislikes.size()>100) {android = mlfunction(likes,dislikes);}
+		if(likes.size()>1 || dislikes.size()>0) {android = mlfunction(likes,dislikes);}
 		
 		else {
 			if(alist.size()>50) {
-		for(int i = 0; i<50; i++) {
+		for(int i = 0; i<100; i++) {
 			android.add(alist.get(i));}}
 			else {android = alist;}
 		}
@@ -312,7 +316,6 @@ public class NewsController {
 	          InputStream is = conn.getInputStream();
 	          MLJson result = mapper.readValue(is, MLJson.class);
 	         
-	          System.out.println(result.getResult());
 	          System.out.println(result.getResult().size());
 	          //disconnect from url connection
 	          conn.disconnect();

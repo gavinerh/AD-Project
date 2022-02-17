@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,7 +16,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
-import android.text.BoringLayout;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
     private Boolean[] dislikeonoff;
     private Boolean[] bookmarkonoff;
     private static String tokenString = null;
+    SwipeRefreshLayout srl;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -88,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         setContentView(R.layout.activity_main);
         populateTokenString();
         retrieveInfoFromServer();
-        Log.d("News Oncreate","hi");
+        swipeLayout();
     }
 
     @Override
@@ -102,13 +104,6 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         newsObjects.clear();
         dynamicNewsObject.clear();
         super.onDestroy();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-//        retrieveInfoFromServer();
-//        registerReceiver(receiver, new IntentFilter(MyNewsService.NOTIFICATION));
     }
 
     @Override
@@ -357,6 +352,35 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
             Toast.makeText(MainActivity.this, "Please register to save preferences", Toast.LENGTH_SHORT).show();
         }
         return email;
+    }
+    private void swipeLayout() {
+        srl = findViewById(R.id.swipe_container);
+        // Adding Listener
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code here
+                stopService(new Intent(getApplicationContext(), MyNewsService.class));
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        newsObjects.clear();
+                        dynamicNewsObject.clear();
+                        adapter.clear();
+                        retrieveInfoFromServer();
+                    }
+                }, 1000);
+                Toast.makeText(getApplicationContext(), "Retrieving News from the Server", Toast.LENGTH_LONG).show();
+                // To keep animation for 4 seconds
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        srl.setRefreshing(false);
+                    }
+                }, 10000); // Delay in millis
+            }
+        });
+
     }
 
 }
