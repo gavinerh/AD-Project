@@ -146,7 +146,7 @@ public class NewsController {
 		List<DislikedArticle> dislikes = darepo.findByUser(user);
 		List<BookmarkedArticles> bms = bmrepo.findByUser(user);
 		
-		if(likes.size()>1 || dislikes.size()>0) {android = mlfunction(likes,dislikes);}
+		if(likes.size()>10 || dislikes.size()>10) {android = mlfunction(likes,dislikes);}
 		
 		else {
 			if(alist.size()>50) {

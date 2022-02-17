@@ -11,7 +11,7 @@ import com.example.demo.model.Category;
 
 @Repository
 public interface CategoryRepo extends JpaRepository<Category, Long> {
-	@Query("SELECT c FROM Category c join c.users u WHERE u.email = :email")
-	List<Category> getAllCategoriesByUser(@Param("email") String email);
+//	@Query("SELECT c FROM Category c join c.users u WHERE u.email = :email")
+//	List<Category> getAllCategoriesByUser(@Param("email") String email);
 	public Category findByName(String name);
 }
