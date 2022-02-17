@@ -331,10 +331,10 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         // 1. Instantiate an Builder with its constructor
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 // 2. Chain together various setter methods to set the dialog characteristics
-        builder.setTitle("LogOut!")
-                .setMessage("Do you want to logOut?");
+        builder.setTitle("Log out")
+                .setMessage("Do you want to log out?");
         // Add the buttons
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
                 logout();

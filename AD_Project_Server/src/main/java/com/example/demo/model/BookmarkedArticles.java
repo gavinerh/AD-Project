@@ -24,26 +24,17 @@ public class BookmarkedArticles {
 	@Column(length=512)
 	private String title;
 	@Column(length=1000)
-	private String urlToImage;
+	private String imageurl;
 	@Column(length=512)
 	private String url;
 	
 	@ManyToOne
-//	@JoinColumns({
-//		@JoinColumn(name="user_email", referencedColumnName="EMAIL")	
-//	})
 	private UserCredential user;
-//	
-//	private String userEmail;
-//	public BookmarkedArticles(String title, String url, String userEmail) {
-//		this.title=title;
-//		this.url=url;
-//		this.userEmail=userEmail;
-//	}
-	public BookmarkedArticles(String title, String url,String urlimg, UserCredential user) {
+
+	public BookmarkedArticles(String title, String url,String imageurl, UserCredential user) {
 		this.title=title;
 		this.url=url;
 		this.user=user;
-		this.urlToImage=urlimg;
+		this.imageurl=imageurl;
 	}
 }
