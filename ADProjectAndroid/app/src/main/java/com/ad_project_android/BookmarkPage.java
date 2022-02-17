@@ -1,6 +1,5 @@
 package com.ad_project_android;
 
-//<<<<<<< Updated upstream
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -58,25 +57,41 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-//<<<<<<< Updated upstream
 //BookmarkPage Page
 public class BookmarkPage extends AppCompatActivity {
-    public static final String BOOKMARK = "BOOKMARK";
-    BookmarkAdapter bmadapter;
-    ListView listView;
+    public static final String BOOK_MARK = "BOOKMARK";
+    private ArrayList<File> listOfBMFiles = new ArrayList<>();
+    private List<Bookmark> bms = new ArrayList<>();
+    private ArrayList<Bookmark> dynamicbms = new ArrayList<>();
+
+    BookmarkAdapter  bmadapter;
+//    ListView listView;
     List<Bookmark> bookmarks= new ArrayList<>();
     String tokenString;
-    private ArrayList<File> listOfFiles = new ArrayList<>();
+
+    private BroadcastReceiver bmreceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            File bmfile = (File) intent.getSerializableExtra("BMFILE");
+            Bookmark bm = (Bookmark) intent.getSerializableExtra(BOOK_MARK);
+            Bitmap bitmap = BitmapFactory.decodeFile(bmfile.getAbsolutePath());
+            bm.setBitmap(bitmap);
+            dynamicbms.add(bm);
+            bmadapter.notifyDataSetChanged();
+        }
+    };
     @Override
     protected void onResume() {
         super.onResume();
+        registerReceiver(bmreceiver, new IntentFilter(MyNewsService.NOTIFICATION));
+        Log.d("Bookmarks onResume",""+bookmarks.size());
     }
-
     @Override
     protected void onPause() {
         super.onPause();
+        unregisterReceiver(bmreceiver);
+        Log.d("Bookmarks onPause",""+bookmarks.size());
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +111,7 @@ public class BookmarkPage extends AppCompatActivity {
         NewsService newsService = getNewsServiceInstance();
         NewsObject newsObject = new NewsObject();
         newsObject.setTitle(bkmark.getTitle());
-        Log.d("News Articles:",""+bookmarks.size());
+
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
         String zt = ZonedDateTime.now().format(dateTimeFormatter);
         newsObject.setPublishedAt(zt);
@@ -112,9 +127,9 @@ public class BookmarkPage extends AppCompatActivity {
                 if(response.code() == 200){
                     Toast.makeText(BookmarkPage.this,
                             "(BM) Preference is registered", Toast.LENGTH_SHORT).show();
-                    List <Bookmark> bms = bmadapter.getBookmarks();
+                    List <Bookmark> bms = bmadapter.getBms();
                     bms.remove(bkmark);
-                    bmadapter.setBookmarks(bms);
+                    bmadapter.setBms(bms);
                     bmadapter.notifyDataSetChanged();
                 }
                 else{
@@ -132,20 +147,6 @@ public class BookmarkPage extends AppCompatActivity {
         });
     }
 
-
-//=======
-//public class BookmarkPage extends AppCompatActivity {
-//    String tokenString;
-//    List<Bookmark> bookmarks = new ArrayList<>();
-//    BookmarkAdapter adapter;
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_bookmark);
-//        populateTokenString();
-//        getPreference();
-//    }
-//>>>>>>> Stashed changes
     private void populateTokenString(){
         SharedPreferences pref = getSharedPreferences(LoginActivity.USER_CREDENTIAL, MODE_PRIVATE);
         tokenString = pref.getString("token", null);
@@ -154,7 +155,6 @@ public class BookmarkPage extends AppCompatActivity {
             return;
         }
     }
-//<<<<<<< Updated upstream
     //condition in case of login error
     private String checkEmail(){
         SharedPreferences pref = getSharedPreferences(LoginActivity.USER_CREDENTIAL, MODE_PRIVATE);
@@ -166,9 +166,7 @@ public class BookmarkPage extends AppCompatActivity {
         }
         return email;
     }
-    //build page linking to server
-//=======
-//>>>>>>> Stashed changes
+
     private NewsService getNewsServiceInstance() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8080/")
@@ -176,7 +174,6 @@ public class BookmarkPage extends AppCompatActivity {
                 .build();
         return retrofit.create(NewsService.class);
     }
-//<<<<<<< Updated upstream
     //popup message for confirmation of actions on page
     public void setbmDialog(Bookmark l, int preference) {
         // 1. Instantiate an Builder with its constructor
@@ -217,50 +214,65 @@ public class BookmarkPage extends AppCompatActivity {
                         });
                     }
                     Log.d("Bookmarks onCreate",""+bookmarks.size());
-
-                    setbmadapter();
-
+                    bms.addAll(bookmarks);
+                    initFilesList();
+//                    setBMadapter(dynamicBookMark);
+                    setBMadapter();
+                    populateBMAdapter();
                 }
                 else{
                     Toast.makeText(BookmarkPage.this,"(BM) Server error, Try again later!",Toast.LENGTH_SHORT).show();
-//=======
-//    private void getPreference(){
-//        NewsService newsService = getNewsServiceInstance();
-//
-//        Call<List<Bookmark>> call = newsService.getBookmark(tokenString);
-//        call.enqueue(new Callback<List<Bookmark>>() {
-//            @Override
-//            public void onResponse(Call<List<Bookmark>> call, Response<List<Bookmark>> response) {
-//                if(response.code() == 200){
-//                    bookmarks=response.body();
-//                    setadaptor();
-//                }
-//                else{
-//                    Toast.makeText(BookmarkPage.this,"Server error, Try again later!",Toast.LENGTH_SHORT).show();
-//>>>>>>> Stashed changes
                 }
             }
 
             @Override
-//<<<<<<< Updated upstream
             public void onFailure(Call call, Throwable t) {
                 Toast.makeText(BookmarkPage.this,"(BM) Server error, Try again later!",Toast.LENGTH_SHORT).show();
             }
         });
     }
     //set page using bookmark adapter
-    private void setbmadapter(){
-        listView = findViewById(R.id.listView);
+    private void setBMadapter() {
+//      private void setBMadapter(List<Bookmark> bookMarks) {
+        ListView listView = findViewById(R.id.listView);
         if (listView != null) {
             bmadapter = new BookmarkAdapter(
                     this, bookmarks,this);
+//            listOfBMFiles
+            bmadapter.setBms(dynamicbms);
             listView.setAdapter(bmadapter);
         }
     }
+
     public void launchwebview(String url){
         Intent intent = new Intent(this, WebViewActivity.class);
         intent.putExtra(MainActivity.EXTERNAL_URL, url);
         startActivity(intent);
+    }
+    private void populateBMAdapter(){
+        for(int i=0; i<bms.size(); i++){
+            startService(bms.get(i), listOfBMFiles.get(i));
+        }
+    }
+    private void startService(Bookmark bookMark, File bmfile){
+        Intent intent = new Intent(getApplicationContext(), MyNewsService.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(BOOK_MARK, bookMark);
+        bundle.putSerializable("BMFILE", bmfile);
+        intent.putExtra(BOOK_MARK, bundle);
+        startService(intent);
+    }
+    private void initFilesList(){
+        for(int i=0; i<bms.size(); i++){
+            String filename = "bm_image";
+            filename += String.format("%s", i);
+            File f = initFile(filename);
+            listOfBMFiles.add(f);
+        }
+    }
+    private File initFile(String filename){
+        File f = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        return new File(f, filename);
     }
 
 }
