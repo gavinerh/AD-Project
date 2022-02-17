@@ -9,8 +9,18 @@
     <!--    register screen-->
     <string name="name">Name</string>
     <string name="confirmPassword">Confirm password</string>
-    <string name="welcome">Welcome to NEWSBOOK</string>
-    <string name="select">Please select your preferred Categories</string>
+    <!--    news preferences screen-->
+    <string name="newspreferencesTitle">News Preferences</string>
+    <string name="subtitle">Select your preferred categories</string>
+    <string name="select">Minimum 2 categories</string>
+    <string name="business">Business</string>
+    <string name="entertainment">Entertainment</string>
+    <string name="general">General</string>
+    <string name="health">Health</string>
+    <string name="science">Science</string>
+    <string name="sports">Sports</string>
+    <string name="tech">Technology</string>
+    <string name="submit">Submit</string>
     <!--    main NEWS screen-->
     <string name="bullet">•</string>
     <!--    bookmark screen-->
