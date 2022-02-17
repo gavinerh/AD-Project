@@ -13,5 +13,9 @@
     <string name="confirmPassword">Confirm password</string>
     <!--    main NEWS screen-->
     <string name="bullet">•</string>
+    <!--    bookmark screen-->
+    <string name="bookmark">Bookmarks</string>
+    <!--    like/dislike screen-->
+    <string name="likedisliketitle">like/dislike History</string>
 
 </resources>
