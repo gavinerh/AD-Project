@@ -48,6 +48,7 @@ public class History extends AppCompatActivity {
     List<LikeDislike> dynlds = new ArrayList<>();
     private ArrayList<File> listOfFiles = new ArrayList<>();
     TextView textView;
+    TextView ldtitle;
     String tokenString;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -58,8 +59,9 @@ public class History extends AppCompatActivity {
             if(file!=null) {
                 Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
                 ld.setBitmap(bitmap);}
+            if(ld!=null){
             dynlds.add(ld);
-            adapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();}
         }
     };
     @Override
@@ -80,6 +82,7 @@ public class History extends AppCompatActivity {
         setContentView(R.layout.activity_history);
         textView = findViewById(R.id.txt);
         textView.setVisibility(View.GONE);
+        ldtitle = findViewById(R.id.likedislikeTitle);
         populateTokenString();
         getPreference();
     }
@@ -197,7 +200,9 @@ public class History extends AppCompatActivity {
                     initFilesList();
                     setadaptor();
                     populateAdaptor();}
-                    else{textView.setVisibility(View.VISIBLE);}
+                    else{   textView.setVisibility(View.VISIBLE);
+                            ldtitle.setVisibility(View.INVISIBLE);
+                    }
                 }
                 else{
                     Toast.makeText(History.this,"Server error, Try again later!",Toast.LENGTH_SHORT).show();

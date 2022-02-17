@@ -39,6 +39,9 @@
             android:name=".ViewSettings"
             android:exported="false" />
         <activity
+            android:name=".BookmarkPage"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>

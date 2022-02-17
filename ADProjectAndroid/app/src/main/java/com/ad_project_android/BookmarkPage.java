@@ -67,8 +67,6 @@ public class BookmarkPage extends AppCompatActivity {
 
     BookmarkAdapter  bmadapter;
     TextView bmtxt;
-//    ListView listView;
-    List<Bookmark> bookmarks= new ArrayList<>();
     String tokenString;
 
     private BroadcastReceiver bmreceiver = new BroadcastReceiver() {
@@ -76,36 +74,38 @@ public class BookmarkPage extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             File bmfile = (File) intent.getSerializableExtra("BMFILE");
             Bookmark bm = (Bookmark) intent.getSerializableExtra(BOOK_MARK);
+            if(bmfile!=null){
             Bitmap bitmap = BitmapFactory.decodeFile(bmfile.getAbsolutePath());
-            bm.setBitmap(bitmap);
+            bm.setBitmap(bitmap);}
+            if(bm!=null){
             dynamicbms.add(bm);
-            bmadapter.notifyDataSetChanged();
+            bmadapter.notifyDataSetChanged();}
         }
     };
     @Override
     protected void onResume() {
         super.onResume();
         registerReceiver(bmreceiver, new IntentFilter(MyNewsService.NOTIFICATION));
-        Log.d("Bookmarks onResume",""+bookmarks.size());
+        Log.d("Bookmarks onResume",""+bms.size());
     }
     @Override
     protected void onPause() {
         super.onPause();
         unregisterReceiver(bmreceiver);
-        Log.d("Bookmarks onPause",""+bookmarks.size());
+        Log.d("Bookmarks onPause",""+bms.size());
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookmarked);
-        populateTokenString();
-        getBMPreference();
         bmtxt = findViewById(R.id.bmtxt);
         bmtxt.setVisibility(View.GONE);
+        populateTokenString();
+        getBMPreference();
     }
     @Override
     protected void onDestroy() {
-        bookmarks.clear();
+        bms.clear();
         super.onDestroy();
 
     }
@@ -214,11 +214,10 @@ public class BookmarkPage extends AppCompatActivity {
                         bm.stream().forEach(x->{
                             Bookmark b = new Gson().fromJson
                                     (new Gson().toJson(x), Bookmark.class);
-                            bookmarks.add(b);
+                            bms.add(b);
                         });
                     }
-                    Log.d("Bookmarks onCreate",""+bookmarks.size());
-                    bms.addAll(bookmarks);
+                    Log.d("Bookmarks onCreate",""+bms.size());
                     if(bms.size()>0){
                         initFilesList();
                         setBMadapter();
@@ -226,6 +225,8 @@ public class BookmarkPage extends AppCompatActivity {
                     }
                     else{
                         bmtxt.setVisibility(View.VISIBLE);
+                        TextView bmtitle = findViewById(R.id.bookmarkTitle);
+                        bmtitle.setVisibility(View.INVISIBLE);
                     }
                 }
                 else{
@@ -245,9 +246,7 @@ public class BookmarkPage extends AppCompatActivity {
         ListView listView = findViewById(R.id.listView);
         if (listView != null) {
             bmadapter = new BookmarkAdapter(
-                    this, bookmarks,this);
-//            listOfBMFiles
-            bmadapter.setBms(dynamicbms);
+                    this, dynamicbms,this);
             listView.setAdapter(bmadapter);
         }
     }

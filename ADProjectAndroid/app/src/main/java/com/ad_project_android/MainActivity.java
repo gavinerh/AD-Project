@@ -369,7 +369,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
                         adapter.clear();
                         retrieveInfoFromServer();
                     }
-                }, 1000);
+                }, 1500);
                 Toast.makeText(getApplicationContext(), "Retrieving News from the Server", Toast.LENGTH_LONG).show();
                 // To keep animation for 4 seconds
                 new Handler().postDelayed(new Runnable() {
