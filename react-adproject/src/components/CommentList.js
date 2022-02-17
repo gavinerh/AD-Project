@@ -11,6 +11,10 @@ export default class CommentList extends Component {
 
     constructor(props) {
         super(props);
+        var symbol = AuthenticationService.getUserEmail();
+        var pos = symbol.indexOf("@");
+        var usernow = symbol.substring(0, pos);
+
         this.hidecomment = this.hidecomment.bind(this);
         this.retrievecomment = this.retrievecomment.bind(this);
         this.inputChangeHandler = this.inputChangeHandler.bind(this);
@@ -21,7 +25,8 @@ export default class CommentList extends Component {
             isLoading: true,
             errors: null,
             title: this.props.title,
-            newComment: ''
+            newComment: '',
+            usernow:usernow,
         };
     }
 
@@ -46,7 +51,8 @@ export default class CommentList extends Component {
                 this.setState({
                     comment: response.data,
                     newComment: '',
-                    username: ""
+                    username: "",
+                    
                 })
                 this.retrievecomment();
             });
@@ -141,7 +147,7 @@ export default class CommentList extends Component {
                                             </svg>
 
                                             {c.username}   :   {c.commentcontent}
-                                            <button className="delete" onClick={() => this.deletecomment(c.commentcontent,c.commenttime,c.username)}>delete</button>
+                                            <button className="delete"  style={{ display:this.state.usernow==c.username? "block":"none" }} onClick={() => this.deletecomment(c.commentcontent,c.commenttime,c.username)}>delete</button>
                                             <div className="commenttime">{c.commenttime}</div>
                                             
                                             
