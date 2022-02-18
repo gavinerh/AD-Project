@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -32,6 +33,7 @@ import com.example.demo.Repository.LikedArticleRepository;
 import com.example.demo.Repository.SourceRepo;
 import com.example.demo.model.Articles;
 import com.example.demo.model.BookmarkedArticles;
+import com.example.demo.model.Category;
 import com.example.demo.model.DislikedArticle;
 import com.example.demo.model.LikedArticle;
 import com.example.demo.model.NewsSet;
@@ -76,21 +78,46 @@ public class NewsController {
 	private List<Articles> alist = new ArrayList<>();
 	
 	//For WEB TEMPORARY
-	@RequestMapping(value="/")
-	public List<Articles> HomePage() {
-		NewsSet ns = NewsService.getNewsHome("technology", null, null);
-		List<Articles> alist = aService.findAll();//ns.getArticles();
-//		for(Articles art:alist) {
-//			//check if articles exist in  DB
-//			if(aService.findExistngArticle(art.getTitle(), art.getDescription())==null) {
-//				srepo.save(art.getSource()); //save sources to DB
-//				aService.save(art); //save articles to DB
-//			}
-//		}
-		System.out.println("News Articles "+alist.size());
-		return alist;
-	}
+//	@RequestMapping(value="/")
+//	public List<Articles> HomePage() {
+//		NewsSet ns = NewsService.getNewsHome("technology", null, null);
+//		List<Articles> alist = aService.findAll();//ns.getArticles();
+////		for(Articles art:alist) {
+////			//check if articles exist in  DB
+////			if(aService.findExistngArticle(art.getTitle(), art.getDescription())==null) {
+////				srepo.save(art.getSource()); //save sources to DB
+////				aService.save(art); //save articles to DB
+////			}
+////		}
+//		System.out.println("News Articles "+alist.size());
+//		return alist;
+//	}
+//	
 	
+	 @RequestMapping(value = "/") 
+	  public List<Articles> HomePage(HttpServletRequest request) {
+		 // NewsSet ns =NewsService.getNewsHome("technology", null, null);
+		  UserCredential user = finduser(request);
+		  List<Articles> alist=aService
+				  .findAll()
+				  .stream()
+				  .filter(article -> user.getCats().contains(article.getCategory()))
+				  .collect(Collectors.toList()); 
+//		  for (Articles art : alist) { 
+//			  if( user.getCats().contains(art.getCategory())) { 
+//				  // check if articles exist in DB 
+//				  if (aService.findExistngArticle(
+//						  art.getTitle(), art.getDescription()) == null) {
+//					  srepo.save(art.getSource());
+//					  aService.save(art);
+//					  // save sources
+//				  }
+//			  }
+//			  System.out.println("News Articles " + alist.size());
+//	  
+//		  } 
+		  return alist; 
+	  }
 	//search using NEWSAPI
 	@GetMapping(value= {"/kw/updateKeyword"})
 	public List<Articles> displayPage(@RequestParam Map<String,String> requestParams) {
@@ -263,13 +290,33 @@ public class NewsController {
 		return list;
 	}
 	
-	@PostMapping(path="/category")
-	public ResponseEntity<Void> postCategories(HttpServletRequest request, @RequestBody List<CategoryJson> res){
+//	@PostMapping(path="/category")
+//	public ResponseEntity<Void> postCategories(HttpServletRequest request, @RequestBody List<CategoryJson> res){
+//		System.out.println(res);
+//		return new ResponseEntity<Void>(HttpStatus.OK);
+//	}
+	
+	@PostMapping(path = "/category")
+	public ResponseEntity<Void> postCategories(HttpServletRequest request, @RequestBody List<CategoryJson> res) {
 		System.out.println(res);
+		UserCredential user = finduser(request);
+		for (CategoryJson a : res) {
+			Category category = cService.finCategoryByName(a.getName());
+			if (a.isChecked() == true && !user.getCats().contains(category)) {
+
+				user.getCats().add(category);
+			} else if (a.isChecked() == false && user.getCats().contains(category)) {
+				user.getCats().remove(category);
+			}
+		}
+		uService.save(user);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
-	
-	
+
+	@GetMapping(path = "/admin/category")
+	public List<Category> getAdmincategory() {
+		return cService.getAllCategories();
+	}
 /////////////////////////////Private Methods///////////////////////////////////////
 
 	private List<Articles> mlfunction(List<LikedArticle> llist, List<DislikedArticle> dlist) {

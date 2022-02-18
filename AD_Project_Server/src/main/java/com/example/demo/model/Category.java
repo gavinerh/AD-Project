@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.example.demo.model.dto.CategoryDto;
+
 @Entity
 public class Category {
 	@Id
@@ -55,7 +57,13 @@ public class Category {
 //	public void setUsers(Collection<UserCredential> users) {
 //		this.users = users;
 //	}
+	public CategoryDto toDto() {
+		return new CategoryDto(this.id, this.name, false);
+	}
 	
+	public static Category fromDto(CategoryDto dto) {
+		return new Category(dto.getName());
+	}
 	
 	
 }

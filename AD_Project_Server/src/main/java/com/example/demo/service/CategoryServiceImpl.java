@@ -53,5 +53,9 @@ public class CategoryServiceImpl implements CategoryService {
 	public List<Category> getAllCategories() {
 		return cRepo.findAll();
 	}
+	@Override
+	public Category finCategoryByName(String name) {
+		return cRepo.finCategoryByName(name);
+	}
 
 }

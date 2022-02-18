@@ -42,7 +42,8 @@ public class Articles {
 	private String content;
 	@OneToMany(fetch=FetchType.EAGER)
 	private List<Comment> comments;	
-	
+	@ManyToOne(fetch=FetchType.EAGER)
+	private Category category;
 	
 	public String getPrettytime() {
 		Instant dateTime = Instant.parse(publishedAt);

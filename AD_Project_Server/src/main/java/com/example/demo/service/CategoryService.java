@@ -9,4 +9,5 @@ public interface CategoryService {
 	void save(Category c);
 	HashMap<String, Boolean> getAllCategoriesByUser(String email);
 	List<Category> getAllCategories();
+	Category finCategoryByName(String name);
 }

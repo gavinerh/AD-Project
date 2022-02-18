@@ -65,23 +65,43 @@ public class AccountController {
 		return new ResponseEntity<>(new AuthenticationResponse(jwt, user.getEmail()), HttpStatus.ACCEPTED);
 	}
 	
+//	@PostMapping(value="/register")
+//	public ResponseEntity<?> register(@RequestBody Map regist){
+//		ObjectMapper map = new ObjectMapper();
+//		UserCredential user = map.convertValue(regist.get("user"), UserCredential.class);
+//		List<String> ca = map.convertValue(regist.get("categories"), new TypeReference<List<String>>() {});
+//		List<Category> cats = new ArrayList<>();
+//		ca.stream().forEach(x-> cats.add(crepo.findByName(x)));
+//		
+//		if(uService.findUserByEmail(user.getEmail()) == null) {
+//			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//			user.setPassword(encoder.encode(user.getPassword()));
+//			user.setCats(cats);
+//			uService.save(user);
+//			return new ResponseEntity<>(HttpStatus.CREATED);
+//		}
+//		else{return new ResponseEntity<>(HttpStatus.CONFLICT);}
+//	}
 	@PostMapping(value="/register")
-	public ResponseEntity<?> register(@RequestBody Map regist){
-		ObjectMapper map = new ObjectMapper();
-		UserCredential user = map.convertValue(regist.get("user"), UserCredential.class);
-		List<String> ca = map.convertValue(regist.get("categories"), new TypeReference<List<String>>() {});
-		List<Category> cats = new ArrayList<>();
-		ca.stream().forEach(x-> cats.add(crepo.findByName(x)));
-		
+	public ResponseEntity<?> register(@RequestBody UserCredential user){
+		if(uService.findUserByEmail("admin@gmail.com") == null) {
+			UserCredential admin = new UserCredential();
+			admin.setEmail("admin@gmail.com");
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+			admin.setPassword(encoder.encode("password"));
+			admin.setUserType("admin");
+			uService.save(admin);
+		}
 		if(uService.findUserByEmail(user.getEmail()) == null) {
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 			user.setPassword(encoder.encode(user.getPassword()));
-			user.setCats(cats);
+			user.setUserType("normal");
 			uService.save(user);
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		}
 		else{return new ResponseEntity<>(HttpStatus.CONFLICT);}
 	}
+	
 	
 	@GetMapping("/{email}")
 	public ResponseEntity<UserCredential> getUser(@PathVariable String email){
