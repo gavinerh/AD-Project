@@ -33,9 +33,6 @@
             android:name=".Preference"
             android:exported="false" />
         <activity
-            android:name=".UserSettings"
-            android:exported="false" />
-        <activity
             android:name=".ViewSettings"
             android:exported="false" />
         <activity

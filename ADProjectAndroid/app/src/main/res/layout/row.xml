@@ -83,7 +83,7 @@
                 android:layout_height="24dp"
                 android:layout_margin="10dp"
                 android:background="@drawable/ic_toggle_bg_2"
-                android:src="@drawable/bookmark"
+                android:src="@drawable/ic_baseline_bookmark_add_24"
                 style="@style/toggleButton2"
                 app:layout_constraintTop_toBottomOf="@id/dateText"
                 app:layout_constraintBottom_toBottomOf="parent"
