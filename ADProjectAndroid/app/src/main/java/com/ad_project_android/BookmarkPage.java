@@ -250,6 +250,7 @@ public class BookmarkPage extends AppCompatActivity {
         if (listView != null) {
             bmadapter = new BookmarkAdapter(
                     this, dynamicbms,this);
+            bmadapter.setBms(dynamicbms);
             listView.setAdapter(bmadapter);
         }
     }
