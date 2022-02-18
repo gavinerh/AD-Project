@@ -48,7 +48,13 @@ public class LikeDislikeAdapter extends ArrayAdapter<Object> {
         }
         if(lds.get(position)!=null) {
             TextView textView = convertView.findViewById(R.id.headlineText);
-            textView.setText(lds.get(position).getTitle());
+            //truncate
+            String title = lds.get(position).getTitle();
+            if(title.length()<80) {textView.setText(title);}
+            else {
+                title=title.substring(0,80);
+                textView.setText(title+"...");
+            }
             ImageView imageView = convertView.findViewById(R.id.imageView);
             imageView.setImageBitmap(lds.get(position).getBitmap());
             ImageView mShare = convertView.findViewById(R.id.share);

@@ -64,7 +64,13 @@ public class BookmarkAdapter extends ArrayAdapter<Object> {
         }
 
         TextView textView = convertView.findViewById(R.id.headlineText);
-        textView.setText(bms.get(position).getTitle());
+        //truncate
+        String title = bms.get(position).getTitle();
+        if(title.length()<80) {textView.setText(title);}
+        else {
+            title=title.substring(0,80);
+            textView.setText(title+"...");
+        }
 
         ImageView img = convertView.findViewById(R.id.imageView);
         img.setImageBitmap(bms.get(position).getBitmap());

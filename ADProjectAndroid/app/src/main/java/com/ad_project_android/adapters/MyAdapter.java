@@ -92,7 +92,13 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
         if(bitmap!=null) imageView.setImageBitmap(bitmap);
         // set headline
         TextView textView = view.findViewById(R.id.headlineText);
-        textView.setText(myitems.get(pos).getTitle());
+        //truncate
+        String title = myitems.get(pos).getTitle();
+        if(title.length()<80) {textView.setText(title);}
+        else {
+            title=title.substring(0,80);
+            textView.setText(title+"...");
+        }
         //set news source
         TextView mSource = view.findViewById(R.id.sourceText);
         mSource.setText(myitems.get(pos).getSource().getName());
