@@ -217,6 +217,9 @@ public class History extends AppCompatActivity {
     }
     private void setadaptor(){
         ListView listView = findViewById(R.id.listView);
+        //set empty page msg
+        TextView emptyView = findViewById(R.id.hist_blankMsg);
+        listView.setEmptyView(emptyView);
         if (listView != null) {
             adapter = new LikeDislikeAdapter(this,like,dislike,this);
             adapter.setLds(dynlds);

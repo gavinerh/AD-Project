@@ -244,6 +244,9 @@ public class BookmarkPage extends AppCompatActivity {
     private void setBMadapter() {
 //      private void setBMadapter(List<Bookmark> bookMarks) {
         ListView listView = findViewById(R.id.listView);
+        //set empty page msg
+        TextView emptyView = findViewById(R.id.bm_blankMsg);
+        listView.setEmptyView(emptyView);
         if (listView != null) {
             bmadapter = new BookmarkAdapter(
                     this, dynamicbms,this);

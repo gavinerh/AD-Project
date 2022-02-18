@@ -6,20 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".BookmarkPage">
 
-    <TextView
-        android:id="@+id/bookmarkTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:padding="10dp"
-        android:fontFamily="@font/zenkurenaido"
-        android:text="@string/bookmark"
-        android:textAllCaps="true"
-        android:textSize="30sp"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ListView
         android:id="@+id/listView"
         android:layout_height="0dp"
@@ -28,23 +14,17 @@
         android:dividerHeight="0dp"
         android:layout_margin="5dp"
         android:paddingBottom="5dp"
-        app:layout_constraintTop_toBottomOf="@id/bookmarkTitle"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
-    <TextView
-        android:id="@+id/bmtxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Your BookMark History is empty"
-        android:fontFamily="@font/zenkurenaido"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/listView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+        android:id="@+id/bm_blankMsg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="35sp"
+        android:gravity="center"
+        android:text="Bookmark List is empty"
+        android:visibility="gone"
+         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
