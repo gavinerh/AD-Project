@@ -88,8 +88,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         if(toast!=null)toast.cancel();
+        super.onDestroy();
     }
 
     private void startMainActivity(){
