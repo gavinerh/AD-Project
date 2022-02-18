@@ -13,8 +13,8 @@ function Settings() {
     return (
         <div>
             <h1>You have reached settings page</h1>
-            <button><Link to="/main/settings/updateCategory" onClick={updateCategoryHandler}>Set News Category</Link></button>
-            <button >User Settings</button>
+            <button >Set News Category:</button>
+            <button><Link to="/main/settings/updateCategory" onClick={updateCategoryHandler}>User Settings</Link></button>
         </div>
     )
 

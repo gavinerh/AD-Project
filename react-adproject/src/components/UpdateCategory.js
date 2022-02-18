@@ -34,12 +34,18 @@ function UpdateCategory() {
     }
 
     return (
+        <>
+        <div>
+        <h3>Please selected your favour categories:</h3>
+        </div>
+
         <form onSubmit={formSubmitHandler}>
             {categories.map(category1 => {
                 return <Category key={category1.name} category={category1} onInputCheckHandler={inputCheckHandler} />
             })}
             <input type='submit' />
         </form>
+        </>
     )
 }
 
