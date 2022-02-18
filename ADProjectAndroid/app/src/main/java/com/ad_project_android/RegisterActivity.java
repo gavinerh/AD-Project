@@ -63,7 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private boolean checkFields(String email, String password, String checkPassword) {
         if(isEmpty(emailInput) || isEmpty(passwordInput) || isEmpty(checkPasswordInput)) {
-            Toast.makeText(this, "All fields must be completed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return false;
         }
 

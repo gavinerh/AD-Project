@@ -98,7 +98,7 @@ public class BookmarkPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookmarked);
-        bmtxt = findViewById(R.id.bmtxt);
+        bmtxt = findViewById(R.id.bm_blankMsg);
         bmtxt.setVisibility(View.GONE);
         populateTokenString();
         getBMPreference();
@@ -225,8 +225,8 @@ public class BookmarkPage extends AppCompatActivity {
                     }
                     else{
                         bmtxt.setVisibility(View.VISIBLE);
-                        TextView bmtitle = findViewById(R.id.bookmarkTitle);
-                        bmtitle.setVisibility(View.INVISIBLE);
+//                        TextView bmtitle = findViewById(R.id.bookmarkTitle);
+//                        bmtitle.setVisibility(View.INVISIBLE);
                     }
                 }
                 else{

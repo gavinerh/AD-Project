@@ -5,6 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".History">
+
+    <TextView
+        android:id="@+id/likedislikeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:fontFamily="@font/zenkurenaido"
+        android:text="@string/likedisliketitle"
+        android:textAllCaps="true"
+        android:textSize="30sp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ListView
         android:id="@+id/listView"
         android:layout_height="0dp"
@@ -13,7 +28,7 @@
         android:dividerHeight="0dp"
         android:layout_margin="5dp"
         android:paddingBottom="5dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/likedislikeTitle"
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
@@ -21,9 +36,11 @@
         android:id="@+id/hist_blankMsg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="35sp"
+        android:fontFamily="@font/zenkurenaido"
+        android:textAllCaps="true"
+        android:textSize="30sp"
         android:gravity="center"
-        android:text="No Likes/Dislikes selected."
+        android:text="No likes/dislikes were selected"
         android:visibility="gone"
         />
 

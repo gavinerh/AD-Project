@@ -79,9 +79,9 @@
 
             <ToggleButton
                 android:id="@+id/bookmark"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_margin="5dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="10dp"
                 android:background="@drawable/ic_toggle_bg_2"
                 android:src="@drawable/bookmark"
                 style="@style/toggleButton2"
@@ -91,9 +91,9 @@
 
             <ImageView
                 android:id="@+id/share"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_margin="5dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="10dp"
                 android:src="@drawable/ic_baseline_share_24"
                 app:layout_constraintTop_toBottomOf="@id/dateText"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -102,9 +102,9 @@
 
             <ToggleButton
                 android:id="@+id/like"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_margin="5dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="10dp"
                 android:background="@drawable/ic_toggle_bg_1"
                 android:src="@drawable/ic_outline_thumb_up_24"
                 style="@style/toggleButton1"
@@ -114,9 +114,10 @@
 
             <ToggleButton
                 android:id="@+id/dislike"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_margin="5dp"
+                android:paddingLeft="5dp"
                 android:background="@drawable/ic_toggle_bg"
                 android:src="@drawable/ic_outline_thumb_down_24"
                 style="@style/toggleButton"

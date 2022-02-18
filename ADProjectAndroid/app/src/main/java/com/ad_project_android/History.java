@@ -80,7 +80,7 @@ public class History extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-        textView = findViewById(R.id.txt);
+        textView = findViewById(R.id.hist_blankMsg);
         textView.setVisibility(View.GONE);
         ldtitle = findViewById(R.id.likedislikeTitle);
         populateTokenString();
@@ -201,7 +201,7 @@ public class History extends AppCompatActivity {
                     setadaptor();
                     populateAdaptor();}
                     else{   textView.setVisibility(View.VISIBLE);
-                            ldtitle.setVisibility(View.INVISIBLE);
+//                            ldtitle.setVisibility(View.INVISIBLE);
                     }
                 }
                 else{
