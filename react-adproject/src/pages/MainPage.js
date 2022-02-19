@@ -31,17 +31,17 @@ function MainPage() {
     {
       path: "/main/bookmark",
       exact: true,
-      main: () => <Bookmarklist /> 
+      main: () => <Bookmarklist />
     },
     {
       path: "/main/liked",
       exact: true,
-      main: () => <LikedHistoryy /> 
+      main: () => <LikedHistoryy />
     },
     {
       path: "/main/dislike",
       exact: true,
-      main: () => <DislikedHistory /> 
+      main: () => <DislikedHistory />
     },
     {
       path: "/main/settings",
@@ -54,7 +54,7 @@ function MainPage() {
       main: () => <UserDetails />
     },
     {
-      path: "/main/settings/updateCategory",
+      path: "/main/updateCategory",
       exact: true,
       main: () => <UpdateCategory />
     },
@@ -119,16 +119,8 @@ function MainPage() {
                       Bookmark
                     </span></Link>
                 </li>
-                <li className="nav-item">
-                  <span className="nav-link link-dark">
-                    <svg className="bi me-2" width="16" height="16">
-                      <use xlinkHref="#hand-thumbs-up" />
-                    </svg>
-                    <Link to="/main/liked" className="text-decoration-none text-dark">Like</Link>
-                  </span>
-                  </li>
                 <li className="nav-item grey-link" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
-                  <Link to="/main/bookmark" className="text-decoration-none text-dark">
+                  <Link to="/main/liked" className="text-decoration-none text-dark">
                     <span className="nav-link link-dark">
                       <svg className="bi me-2" width="16" height="16">
                         <use xlinkHref="#hand-thumbs-up" />
@@ -136,14 +128,22 @@ function MainPage() {
                       Like
                     </span></Link>
                 </li>
-                
+                <li className="nav-item grey-link" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+                  <Link to="/main/dislike" className="text-decoration-none text-dark">
+                    <span className="nav-link link-dark">
+                      <svg className="bi me-2" width="16" height="16">
+                        <use xlinkHref="#hand-thumbs-down" />
+                      </svg>
+                      Dislike
+                    </span></Link>
+                </li>
+
                 <hr />
                 <li className="nav-item">
                   <span className="nav-link text-break">
                     <svg className="bi me-2" width="16" height="16">
                       <use xlinkHref="#people-circle" />
                     </svg>
-                    <Link to="/main/dislike" className="text-decoration-none text-dark">Dislike</Link>
                     {username}
                   </span>
                 </li>
@@ -157,7 +157,7 @@ function MainPage() {
                     </span></Link>
                 </li>}
                 <li className="nav-item grey-link" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
-                  <Link to="/main/settings" className="text-decoration-none text-dark">
+                  <Link to="/main/updateCategory" className="text-decoration-none text-dark">
                     <span className="nav-link link-dark">
                       <svg className="bi me-2" width="16" height="16">
                         <use xlinkHref="#caret-right" />
