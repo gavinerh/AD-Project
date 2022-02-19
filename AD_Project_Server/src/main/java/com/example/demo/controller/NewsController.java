@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -50,6 +51,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 //=======
 //import Enumerates.category;
 //>>>>>>> Stashed changes
+
+import Enumerates.category;
 
 
 @RestController
@@ -300,6 +303,12 @@ public class NewsController {
 	public ResponseEntity<Void> postCategories(HttpServletRequest request, @RequestBody List<CategoryJson> res) {
 		System.out.println(res);
 		UserCredential user = finduser(request);
+		if(res==null) {
+			List<Category> categorys=cService.getAllCategories();
+			for (Category a: categorys) {
+				user.getCats().add(a);
+			}
+		}else {
 		for (CategoryJson a : res) {
 			Category category = cService.finCategoryByName(a.getName());
 			if (a.isChecked() == true && !user.getCats().contains(category)) {
@@ -309,6 +318,8 @@ public class NewsController {
 				user.getCats().remove(category);
 			}
 		}
+		}
+		
 		uService.save(user);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
