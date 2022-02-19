@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
+import { useState } from 'react';
 import ArticleList from '../components/ArticleList';
 import './MainPage.css';
 import Settings from './Settings';
@@ -7,6 +8,7 @@ import WeatherComponent from '../components/WeatherComponent';
 import AuthenticationService from "../service/AuthenticationService";
 import Bookmark from "./Bookmark";
 import UpdateCategory from "../components/UpdateCategory";
+import AdminCategory from "../components/AdminCategory";
 
 function MainPage() {
 
@@ -39,7 +41,12 @@ function MainPage() {
     {
       path: "/main/settings/updateCategory",
       exact: true,
-      main: () => <UpdateCategory/>
+      main: () => <UpdateCategory />
+    },
+    {
+      path: "/main/admincategory",
+      exact: true,
+      main: () => <AdminCategory />
     }
   ];
 
@@ -50,6 +57,8 @@ function MainPage() {
     AuthenticationService.removeUserSession();
     <Redirect to="/login" />
   }
+
+  const [isAdmin, setIsAdmin] = useState(username === 'admin@gmail.com' ? true : false);
 
   return (
     <div>
@@ -122,6 +131,15 @@ function MainPage() {
                     {username}
                   </span>
                 </li>
+                {isAdmin && <li className="nav-item grey-link" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+                  <Link to="/main/admincategory" className="text-decoration-none text-dark">
+                    <span className="nav-link link-dark">
+                      <svg className="bi me-2" width="16" height="16">
+                        <use xlinkHref="#caret-right" />
+                      </svg>
+                      Admin Settings
+                    </span></Link>
+                </li>}
                 <li className="nav-item grey-link" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
                   <Link to="/main/settings" className="text-decoration-none text-dark">
                     <span className="nav-link link-dark">

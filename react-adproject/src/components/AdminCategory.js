@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import DataGrid, {
     Column,
     Editing,
-  } from 'devextreme-react/data-grid';
+} from 'devextreme-react/data-grid';
 import { getCategories, createCategory, deleteCategory } from './../service/CategoryService';
+import 'devextreme/dist/css/dx.light.css';
 
 const AdminCategory = () => {
 
@@ -43,24 +44,25 @@ const AdminCategory = () => {
     }
 
     return (
-        <>
+        <div className='p-3 col-sm-12 col-md-8'>
+            <h4>Admin settings</h4>
             {
                 dataSource ? (
-                    <DataGrid 
-                    dataSource={dataSource}
-                    onRowInserting={onRowInserting}
-                    onRowRemoving={onRowRemoving}
+                    <DataGrid
+                        dataSource={dataSource}
+                        onRowInserting={onRowInserting}
+                        onRowRemoving={onRowRemoving}
                     >
                         <Editing
                             mode="row"
                             allowDeleting={true}
-                            allowAdding={true} 
+                            allowAdding={true}
                         />
                         <Column dataField="name" caption="Name" />
                     </DataGrid>
                 ) : <></>
             }
-        </>
+        </div>
     );
 }
 
