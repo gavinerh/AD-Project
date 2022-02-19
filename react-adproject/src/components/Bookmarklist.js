@@ -3,12 +3,8 @@ import ArticlesService from "../service/ArticlesService";
 import ArticleService from '../service/ArticlesService';
 import './ArticleList.css';
 import noImage from '../assets/no-image-placeholder.svg';
-import CommentList from "./CommentList";
 import Modal from "./Modal";
-import { Link, Redirect } from 'react-router-dom';
 import AuthenticationService from "../service/AuthenticationService";
-import { FacebookShareButton, TwitterShareButton, EmailShareButton } from "react-share";
-import { FacebookIcon, TwitterIcon, EmailIcon } from "react-share";
 
 export default class BookmarkList extends Component {
     constructor(props) {
@@ -73,7 +69,7 @@ export default class BookmarkList extends Component {
             <React.Fragment>
                 <div className="d-flex">
                     {/* Articles column */}
-                    <div className='col-md-9 border-0 flex-column'>
+                    <div className='col-sm-12 col-lg-9 border-0 flex-column'>
                         {!isLoading ? (
                             articles.map(BookmarkedArticles => {
                                 const { id, sourcename, title, description, url, urlToImage } = BookmarkedArticles;
@@ -99,7 +95,7 @@ export default class BookmarkList extends Component {
                                             <div className="d-flex w-100 justify-content-between">
                                                 <div className="flex-fill">
                                                     <a href={url} target="_blank" rel="noopener noreferrer" className="text-decoration-none text-dark"><h5 className="mb-0">{title}</h5>
-                                                        <p className="mb-0">{description}</p></a>
+                                                        <p className="py-1 mb-0">{description}</p></a>
                                                 </div>
                                             </div>
                                             <div className="d-flex justify-content-end">
