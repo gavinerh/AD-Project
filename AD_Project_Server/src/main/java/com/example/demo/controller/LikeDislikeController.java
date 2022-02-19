@@ -21,12 +21,11 @@ public class LikeDislikeController {
 		
 	}
 	
-	@PostMapping(path="/dislike")
-	public void dislikeNews(@RequestBody JsonArticle article) {
-		System.out.println(article);
-		// register the disliked news from client side
-	}
-	
+	/*
+	 * @PostMapping(path="/dislike") public void dislikeNews(@RequestBody
+	 * JsonArticle article) { System.out.println(article); a // register the
+	 * disliked news from client side }
+	 */
 //	@PostMapping(path="/like")
 //	public void likeNews1(@RequestBody Message message){
 //		System.out.println("Liked this article");

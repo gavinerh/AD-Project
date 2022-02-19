@@ -11,10 +11,41 @@ class ArticleDataService {
         return axios.get(ARTICLE_API_BASE_URL, AuthenticationService.setupHeader());
     }
 
+    getBookmarkArticles() {
+        return axios.get(`${ARTICLE_API_BASE_URL}bookmarked`, AuthenticationService.setupHeader());
+    }
+
+    getLikedArticles() {
+        return axios.get(`${ARTICLE_API_BASE_URL}liked`, AuthenticationService.setupHeader());
+    }
+
+    getDislikedArticles() {
+        return axios.get(`${ARTICLE_API_BASE_URL}disliked`, AuthenticationService.setupHeader());
+    }
+
     findByCountryCategory(country, category) {
         return axios.get(ARTICLE_API_BASE_URL + "/" + country
             + "/" + category, AuthenticationService.setupHeader());
     }
+
+    IsArticleLiked(article)
+    {
+        return axios.post(`${ARTICLE_API_BASE_URL}checkLike`, article ,AuthenticationService.setupHeader());
+        
+    }
+
+    IsArticleDisliked(article)
+    {
+       return axios.get(`${ARTICLE_API_BASE_URL}checkDislike`, article ,AuthenticationService.setupHeader());
+    }
+
+    IsArticleBookmarked(article)
+    {
+        axios.get(`${ARTICLE_API_BASE_URL}checkBookmarked`, article ,AuthenticationService.setupHeader());
+
+    }
+
+
 
 
     // updateKeyword(query) {
@@ -42,23 +73,17 @@ class ArticleDataService {
     }
 
     dislikeArticle(article) {
-        let customArticle = {
-            title: article.title,
-            description: article.description,
-            url: article.url,
-        }
-        axios.post(`http://localhost:8080/dislike`, customArticle, AuthenticationService.setupHeader())
-            .catch(error => console.log(error));
+        axios.post(`${ARTICLE_API_BASE_URL}dislike`, article ,AuthenticationService.setupHeader());
     }
 
 
     likeArticle(article) {
-        let customArticle = {
-            title: article.title,
-            description: article.description,
-            url: article.url,
-        }
-        axios.post(`http://localhost:8080/like`, customArticle, AuthenticationService.setupHeader());
+       
+        axios.post(`${ARTICLE_API_BASE_URL}like`, article ,AuthenticationService.setupHeader());
+    }
+
+    bookmarkArticle(article) {
+        axios.post(`http://localhost:8080/newsapi/bookmark`, article, AuthenticationService.setupHeader());
     }
 
 

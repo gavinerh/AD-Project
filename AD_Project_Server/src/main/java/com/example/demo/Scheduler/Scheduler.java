@@ -34,17 +34,23 @@ public class Scheduler {
 	@Autowired
 	SourceRepo srepo;
 	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("h:mm:ss a");
-	@Scheduled(cron = "30 55 22 * * ?")
+	@Scheduled(cron = "30 01 19 * * ?")
 	public void scheduleTaskUsingCronExpression() {
 		
 	    System.out.println(
 	      "Starting scheduled tasks using cron jobs (Fetch news from API) - " + dateTimeFormatter.format(LocalDateTime.now()));
 	    
 	    List<Articles> nlist = new ArrayList<>();
-	    List<category> cats = Arrays.asList(category.values());
+	    List<Articles> aList = new ArrayList<>();
+ 	    List<category> cats = Arrays.asList(category.values());
 		for(category s:cats) {
 			//NewsSet ns = NewsService.getNewsHome(s.name(), null, null);
-			nlist.addAll(NewsService.getNewsByCountryCategory(s.name(), null));
+			
+			aList = NewsService.getNewsByCountryCategory(s.name(), null);
+			/*
+			 * for (Articles a:aList) { a.setCategoty(s); }
+			 */
+			nlist.addAll(aList);
 		}
 		System.out.println("Fetched Articles (size): "+nlist.size());
 
@@ -58,7 +64,6 @@ public class Scheduler {
 		else {
 			System.out.println("No Articles from Database");
 		}
-		
 		System.out.println(
 			      "Scheduled tasks Done - " + dateTimeFormatter.format(LocalDateTime.now()));
 	}

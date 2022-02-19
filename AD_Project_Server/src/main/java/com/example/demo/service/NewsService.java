@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class NewsService {
 	
-	private static final String myKey = "&apiKey=fbbc757feb5b441b805c38dc2ad94bd3";
+	private static final String myKey = "&apiKey=954d4f961f21495483d50e9e6c487ea7";
 	private static final String myLang = "&language=en";
 	private static final String myPageSize = "&pageSize=30";
 	
@@ -52,7 +52,7 @@ public class NewsService {
 	public static ArrayList<Articles> getNewsByCountryCategory(String category, String country) {
 
 		//String key = myKey;
-		String key = "&apiKey=fbbc757feb5b441b805c38dc2ad94bd3";
+		String key = "&apiKey=954d4f961f21495483d50e9e6c487ea7";
 		
 		if(country == null) {
 			country ="";

@@ -1,11 +1,15 @@
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
+import React from "react";
 import ArticleList from '../components/ArticleList';
 import './MainPage.css';
 import Settings from './Settings';
 import UserDetails from "../components/UserDetails";
 import WeatherComponent from '../components/WeatherComponent';
 import AuthenticationService from "../service/AuthenticationService";
-import Bookmark from "./Bookmark";
+
+import Bookmarklist from "../components/Bookmarklist";
+import LikedHistoryy from "../components/LikedHistory";
+import DislikedHistory from "../components/DislikedHistory";
 
 function MainPage() {
 
@@ -23,7 +27,17 @@ function MainPage() {
     {
       path: "/main/bookmark",
       exact: true,
-      main: () => <Bookmark /> //include bookmark component here
+      main: () => <Bookmarklist /> 
+    },
+    {
+      path: "/main/liked",
+      exact: true,
+      main: () => <LikedHistoryy /> 
+    },
+    {
+      path: "/main/dislike",
+      exact: true,
+      main: () => <DislikedHistory /> 
     },
     {
       path: "/main/settings",
@@ -93,7 +107,7 @@ function MainPage() {
                     <svg className="bi me-2" width="16" height="16">
                       <use xlinkHref="#hand-thumbs-up" />
                     </svg>
-                    <Link to="/main/bookmark" className="text-decoration-none text-dark">Like</Link>
+                    <Link to="/main/liked" className="text-decoration-none text-dark">Like</Link>
                   </span>
                 </li>
                 <li className="nav-item">
@@ -101,7 +115,7 @@ function MainPage() {
                     <svg className="bi me-2" width="16" height="16">
                       <use xlinkHref="#hand-thumbs-down" />
                     </svg>
-                    <Link to="/main/bookmark" className="text-decoration-none text-dark">Dislike</Link>
+                    <Link to="/main/dislike" className="text-decoration-none text-dark">Dislike</Link>
                   </span>
                 </li>
                 <hr />

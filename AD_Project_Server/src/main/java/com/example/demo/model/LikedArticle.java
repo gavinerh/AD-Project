@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,8 +14,10 @@ public class LikedArticle {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	private String title;
+	@Column(length=512)
 	private String description;
 	private String url;
+	private String UrlToImage;
 	@ManyToOne
 	private UserCredential user;
 
@@ -25,12 +28,13 @@ public class LikedArticle {
 		this(title,null,url,user);
 	}
 
-	public LikedArticle(String title, String description, String url,UserCredential user) {
+	public LikedArticle(String title, String description, String url,UserCredential user, String UrlToImage) {
 		super();
 		this.title = title;
 		this.description = description;
 		this.url = url;
 		this.user = user;
+		this.UrlToImage = UrlToImage;
 	}
 
 	public Integer getId() {

@@ -50,6 +50,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Enumerates.category;
+import ch.qos.logback.core.joran.conditional.IfAction;
 
 
 @RestController
@@ -73,13 +74,12 @@ public class NewsController {
 	@Autowired
 	JwtUtil jwtUtil;
 	
-	private List<Articles> alist = new ArrayList<>();
+	
 	
 	//For WEB TEMPORARY
 	@RequestMapping(value="/")
 	public List<Articles> HomePage() {
-		NewsSet ns = NewsService.getNewsHome("technology", null, null);
-		List<Articles> alist = ns.getArticles();
+		List<Articles> alist  = NewsService.getNewsByCountryCategory("Technology", null);
 		for(Articles art:alist) {
 			//check if articles exist in  DB
 			if(aService.findExistngArticle(art.getTitle(), art.getDescription())==null) {
@@ -139,7 +139,7 @@ public class NewsController {
 
 		alist = aService.findAll();
 ///////////////////////////////////////////////////////////////////////
-
+       
 		System.out.println("Fetched Articles size: "+alist.size());
 		List<Articles> android = new ArrayList<>();
 		List<LikedArticle> likes = larepo.findByUser(user);
@@ -158,7 +158,6 @@ public class NewsController {
 		List<String> dislike = new ArrayList<>();
 		likes.stream().forEach(x-> like.add(x.getTitle()));
 		dislikes.stream().forEach(x-> dislike.add(x.getTitle()));
-		
 		
 		Map<String,List<?>> aj = new HashMap<String,List<?>>();
 		aj.put("news", android);
@@ -198,56 +197,98 @@ public class NewsController {
 	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	@PostMapping(path="/bookmark/{email}")
-	public ResponseEntity<Void> bookmarkNews(@RequestBody Articles article, 
-			@PathVariable("email") String email){
+	@PostMapping(path="/bookmark")
+	public ResponseEntity<Void> bookmarkNews(HttpServletRequest request,@RequestBody Articles article){
 
-		UserCredential user = uService.findUserByEmail(email);
+		UserCredential user = finduser(request);
 		BookmarkedArticles bookmarked = bmrepo.findByUserAndTitle(user,article.getTitle());
 		
 		if(bookmarked==null) {
-			bmrepo.saveAndFlush(new BookmarkedArticles(article.getTitle(), 
-					article.getUrl(), user));}
+			bmrepo.saveAndFlush(new BookmarkedArticles(article.getTitle(),article.getUrl(),article.getDescription(), article.getUrlToImage(),
+					 user, article.getPublishedAt()));}
 		else {
 			bmrepo.delete(bookmarked);
 		}
-		System.out.println(article);
+		
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
-	@GetMapping(path="/bookmark")
+	@GetMapping(path="/bookmarked")
 	public ResponseEntity<?> getbookmarks(HttpServletRequest request){
 		UserCredential user = finduser(request);
 		
 		List<BookmarkedArticles> bms = bmrepo.findByUser(user);
+		System.out.println("bookmarked "+bms.size());
 		
 		return new ResponseEntity<List<BookmarkedArticles>>(bms,HttpStatus.OK);
+	}
+		
+	@GetMapping(path="/liked")
+	public ResponseEntity<?> getliked(HttpServletRequest request){
+		UserCredential user = finduser(request);
+		
+		List<LikedArticle> bms = larepo.findByUser(user);
+		
+		System.out.println("liked "+bms.size());
+		
+		
+		return new ResponseEntity<List<LikedArticle>>(bms,HttpStatus.OK);
+	}
+	
+	@GetMapping(path="/disliked")
+	public ResponseEntity<?> getdisliked(HttpServletRequest request){
+		UserCredential user = finduser(request);
+		
+		List<DislikedArticle> bms = darepo.findByUser(user);
+		
+		return new ResponseEntity<List<DislikedArticle>>(bms,HttpStatus.OK);
 	}
 	
 	@PostMapping(path="/like")
 	public ResponseEntity<Void> likeNews(HttpServletRequest request,@RequestBody Articles article){
 		UserCredential user = finduser(request);
-		
+		DislikedArticle dislike = darepo.findByUserAndTitle(user, article.getTitle());
 		LikedArticle like = larepo.findByUserAndTitle(user,article.getTitle());
+		if (dislike != null) 
+		{
+			darepo.delete(dislike);
+			
+		} 
 		if(like ==null) {
-		larepo.saveAndFlush(new LikedArticle(article.getTitle(),article.getUrl(),user));}
+		larepo.saveAndFlush(new LikedArticle(article.getTitle(),article.getDescription(),article.getUrl(),user,article.getUrlToImage()));}
 		else {
 			larepo.delete(like);
 		}
-		System.out.println(article);
+		
 		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
+	@PostMapping(path="/checkLike")
+	public ResponseEntity<Boolean> IsArticleLiked(HttpServletRequest request,@RequestBody Articles article){
+		UserCredential user = finduser(request);
+		Boolean checking = false;
+		LikedArticle like = larepo.findByUserAndTitle(user,article.getTitle());
+		if(like ==null) {
+		checking=false;}
+		else {
+			checking=true;
+		}
+		System.out.println(checking);
+		
+		return new ResponseEntity<Boolean>(checking,HttpStatus.OK);
 	}
 	
 	@PostMapping(path="/dislike")
 	public ResponseEntity<Void> dislikeNews(HttpServletRequest request,@RequestBody Articles article) {
 		UserCredential user = finduser(request);
 		DislikedArticle dislike = darepo.findByUserAndTitle(user,article.getTitle());
+		LikedArticle like = larepo.findByUserAndTitle(user,article.getTitle());
 		if(dislike ==null) {
-		darepo.saveAndFlush(new DislikedArticle(article.getTitle(),article.getUrl(),user));}
+		darepo.saveAndFlush(new DislikedArticle(article.getTitle(),article.getDescription(),article.getUrl(),user,article.getUrlToImage()));}
 		else {
 			darepo.delete(dislike);
 		}	
-		System.out.println(article);
+		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
