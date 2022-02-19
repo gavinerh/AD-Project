@@ -1,11 +1,7 @@
 package com.example.demo.model;
 
-<<<<<<< HEAD
-import javax.persistence.CascadeType;
-=======
-import java.util.Collection;
 
->>>>>>> 3f0a9427a4eaa1bfe6b46f9adca87975e62956e9
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,14 +35,8 @@ public class BookmarkedArticles {
 	private String publishedAt;
 	@ManyToOne
 	private UserCredential user;
-<<<<<<< HEAD
-//	
-//	private String userEmail;
-//	public BookmarkedArticles(String title, String url, String userEmail) {
-//		this.title=title;
-//		this.url=url;
-//		this.userEmail=userEmail;
-//	}
+
+
 	public BookmarkedArticles(String title, String url, String description, String UrlToImage, UserCredential user, String PublishAt ) 
 	{
 		this.title=title;
@@ -55,13 +45,6 @@ public class BookmarkedArticles {
 		this.UrlToImage = UrlToImage;
 		this.description =description;
 	
-=======
 
-	public BookmarkedArticles(String title, String url,String imageurl, UserCredential user) {
-		this.title=title;
-		this.url=url;
-		this.user=user;
-		this.imageurl=imageurl;
->>>>>>> 3f0a9427a4eaa1bfe6b46f9adca87975e62956e9
 	}
 }

@@ -34,13 +34,10 @@ public class Scheduler {
 	@Autowired
 	SourceRepo srepo;
 	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("h:mm:ss a");
-<<<<<<< HEAD
-	@Scheduled(cron = "30 01 19 * * ?")
-=======
-	
+
 	//// RETRIEVE ARTICLES FROM API/////
 	@Scheduled(cron = "50 31 01 * * ?")
->>>>>>> 3f0a9427a4eaa1bfe6b46f9adca87975e62956e9
+
 	public void scheduleTaskUsingCronExpression() {
 		
 	    System.out.println(

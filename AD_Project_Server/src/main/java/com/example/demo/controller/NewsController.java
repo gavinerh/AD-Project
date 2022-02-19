@@ -8,7 +8,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -20,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,17 +41,10 @@ import com.example.demo.model.JsonModel.CategoryJson;
 import com.example.demo.model.JsonModel.MLJson;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.ArticlesService;
-import com.example.demo.service.CategoryService;
 import com.example.demo.service.NewsService;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-//<<<<<<< Updated upstream
-//=======
-//import Enumerates.category;
-//>>>>>>> Stashed changes
 
-import Enumerates.category;
-import ch.qos.logback.core.joran.conditional.IfAction;
 
 
 @RestController
@@ -76,27 +67,21 @@ public class NewsController {
 	DislikedArticleRepository darepo;
 	@Autowired
 	JwtUtil jwtUtil;
-	@Autowired
-	CategoryService cService;
+	List<Articles> alist = new ArrayList<Articles>();
 	
 	
 	
 	//For WEB TEMPORARY
-<<<<<<< HEAD
-	@RequestMapping(value="/")
-	public List<Articles> HomePage() {
-		List<Articles> alist  = NewsService.getNewsByCountryCategory("Technology", null);
-		for(Articles art:alist) {
-			//check if articles exist in  DB
-			if(aService.findExistngArticle(art.getTitle(), art.getDescription())==null) {
-				srepo.save(art.getSource()); //save sources to DB
-				aService.save(art); //save articles to DB
-			}
-		}
-		System.out.println("News Articles "+alist.size());
-		return alist;
-	}
-=======
+	/*
+	 * @RequestMapping(value="/") public List<Articles> HomePage() { List<Articles>
+	 * alist = NewsService.getNewsByCountryCategory("Technology", null);
+	 * for(Articles art:alist) { //check if articles exist in DB
+	 * if(aService.findExistngArticle(art.getTitle(), art.getDescription())==null) {
+	 * srepo.save(art.getSource()); //save sources to DB aService.save(art); //save
+	 * articles to DB } } System.out.println("News Articles "+alist.size()); return
+	 * alist; }
+	 */
+
 //	@RequestMapping(value="/")
 //	public List<Articles> HomePage() {
 //		NewsSet ns = NewsService.getNewsHome("technology", null, null);
@@ -112,7 +97,7 @@ public class NewsController {
 //		return alist;
 //	}
 //	
->>>>>>> 3f0a9427a4eaa1bfe6b46f9adca87975e62956e9
+
 	
 	 @RequestMapping(value = "/") 
 	  public List<Articles> HomePage(HttpServletRequest request) {
@@ -184,7 +169,7 @@ public class NewsController {
 ///////////////////////////////////////////////////////////////////////	
 		//Fetch News from database
 
-		alist = aService.findAll();
+		List<Articles> alist = aService.findAll();
 ///////////////////////////////////////////////////////////////////////
        
 		System.out.println("Fetched Articles size: "+alist.size());
@@ -249,13 +234,10 @@ public class NewsController {
 		BookmarkedArticles bookmarked = bmrepo.findByUserAndTitle(user,article.getTitle());
 		
 		if(bookmarked==null) {
-<<<<<<< HEAD
+
 			bmrepo.saveAndFlush(new BookmarkedArticles(article.getTitle(),article.getUrl(),article.getDescription(), article.getUrlToImage(),
 					 user, article.getPublishedAt()));}
-=======
-			bmrepo.saveAndFlush(new BookmarkedArticles(article.getTitle(), 
-					article.getUrl(),article.getUrlToImage(), user));}
->>>>>>> 3f0a9427a4eaa1bfe6b46f9adca87975e62956e9
+
 		else {
 			bmrepo.delete(bookmarked);
 		}
@@ -305,12 +287,10 @@ public class NewsController {
 			
 		} 
 		if(like ==null) {
-<<<<<<< HEAD
+
 		larepo.saveAndFlush(new LikedArticle(article.getTitle(),article.getDescription(),article.getUrl(),user,article.getUrlToImage()));}
-=======
-		larepo.saveAndFlush(new LikedArticle(article.getTitle(),article.getUrlToImage(),
-				article.getUrl(),article.getDescription(),user));}
->>>>>>> 3f0a9427a4eaa1bfe6b46f9adca87975e62956e9
+
+		
 		else {
 			larepo.delete(like);
 		}
@@ -339,12 +319,11 @@ public class NewsController {
 		DislikedArticle dislike = darepo.findByUserAndTitle(user,article.getTitle());
 		LikedArticle like = larepo.findByUserAndTitle(user,article.getTitle());
 		if(dislike ==null) {
-<<<<<<< HEAD
+
 		darepo.saveAndFlush(new DislikedArticle(article.getTitle(),article.getDescription(),article.getUrl(),user,article.getUrlToImage()));}
-=======
-		darepo.saveAndFlush(new DislikedArticle(article.getTitle(),article.getUrlToImage(),
-				article.getUrl(),article.getDescription(),user));}
->>>>>>> 3f0a9427a4eaa1bfe6b46f9adca87975e62956e9
+
+	
+
 		else {
 			darepo.delete(dislike);
 		}	
@@ -379,7 +358,8 @@ public class NewsController {
 			for (Category a: categorys) {
 				user.getCats().add(a);
 			}
-		}else {
+		}
+		else {
 		for (CategoryJson a : res) {
 			Category category = cService.finCategoryByName(a.getName());
 			if (a.isChecked() == true && !user.getCats().contains(category)) {
