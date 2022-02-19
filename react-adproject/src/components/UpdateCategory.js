@@ -34,18 +34,34 @@ function UpdateCategory() {
     }
 
     return (
-        <>
-        <div>
-        <h3>Please selected your favour categories:</h3>
+        <div className="container p-3">
+            <main>
+                <div className="row g-5">
+                    <div className="col-md-6">
+                        <h4 className="mb-3">Select news categories</h4>
+                        <form onSubmit={formSubmitHandler}>
+                            {categories.map(category1 => {
+                                return <Category key={category1.name} category={category1} onInputCheckHandler={inputCheckHandler} />
+                            })}
+                            <button className="mt-3 btn btn-primary" type="submit">Submit</button>
+                            {/* <input type='submit' /> */}
+                        </form>
+                    </div>
+                </div>
+            </main>
         </div>
+        // <>
+        // <div>
+        // <h3>Please selected your favour categories:</h3>
+        // </div>
 
-        <form onSubmit={formSubmitHandler}>
-            {categories.map(category1 => {
-                return <Category key={category1.name} category={category1} onInputCheckHandler={inputCheckHandler} />
-            })}
-            <input type='submit' />
-        </form>
-        </>
+        // <form onSubmit={formSubmitHandler}>
+        //     {categories.map(category1 => {
+        //         return <Category key={category1.name} category={category1} onInputCheckHandler={inputCheckHandler} />
+        //     })}
+        //     <input type='submit' />
+        // </form>
+        // </>
     )
 }
 
