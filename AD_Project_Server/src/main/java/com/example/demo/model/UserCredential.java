@@ -26,7 +26,7 @@ public class UserCredential {
 	private String password;
 	// admin or normal user
 	private String userType;
-	@ManyToMany(cascade = {CascadeType.MERGE}, fetch=FetchType.EAGER)
+	@ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST}, fetch=FetchType.LAZY)
 	@JoinTable(name = "usercats", joinColumns = {
 			@JoinColumn(name = "userid", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "categoryid", referencedColumnName = "id") })

@@ -37,7 +37,7 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
     protected List<NewsObject> myitems = new ArrayList<>();
     private List<String> likes = new ArrayList<>();
     private List<String> dislikes = new ArrayList<>();
-    private List<Bookmark> bms = new ArrayList<>();
+    private List<String> bms = new ArrayList<>();
     private ArrayList<File> files = null;
     private AdapterInterface adapterInterface;
     private Boolean[] likeonoff;
@@ -67,9 +67,9 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
             // then attachToRoot should be 'false' (which is in our case)
             view = inflater.inflate(R.layout.row, parent, false);
         }
-        if (myitems.size() == 0) {
-            return view;
-        }
+//        if (myitems.size() == 0) {
+//            return view;
+//        }
 
         CardView mCardView = view.findViewById(R.id.card_view);
         mCardView.setOnClickListener(new View.OnClickListener() {
@@ -88,17 +88,23 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
         // set the image for ImageView
         ImageView imageView = view.findViewById(R.id.imageView);
         imageView.setImageResource(R.drawable.ic_baseline_image_24);
-
-        setImageBitmap(files.get(pos), imageView, myitems.get(pos));
+        Bitmap bitmap = myitems.get(pos).getBitmap();
+        if(bitmap!=null) imageView.setImageBitmap(bitmap);
         // set headline
         TextView textView = view.findViewById(R.id.headlineText);
-        textView.setText(myitems.get(pos).getTitle());
+        //truncate
+        String title = myitems.get(pos).getTitle();
+        if(title.length()<80) {textView.setText(title);}
+        else {
+            title=title.substring(0,80);
+            textView.setText(title+"...");
+        }
         //set news source
         TextView mSource = view.findViewById(R.id.sourceText);
         mSource.setText(myitems.get(pos).getSource().getName());
         // set time published
         TextView mTime = view.findViewById(R.id.dateText);
-        mTime.setText(myitems.get(pos).getPrettytime());
+        mTime.setText("• " + myitems.get(pos).getPrettytime());
         // set share to social media
         ImageView mShare = view.findViewById(R.id.share);
         mShare.setOnClickListener(new View.OnClickListener() {
@@ -174,7 +180,7 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
         dislikeBtn.setChecked(dislikeonoff[pos]);
 
         //bookmark sharedpref and onclick
-        if (bms.contains(new Bookmark(myitems.get(pos).getTitle()))) {
+        if (bms.contains(myitems.get(pos).getTitle())) {
             bookmarkBtn.setChecked(true);
             bookmarkonoff[rowpos] = true;
         }
@@ -209,14 +215,6 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
         return myitems.size();
     }
 
-    private void setImageBitmap(File f, ImageView imgView, NewsObject newsObject) {
-        Bitmap bitmap = null;
-        if (newsObject.getBitmap() != null) {
-            bitmap = newsObject.getBitmap();
-        }
-        imgView.setImageBitmap(bitmap);
-    }
-
     @Override
     public void sendNewsObjectPosition(NewsObject position, int preference) {
         adapterInterface.sendNewsObjectPosition(position, preference);
@@ -232,27 +230,15 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
         adapterInterface.launchWebview(url);
     }
 
-    public List<String> getLikes() {
-        return likes;
-    }
-
     public void setLikes(List<String> likes) {
         this.likes = likes;
-    }
-
-    public List<String> getDislikes() {
-        return dislikes;
     }
 
     public void setDislikes(List<String> dislikes) {
         this.dislikes = dislikes;
     }
 
-    public List<Bookmark> getBms() {
-        return bms;
-    }
-
-    public void setBms(List<Bookmark> bms) {
+    public void setBms(List<String> bms) {
         this.bms = bms;
     }
 }

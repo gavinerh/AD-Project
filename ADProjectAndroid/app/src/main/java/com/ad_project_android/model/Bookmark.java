@@ -1,6 +1,8 @@
 package com.ad_project_android.model;
 
 
+import android.graphics.Bitmap;
+
 import androidx.annotation.Nullable;
 
 import java.io.Serializable;
@@ -8,19 +10,20 @@ import java.util.Objects;
 
 public class Bookmark implements Serializable {
     private String title;
-    private String desc;
     private String url;
     private String imageurl;
+    private Bitmap bitmap;
 
     public Bookmark(){}
     public Bookmark(String title) {
         this.title=title;
     }
-    public Bookmark(String title, String desc, String url, String imageurl){
+    public Bookmark(String title, String url,
+                    String imageurl, Bitmap bitmap){
         this.title = title;
-        this.desc=desc;
         this.url=url;
         this.imageurl=imageurl;
+        this.bitmap = bitmap;
     }
 
 
@@ -31,14 +34,25 @@ public class Bookmark implements Serializable {
         this.title = title;
     }
 
-    public String getDesc() {return desc;}
-    public void setDesc(String desc) {this.desc= desc; }
-
     public String getUrl() {
         return url;
     }
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getImageurl() {
+        return imageurl;
+    }
+    public void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 
     @Override

@@ -164,8 +164,7 @@ export default class ArticleList extends Component {
                     url: `${article.url}`,
                     urlToImage: `${article.urlToImage}`,
                     prettytime: `${article.prettytime}`,
-                    
-
+                    publishedAt: `${article.publishedAt}`
                 }))
             )
             //change loading state to display data--> set active article
@@ -200,13 +199,13 @@ export default class ArticleList extends Component {
             <React.Fragment>
                 <div className="d-flex">
                     {/* Articles column */}
-                    <div className='col-md-9 border-0 flex-column'>
+                    <div className='col-md-12 col-lg-9 border-0 flex-column'>
                         {!isLoading ? (
                             articles.map(article => {
-                                const { sourceid, id, sourcename, title, description, url, urlToImage, prettytime } = article;
-                                const IsArticleLikedd = ArticleService.IsArticleLiked();
+                                const { sourceid, id, sourcename, title, description, url, urlToImage, prettytime, publishedAt } = article;
+                                const IsArticleLikedd = true;
                                 return (
-                                    <div className="container px-3 pt-3" key={sourceid, id, url}>
+                                    <div className="container px-3 pt-3" key={sourceid, id, title}>
                                         {/* article icons */}
                                         <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }}>
                                             <symbol id="hand-thumbs-up" viewBox="0 0 16 16">
@@ -356,7 +355,7 @@ export default class ArticleList extends Component {
                     </div>
 
                     {/* Search bar */}
-                    <div className='col-md-3 d-none d-sm-none d-md-block flex-column'>
+                    <div className='col-lg-3 d-none d-lg-block flex-column'>
                         <div className="container my-3">
                             <div className='p-3 card card-cover bg-light rounded-5 shadow-sm'>
                                 <form onSubmit={this.searchFormHandler} >

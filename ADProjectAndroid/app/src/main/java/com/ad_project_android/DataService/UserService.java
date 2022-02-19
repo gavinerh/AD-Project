@@ -3,6 +3,8 @@ package com.ad_project_android.DataService;
 import com.ad_project_android.model.TokenJWT;
 import com.ad_project_android.model.User;
 
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -16,7 +18,7 @@ public interface UserService {
     Call<TokenJWT> authenticateUser(@Body User user);
 
     @POST("account/register")
-    Call<Void> registerUser(@Body User user);
+    Call<Void> registerUser(@Body Map user);
 
     @GET("account/{email}")
     Call<User> getUser(@Path("email") String email, @Header("Authorization") String token);

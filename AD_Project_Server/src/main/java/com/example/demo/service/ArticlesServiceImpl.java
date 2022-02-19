@@ -64,6 +64,9 @@ public class ArticlesServiceImpl implements ArticlesService {
 		aRepo.saveAllAndFlush(alist);
 		
 	}
-	
+	@Override
+	public List<Articles> findArticlesByCategories(List<Long> categories) {
+		return aRepo.findByCategoryIn(categories);
+	}
 	
 }

@@ -16,17 +16,12 @@
         <activity
             android:name=".WebViewActivity"
             android:exported="false" />
-
         <service
             android:name=".MyNewsService"
             android:enabled="true"
             android:exported="true" />
-
         <activity
             android:name=".RegisterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Feedback"
             android:exported="false" />
         <activity
             android:name=".History"
@@ -38,10 +33,10 @@
             android:name=".Preference"
             android:exported="false" />
         <activity
-            android:name=".UserSettings"
+            android:name=".ViewSettings"
             android:exported="false" />
         <activity
-            android:name=".ViewSettings"
+            android:name=".BookmarkPage"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"

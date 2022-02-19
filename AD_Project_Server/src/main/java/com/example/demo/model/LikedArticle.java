@@ -8,19 +8,29 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Entity
+@NoArgsConstructor
+@Data
 public class LikedArticle {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+	@Column(length=512)
 	private String title;
 	@Column(length=512)
 	private String description;
+	@Column(length=1000)
+	private String urlToImage;
+	@Column(length=512)
 	private String url;
 	private String UrlToImage;
 	@ManyToOne
 	private UserCredential user;
 
+<<<<<<< HEAD
 	public LikedArticle() {
 		super();
 	}
@@ -29,44 +39,20 @@ public class LikedArticle {
 	}
 
 	public LikedArticle(String title, String description, String url,UserCredential user, String UrlToImage) {
+=======
+	public LikedArticle(String title, String urlimg, String url,String desc,UserCredential user) {
+>>>>>>> 3f0a9427a4eaa1bfe6b46f9adca87975e62956e9
 		super();
 		this.title = title;
-		this.description = description;
 		this.url = url;
+		this.urlToImage=urlimg;
 		this.user = user;
+<<<<<<< HEAD
 		this.UrlToImage = UrlToImage;
+=======
+		description = desc;
+>>>>>>> 3f0a9427a4eaa1bfe6b46f9adca87975e62956e9
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
 
 }

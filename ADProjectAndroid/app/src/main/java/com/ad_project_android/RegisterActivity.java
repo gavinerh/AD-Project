@@ -15,6 +15,11 @@ import android.widget.Toast;
 import com.ad_project_android.DataService.UserService;
 import com.ad_project_android.model.User;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -25,11 +30,15 @@ public class RegisterActivity extends AppCompatActivity {
 
     EditText emailInput, passwordInput, checkPasswordInput;
     Button regBtn;
+    List<String> categories = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        Intent intent = getIntent();
+        categories = (List<String>) intent.getSerializableExtra("categories");
 
 //        nameInput = findViewById(R.id.reg_nameinput);
         emailInput = findViewById(R.id.reg_emailinput);
@@ -54,7 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private boolean checkFields(String email, String password, String checkPassword) {
         if(isEmpty(emailInput) || isEmpty(passwordInput) || isEmpty(checkPasswordInput)) {
-            Toast.makeText(this, "All fields must be completed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -76,9 +85,11 @@ public class RegisterActivity extends AppCompatActivity {
         UserService userService = retrofit.create(UserService.class);
         // passing data from text field into user model
         User user = new User(null, null, email, password);
-
+        Map register = new HashMap();
+        register.put("user",user);
+        register.put("categories",categories);
         // calling method to create a post and pass in model class
-        Call<Void> call = userService.registerUser(user);
+        Call<Void> call = userService.registerUser(register);
 
         // execute post method
         call.enqueue(new Callback<Void>() {
@@ -90,7 +101,6 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
                 Toast.makeText(getApplicationContext(), "Email is already registered", Toast.LENGTH_SHORT).show();
-
             }
 
             @Override

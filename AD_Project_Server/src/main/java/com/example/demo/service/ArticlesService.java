@@ -8,6 +8,7 @@ public interface ArticlesService {
 	List<Articles> findAll();
 	Articles findExistngArticle(String t, String d);
 	List<Articles> findArticlesByTitleAndDescription(String k);
+	List<Articles> findArticlesByCategories(List<Long> categories);
 	Articles save(Articles a);
 	Articles saveAndFlush(Articles a);
 	void deleteAll();

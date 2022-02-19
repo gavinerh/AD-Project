@@ -1,11 +1,17 @@
 package com.ad_project_android.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+//<<<<<<< Updated upstream
 import android.graphics.Bitmap;
+//=======
+//>>>>>>> Stashed changes
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,17 +19,19 @@ import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 
 import com.ad_project_android.BookmarkPage;
 import com.ad_project_android.R;
 import com.ad_project_android.model.Bookmark;
+
 import com.ad_project_android.model.NewsObject;
-//import com.ad_project_android.model.Bookmark;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +40,8 @@ public class BookmarkAdapter extends ArrayAdapter<Object> {
     private BookmarkPage bkmarked;
     private List<Bookmark> bookmarks = new ArrayList<>();
     private List<Bookmark> bms = new ArrayList<>();
-    private Boolean[] bookmarkonoff;
     private ToggleButton bookmarkBtn;
+    Animation ani;
 
     public BookmarkAdapter(@NonNull Context context, @NonNull List<Bookmark> bookmarks,
                            BookmarkPage bkmarked) {
@@ -42,7 +50,6 @@ public class BookmarkAdapter extends ArrayAdapter<Object> {
         this.bkmarked = bkmarked;
         this.bookmarks = bookmarks;
         bms.addAll(bookmarks);
-        getTogglelength();
     }
 
     @NonNull
@@ -57,23 +64,47 @@ public class BookmarkAdapter extends ArrayAdapter<Object> {
         }
 
         TextView textView = convertView.findViewById(R.id.headlineText);
-        textView.setText(bms.get(position).getTitle());
+        //truncate
+        String title = bms.get(position).getTitle();
+        if(title.length()<80) {textView.setText(title);}
+        else {
+            title=title.substring(0,80);
+            textView.setText(title+"...");
+        }
+
+        ImageView img = convertView.findViewById(R.id.imageView);
+        img.setImageBitmap(bms.get(position).getBitmap());
+
         ImageView mShare = convertView.findViewById(R.id.share);
         mShare.setVisibility(View.GONE);
         TextView mTime = convertView.findViewById(R.id.dateText);
         mTime.setVisibility(View.GONE);
         TextView mSource = convertView.findViewById(R.id.sourceText);
         mSource.setVisibility(View.GONE);
+
         ToggleButton likeBtn = convertView.findViewById(R.id.like);
         likeBtn.setVisibility(View.GONE);
         ToggleButton dislikeBtn = convertView.findViewById(R.id.dislike);
         dislikeBtn.setVisibility(View.GONE);
 
+        CardView mCardView = convertView.findViewById(R.id.card_view);
+        mCardView.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceType")
+            @Override
+            public void onClick(View view) {
+                //go to webview? go to external url
+                String externalUrl = bms.get(position).getUrl();
+                ani = AnimationUtils.loadAnimation(context, R.drawable.overshoot);
+                ani.start();
+                mCardView.startAnimation(ani);
+                bkmarked.launchwebview(externalUrl);
+            }
+        });
+
         bookmarkBtn = convertView.findViewById(R.id.bookmark);
-        if (bookmarks.contains(new Bookmark(bms.get(position).getTitle()))) {
+        if (bookmarks.contains(bms.get(position))) {
             bookmarkBtn.setVisibility(View.VISIBLE);
             bookmarkBtn.setChecked(true);
-            bookmarkonoff[rowpos] = true;
         }
         bookmarkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +112,6 @@ public class BookmarkAdapter extends ArrayAdapter<Object> {
                 bkmarked.setbmDialog(bms.get(position), 2);
             }
         });
-        bookmarkBtn.setChecked(bookmarkonoff[position]);
         return convertView;
     }
 
@@ -90,28 +120,11 @@ public class BookmarkAdapter extends ArrayAdapter<Object> {
         return bms.size();
     }
 
-    public void getTogglelength() {
-        bookmarkonoff = new Boolean[bms.size()];
-        for (int i = 0; i < bms.size(); i++) {
-            bookmarkonoff[i] = false;
-        }
-    }
-
-    public void setBookmarks(List<Bookmark> bookmarks) { this.bookmarks = bookmarks; }
-    public List<Bookmark> getBookmarks() { return bookmarks; }
-
     public void setBms(List<Bookmark> bms) {
         this.bms = bms;
     }
     public List<Bookmark> getBms() {
         return bms;
-    }
-
-    public ToggleButton getBookmarkBtn() {
-        return bookmarkBtn;
-    }
-    public void setBookmarkBtn(ToggleButton bookmarkBtn) {
-        this.bookmarkBtn = bookmarkBtn;
     }
 
 }

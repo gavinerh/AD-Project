@@ -37,6 +37,11 @@
   color: #2470dc;
 }
 
+.grey-link:hover {
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
+
 .sidebar .nav-link:hover .feather,
 .sidebar .nav-link.active .feather {
   color: inherit;
@@ -66,4 +71,9 @@
   padding: 0.75rem 1rem;
   border-width: 0;
   border-radius: 0;
+}
+
+.my-brand-sidebar {
+  font-size: 2rem;
+  font-family: "Zen Kurenaido", sans-serif;
 }

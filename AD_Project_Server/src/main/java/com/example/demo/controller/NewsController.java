@@ -7,12 +7,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.Repository.ArticlesRepo;
 import com.example.demo.Repository.BookmarkedArticlesRepository;
 import com.example.demo.Repository.CategoryRepo;
 import com.example.demo.Repository.DislikedArticleRepository;
@@ -41,13 +39,18 @@ import com.example.demo.model.DislikedArticle;
 import com.example.demo.model.LikedArticle;
 import com.example.demo.model.NewsSet;
 import com.example.demo.model.UserCredential;
+import com.example.demo.model.JsonModel.CategoryJson;
 import com.example.demo.model.JsonModel.MLJson;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.ArticlesService;
+import com.example.demo.service.CategoryService;
 import com.example.demo.service.NewsService;
 import com.example.demo.service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+//<<<<<<< Updated upstream
+//=======
+//import Enumerates.category;
+//>>>>>>> Stashed changes
 
 import Enumerates.category;
 import ch.qos.logback.core.joran.conditional.IfAction;
@@ -73,10 +76,13 @@ public class NewsController {
 	DislikedArticleRepository darepo;
 	@Autowired
 	JwtUtil jwtUtil;
+	@Autowired
+	CategoryService cService;
 	
 	
 	
 	//For WEB TEMPORARY
+<<<<<<< HEAD
 	@RequestMapping(value="/")
 	public List<Articles> HomePage() {
 		List<Articles> alist  = NewsService.getNewsByCountryCategory("Technology", null);
@@ -90,7 +96,48 @@ public class NewsController {
 		System.out.println("News Articles "+alist.size());
 		return alist;
 	}
+=======
+//	@RequestMapping(value="/")
+//	public List<Articles> HomePage() {
+//		NewsSet ns = NewsService.getNewsHome("technology", null, null);
+//		List<Articles> alist = aService.findAll();//ns.getArticles();
+////		for(Articles art:alist) {
+////			//check if articles exist in  DB
+////			if(aService.findExistngArticle(art.getTitle(), art.getDescription())==null) {
+////				srepo.save(art.getSource()); //save sources to DB
+////				aService.save(art); //save articles to DB
+////			}
+////		}
+//		System.out.println("News Articles "+alist.size());
+//		return alist;
+//	}
+//	
+>>>>>>> 3f0a9427a4eaa1bfe6b46f9adca87975e62956e9
 	
+	 @RequestMapping(value = "/") 
+	  public List<Articles> HomePage(HttpServletRequest request) {
+		 // NewsSet ns =NewsService.getNewsHome("technology", null, null);
+		  UserCredential user = finduser(request);
+		  List<Articles> alist=aService
+				  .findAll()
+				  .stream()
+				  .filter(article -> user.getCats().contains(article.getCategory()))
+				  .collect(Collectors.toList()); 
+//		  for (Articles art : alist) { 
+//			  if( user.getCats().contains(art.getCategory())) { 
+//				  // check if articles exist in DB 
+//				  if (aService.findExistngArticle(
+//						  art.getTitle(), art.getDescription()) == null) {
+//					  srepo.save(art.getSource());
+//					  aService.save(art);
+//					  // save sources
+//				  }
+//			  }
+//			  System.out.println("News Articles " + alist.size());
+//	  
+//		  } 
+		  return alist; 
+	  }
 	//search using NEWSAPI
 	@GetMapping(value= {"/kw/updateKeyword"})
 	public List<Articles> displayPage(@RequestParam Map<String,String> requestParams) {
@@ -146,35 +193,36 @@ public class NewsController {
 		List<DislikedArticle> dislikes = darepo.findByUser(user);
 		List<BookmarkedArticles> bms = bmrepo.findByUser(user);
 		
-		if(likes.size()>9 || dislikes.size()>0) {android = mlfunction(likes,dislikes);}
+		if(likes.size()>10 || dislikes.size()>10) {android = mlfunction(likes,dislikes);}
 		
 		else {
 			if(alist.size()>50) {
-		for(int i = 0; i<50; i++) {
+		for(int i = 0; i<100; i++) {
 			android.add(alist.get(i));}}
 			else {android = alist;}
 		}
 		List<String> like = new ArrayList<>();
 		List<String> dislike = new ArrayList<>();
+		List<String> bm = new ArrayList<>();
 		likes.stream().forEach(x-> like.add(x.getTitle()));
 		dislikes.stream().forEach(x-> dislike.add(x.getTitle()));
+		bms.stream().forEach(x-> bm.add(x.getTitle()));
 		
 		Map<String,List<?>> aj = new HashMap<String,List<?>>();
 		aj.put("news", android);
 		aj.put("likes", like);
 		aj.put("dislikes", dislike);
-		aj.put("bookmarks", bms);
+		aj.put("bookmarks", bm);
 		
 		System.out.println("Articles for Android size: "+android.size());
 		return new ResponseEntity<Map<String,List<?>>>(aj, HttpStatus.OK);
 	}
 	//create method to retrieve bookmarked articles
 		@GetMapping(path="/bmpreference")
-		public ResponseEntity<?> getbmpref() {
-			List<BookmarkedArticles> bookmarks = bmrepo.findAll();
-			List<String> bkmark = new ArrayList<>();
-			if(bookmarks!=null)bookmarks.stream().forEach
-				(x-> bkmark.add(x.getTitle()));
+		public ResponseEntity<?> getbmpref(HttpServletRequest request) {
+			UserCredential user = finduser(request);
+			List<BookmarkedArticles> bookmarks = bmrepo.findByUser(user);
+
 			Map<String,List<?>> bmpref = new HashMap<String,List<?>>();
 			bmpref.put("bookmarks", bookmarks);	
 			return new ResponseEntity<Map<String, List<?>>>(bmpref, HttpStatus.OK);
@@ -185,15 +233,12 @@ public class NewsController {
 		
 		List<LikedArticle> likes = larepo.findByUser(user);
 		List<DislikedArticle> dislikes = darepo.findByUser(user);
-		List<String> like = new ArrayList<>();
-		List<String> dislike = new ArrayList<>();
-		if(likes!=null)likes.stream().forEach(x-> like.add(x.getTitle()));
-		if(dislikes!=null)dislikes.stream().forEach(x-> dislike.add(x.getTitle()));
-		Map<String,List<String>> pref = new HashMap<String,List<String>>();
-		pref.put("likes", like);
-		pref.put("dislikes", dislike);
 		
-		return new ResponseEntity<Map<String,List<String>>>(pref,HttpStatus.OK);
+		Map<String,List<?>> pref = new HashMap<String,List<?>>();
+		pref.put("likes", likes);
+		pref.put("dislikes", dislikes);
+		
+		return new ResponseEntity<Map<String,List<?>>>(pref,HttpStatus.OK);
 	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -204,8 +249,13 @@ public class NewsController {
 		BookmarkedArticles bookmarked = bmrepo.findByUserAndTitle(user,article.getTitle());
 		
 		if(bookmarked==null) {
+<<<<<<< HEAD
 			bmrepo.saveAndFlush(new BookmarkedArticles(article.getTitle(),article.getUrl(),article.getDescription(), article.getUrlToImage(),
 					 user, article.getPublishedAt()));}
+=======
+			bmrepo.saveAndFlush(new BookmarkedArticles(article.getTitle(), 
+					article.getUrl(),article.getUrlToImage(), user));}
+>>>>>>> 3f0a9427a4eaa1bfe6b46f9adca87975e62956e9
 		else {
 			bmrepo.delete(bookmarked);
 		}
@@ -255,7 +305,12 @@ public class NewsController {
 			
 		} 
 		if(like ==null) {
+<<<<<<< HEAD
 		larepo.saveAndFlush(new LikedArticle(article.getTitle(),article.getDescription(),article.getUrl(),user,article.getUrlToImage()));}
+=======
+		larepo.saveAndFlush(new LikedArticle(article.getTitle(),article.getUrlToImage(),
+				article.getUrl(),article.getDescription(),user));}
+>>>>>>> 3f0a9427a4eaa1bfe6b46f9adca87975e62956e9
 		else {
 			larepo.delete(like);
 		}
@@ -284,7 +339,12 @@ public class NewsController {
 		DislikedArticle dislike = darepo.findByUserAndTitle(user,article.getTitle());
 		LikedArticle like = larepo.findByUserAndTitle(user,article.getTitle());
 		if(dislike ==null) {
+<<<<<<< HEAD
 		darepo.saveAndFlush(new DislikedArticle(article.getTitle(),article.getDescription(),article.getUrl(),user,article.getUrlToImage()));}
+=======
+		darepo.saveAndFlush(new DislikedArticle(article.getTitle(),article.getUrlToImage(),
+				article.getUrl(),article.getDescription(),user));}
+>>>>>>> 3f0a9427a4eaa1bfe6b46f9adca87975e62956e9
 		else {
 			darepo.delete(dislike);
 		}	
@@ -292,7 +352,53 @@ public class NewsController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
+	@GetMapping(path="/category")
+	public List<CategoryJson> getCategories(HttpServletRequest request){
+		String email = finduser(request).getEmail();
+		HashMap<String, Boolean> map = cService.getAllCategoriesByUser(email);
+		List<CategoryJson> list = new ArrayList<>();
+		for(String s : map.keySet()) {
+			CategoryJson cj = new CategoryJson(s, map.get(s));
+			list.add(cj);
+		}
+		return list;
+	}
 	
+//	@PostMapping(path="/category")
+//	public ResponseEntity<Void> postCategories(HttpServletRequest request, @RequestBody List<CategoryJson> res){
+//		System.out.println(res);
+//		return new ResponseEntity<Void>(HttpStatus.OK);
+//	}
+	
+	@PostMapping(path = "/category")
+	public ResponseEntity<Void> postCategories(HttpServletRequest request, @RequestBody List<CategoryJson> res) {
+		System.out.println(res);
+		UserCredential user = finduser(request);
+		if(res==null) {
+			List<Category> categorys=cService.getAllCategories();
+			for (Category a: categorys) {
+				user.getCats().add(a);
+			}
+		}else {
+		for (CategoryJson a : res) {
+			Category category = cService.finCategoryByName(a.getName());
+			if (a.isChecked() == true && !user.getCats().contains(category)) {
+
+				user.getCats().add(category);
+			} else if (a.isChecked() == false && user.getCats().contains(category)) {
+				user.getCats().remove(category);
+			}
+		}
+		}
+		
+		uService.save(user);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	@GetMapping(path = "/admin/category")
+	public List<Category> getAdmincategory() {
+		return cService.getAllCategories();
+	}
 /////////////////////////////Private Methods///////////////////////////////////////
 
 	private List<Articles> mlfunction(List<LikedArticle> llist, List<DislikedArticle> dlist) {
@@ -313,13 +419,13 @@ public class NewsController {
 	          List<String> dislikes = new ArrayList<>();
 	          alist.stream()
 	          		.forEach(x-> {
-	          			titles.add(x.getTitle());
+	          			titles.add(x.getTitle()+" "+x.getDescription()==null? "":x.getDescription());
 	  	          			});
 	         if(llist!=null) {
 	          llist.stream()
-	          		.forEach(x-> likes.add(x.getTitle()));}
+	          		.forEach(x-> likes.add(x.getTitle()+" "+x.getDescription()==null? "":x.getDescription()));}
 	         if(dlist!=null) {
-	      	   dlist.stream().forEach(x-> dislikes.add(x.getTitle()));
+	      	   dlist.stream().forEach(x-> dislikes.add(x.getTitle()+" "+x.getDescription()==null? "":x.getDescription()));
 	         }
 	          
 	          ldlike.setTitles(titles);
@@ -339,7 +445,6 @@ public class NewsController {
 	          InputStream is = conn.getInputStream();
 	          MLJson result = mapper.readValue(is, MLJson.class);
 	         
-	          System.out.println(result.getResult());
 	          System.out.println(result.getResult().size());
 	          //disconnect from url connection
 	          conn.disconnect();

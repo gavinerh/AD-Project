@@ -10,11 +10,11 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="108dp"
         android:fontFamily="@font/zenkurenaido"
         android:text="@string/app_name"
-        android:textSize="60sp"
         android:textColor="@color/black"
+        android:textSize="60sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,12 +25,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:text="@string/signUp"
-        android:textSize="20sp"
+        android:text="@string/createAcct"
         android:textColor="@color/black"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@id/reg_emailinput"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.162"
+        app:layout_constraintHorizontal_bias="0.258"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title" />
 
@@ -48,39 +48,41 @@
 
     <EditText
         android:id="@+id/reg_passwordinput"
-        android:hint="@string/password"
-        android:textSize="20sp"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:hint="@string/password"
         android:inputType="textPassword"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toTopOf="@id/reg_checkpassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/reg_emailinput"
-        app:layout_constraintBottom_toTopOf="@id/reg_checkpassword"/>
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/reg_emailinput" />
 
     <EditText
         android:id="@+id/reg_checkpassword"
-        android:hint="@string/confirmPassword"
-        android:textSize="20sp"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="@string/confirmPassword"
         android:inputType="textPassword"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/reg_passwordinput"
-        app:layout_constraintBottom_toTopOf="@id/registerBtn"/>
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/reg_passwordinput" />
 
     <Button
         android:id="@+id/registerBtn"
-        android:textSize="20sp"
-        android:text="@string/signUp"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/signUp"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/reg_checkpassword" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

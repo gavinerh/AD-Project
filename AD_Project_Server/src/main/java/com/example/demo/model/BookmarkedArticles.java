@@ -1,6 +1,11 @@
 package com.example.demo.model;
 
+<<<<<<< HEAD
 import javax.persistence.CascadeType;
+=======
+import java.util.Collection;
+
+>>>>>>> 3f0a9427a4eaa1bfe6b46f9adca87975e62956e9
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,7 +24,11 @@ public class BookmarkedArticles {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+	@Column(length=512)
 	private String title;
+	@Column(length=1000)
+	private String imageurl;
+	@Column(length=512)
 	private String url;
 	@Column(length=512)
 	private String description;		
@@ -29,10 +38,8 @@ public class BookmarkedArticles {
 	private Source source;	
 	private String publishedAt;
 	@ManyToOne
-//	@JoinColumns({
-//		@JoinColumn(name="user_email", referencedColumnName="EMAIL")	
-//	})
 	private UserCredential user;
+<<<<<<< HEAD
 //	
 //	private String userEmail;
 //	public BookmarkedArticles(String title, String url, String userEmail) {
@@ -48,5 +55,13 @@ public class BookmarkedArticles {
 		this.UrlToImage = UrlToImage;
 		this.description =description;
 	
+=======
+
+	public BookmarkedArticles(String title, String url,String imageurl, UserCredential user) {
+		this.title=title;
+		this.url=url;
+		this.user=user;
+		this.imageurl=imageurl;
+>>>>>>> 3f0a9427a4eaa1bfe6b46f9adca87975e62956e9
 	}
 }

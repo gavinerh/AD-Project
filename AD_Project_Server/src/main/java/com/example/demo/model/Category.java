@@ -12,23 +12,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.example.demo.model.dto.CategoryDto;
+
 @Entity
-public class Category implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class Category {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	private String name;
 	
-	@ManyToMany(mappedBy="cats", fetch = FetchType.EAGER)
-	private Collection<UserCredential> users;
+//	@ManyToMany(mappedBy="cats", fetch = FetchType.LAZY)
+//	private Collection<UserCredential> users;
 	
 	public Category() {
 		super();
-		users = new ArrayList<>();
+		//users = new ArrayList<>();
 	}
 
 	public Category(String name) {
@@ -52,14 +50,20 @@ public class Category implements Serializable {
 		this.name = name;
 	}
 
-	public Collection<UserCredential> getUsers() {
-		return users;
-	}
-
-	public void setUsers(Collection<UserCredential> users) {
-		this.users = users;
+//	public Collection<UserCredential> getUsers() {
+//		return users;
+//	}
+//
+//	public void setUsers(Collection<UserCredential> users) {
+//		this.users = users;
+//	}
+	public CategoryDto toDto() {
+		return new CategoryDto(this.id, this.name, false);
 	}
 	
+	public static Category fromDto(CategoryDto dto) {
+		return new Category(dto.getName());
+	}
 	
 	
 }

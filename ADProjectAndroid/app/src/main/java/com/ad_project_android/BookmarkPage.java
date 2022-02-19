@@ -14,11 +14,21 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+//=======
+//import androidx.appcompat.app.AppCompatActivity;
+//
+//import android.content.SharedPreferences;
+//import android.os.Bundle;
+//>>>>>>> Stashed changes
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ad_project_android.DataService.NewsService;
 import com.ad_project_android.adapters.BookmarkAdapter;
+//<<<<<<< Updated upstream
 import com.ad_project_android.model.Bookmark;
 import com.ad_project_android.model.NewsObject;
 import com.google.gson.Gson;
@@ -33,6 +43,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+//=======
+//import com.ad_project_android.adapters.LikeDislikeAdapter;
+//import com.ad_project_android.model.Bookmark;
+//
+//import java.util.ArrayList;
+//import java.util.List;
+//import java.util.Map;
+//>>>>>>> Stashed changes
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,23 +60,62 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 //BookmarkPage Page
 public class BookmarkPage extends AppCompatActivity {
-    BookmarkAdapter bmadapter;
-    List<Bookmark> bookmarks= new ArrayList<>();
+    public static final String BOOK_MARK = "BOOKMARK";
+    private ArrayList<File> listOfBMFiles = new ArrayList<>();
+    private List<Bookmark> bms = new ArrayList<>();
+    private ArrayList<Bookmark> dynamicbms = new ArrayList<>();
+
+    BookmarkAdapter  bmadapter;
+    TextView bmtxt;
     String tokenString;
 
+    private BroadcastReceiver bmreceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            File bmfile = (File) intent.getSerializableExtra("BMFILE");
+            Bookmark bm = (Bookmark) intent.getSerializableExtra(BOOK_MARK);
+            if(bmfile!=null){
+            Bitmap bitmap = BitmapFactory.decodeFile(bmfile.getAbsolutePath());
+            bm.setBitmap(bitmap);}
+            if(bm!=null){
+            dynamicbms.add(bm);
+            bmadapter.notifyDataSetChanged();}
+        }
+    };
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(bmreceiver, new IntentFilter(MyNewsService.NOTIFICATION));
+        Log.d("Bookmarks onResume",""+bms.size());
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(bmreceiver);
+        Log.d("Bookmarks onPause",""+bms.size());
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookmarked);
+        bmtxt = findViewById(R.id.bm_blankMsg);
+        bmtxt.setVisibility(View.GONE);
         populateTokenString();
         getBMPreference();
     }
+    @Override
+    protected void onDestroy() {
+        bms.clear();
+        super.onDestroy();
+
+    }
+
     //in case cancel unbookmark action, save article
     public void saveBm(Bookmark bkmark, int preference){
         NewsService newsService = getNewsServiceInstance();
         NewsObject newsObject = new NewsObject();
         newsObject.setTitle(bkmark.getTitle());
-        Log.d("News Articles:",""+bookmarks.size());
+
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
         String zt = ZonedDateTime.now().format(dateTimeFormatter);
         newsObject.setPublishedAt(zt);
@@ -113,7 +170,7 @@ public class BookmarkPage extends AppCompatActivity {
         }
         return email;
     }
-    //build page linking to server
+
     private NewsService getNewsServiceInstance() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8080/")
@@ -157,11 +214,20 @@ public class BookmarkPage extends AppCompatActivity {
                         bm.stream().forEach(x->{
                             Bookmark b = new Gson().fromJson
                                     (new Gson().toJson(x), Bookmark.class);
-                            bookmarks.add(b);
+                            bms.add(b);
                         });
                     }
-                    Log.d("Bookmarks onCreate",""+bookmarks.size());
-                    setbmadapter();
+                    Log.d("Bookmarks onCreate",""+bms.size());
+                    if(bms.size()>0){
+                        initFilesList();
+                        setBMadapter();
+                        populateBMAdapter();
+                    }
+                    else{
+                        bmtxt.setVisibility(View.VISIBLE);
+//                        TextView bmtitle = findViewById(R.id.bookmarkTitle);
+//                        bmtitle.setVisibility(View.INVISIBLE);
+                    }
                 }
                 else{
                     Toast.makeText(BookmarkPage.this,"(BM) Server error, Try again later!",Toast.LENGTH_SHORT).show();
@@ -175,12 +241,49 @@ public class BookmarkPage extends AppCompatActivity {
         });
     }
     //set page using bookmark adapter
-    private void setbmadapter(){
+    private void setBMadapter() {
+//      private void setBMadapter(List<Bookmark> bookMarks) {
         ListView listView = findViewById(R.id.listView);
+        //set empty page msg
+        TextView emptyView = findViewById(R.id.bm_blankMsg);
+        listView.setEmptyView(emptyView);
         if (listView != null) {
             bmadapter = new BookmarkAdapter(
-                    this, bookmarks,this);
+                    this, dynamicbms,this);
+            bmadapter.setBms(dynamicbms);
             listView.setAdapter(bmadapter);
         }
     }
+
+    public void launchwebview(String url){
+        Intent intent = new Intent(this, WebViewActivity.class);
+        intent.putExtra(MainActivity.EXTERNAL_URL, url);
+        startActivity(intent);
+    }
+    private void populateBMAdapter(){
+        for(int i=0; i<bms.size(); i++){
+            startService(bms.get(i), listOfBMFiles.get(i));
+        }
+    }
+    private void startService(Bookmark bookMark, File bmfile){
+        Intent intent = new Intent(getApplicationContext(), MyNewsService.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(BOOK_MARK, bookMark);
+        bundle.putSerializable("BMFILE", bmfile);
+        intent.putExtra(BOOK_MARK, bundle);
+        startService(intent);
+    }
+    private void initFilesList(){
+        for(int i=0; i<bms.size(); i++){
+            String filename = "bm_image";
+            filename += String.format("%s", i);
+            File f = initFile(filename);
+            listOfBMFiles.add(f);
+        }
+    }
+    private File initFile(String filename){
+        File f = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        return new File(f, filename);
+    }
+
 }
