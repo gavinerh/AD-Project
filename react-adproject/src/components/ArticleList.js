@@ -187,10 +187,6 @@ export default class ArticleList extends Component {
                     })
                 }
             });
-
-
-
-
     }
 
     render() {
@@ -267,12 +263,12 @@ export default class ArticleList extends Component {
                                                             </button>
                                                         </div>
                                                         <div className="me-1">
-                                                            <button class="py-1 mb-1 btn btn-custom btn-sm btn-outline-dark" id="dropdown09" data-bs-toggle="dropdown"
+                                                            <button className="py-1 mb-1 btn btn-custom btn-sm btn-outline-dark" id="dropdown09" data-bs-toggle="dropdown"
                                                                 aria-expanded="false"><svg className="bi mx-1" width="1em" height="1em">
                                                                     <use xlinkHref="#link" />
                                                                 </svg>
                                                                 Share</button>
-                                                            <ul class="dropdown-menu" aria-labelledby="dropdown09">
+                                                            <ul className="dropdown-menu" aria-labelledby="dropdown09">
                                                                 <li><FacebookShareButton url={url}
                                                                     quote={title}
                                                                     hashtag={"#newsbook"}
