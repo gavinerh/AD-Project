@@ -84,7 +84,7 @@ function UserDetails() {
                     {!isloading ?
                         <div className="col-md-6">
                             <h4 className="mb-3">My account</h4>
-                            <form>
+                            <form onSubmit={submitHandler}>
                                 <div className="row g-3">
                                     <div className="col-12">
                                         <label htmlFor="email" className="form-label">Email</label>
@@ -93,7 +93,7 @@ function UserDetails() {
 
                                     <div className="col-12">
                                         <label htmlFor="password" className="form-label">Password</label>
-                                        <input type="password" className="form-control" id="password" value={userCredential.password || ""} onChange={passwordChangeHandler} required />
+                                        <input type="password" className="form-control" id="password" onChange={passwordChangeHandler} required />
                                         {userCredential.error && <span className="fw-bold text-danger">{userCredential.error}</span>}
                                     </div>
 
@@ -107,7 +107,7 @@ function UserDetails() {
                                         <input type="text" className="form-control" id="phone" value={userCredential.phone || ""} onChange={phoneChangeHandler} />
                                     </div>
 
-                                    <button className="btn btn-primary" type="submit" onClick={submitHandler}>Update</button>
+                                    <button className="btn btn-primary" type="submit">Update</button>
                                 </div>
                             </form>
                         </div>
