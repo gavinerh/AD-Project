@@ -119,21 +119,22 @@ function MainPage() {
                       Bookmark
                     </span></Link>
                 </li>
-                <li className="nav-item">
-                  <span className="nav-link link-dark">
-                    <svg className="bi me-2" width="16" height="16">
-                      <use xlinkHref="#hand-thumbs-up" />
-                    </svg>
-                    <Link to="/main/liked" className="text-decoration-none text-dark">Like</Link>
-                  </span>
-                  </li>
                 <li className="nav-item grey-link" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
-                  <Link to="/main/bookmark" className="text-decoration-none text-dark">
+                  <Link to="/main/liked" className="text-decoration-none text-dark">
                     <span className="nav-link link-dark">
                       <svg className="bi me-2" width="16" height="16">
                         <use xlinkHref="#hand-thumbs-up" />
                       </svg>
                       Like
+                    </span></Link>
+                </li>
+                <li className="nav-item grey-link" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+                  <Link to="/main/disliked" className="text-decoration-none text-dark">
+                    <span className="nav-link link-dark">
+                      <svg className="bi me-2" width="16" height="16">
+                        <use xlinkHref="#hand-thumbs-down" />
+                      </svg>
+                      Dislike
                     </span></Link>
                 </li>
                 
@@ -143,10 +144,11 @@ function MainPage() {
                     <svg className="bi me-2" width="16" height="16">
                       <use xlinkHref="#people-circle" />
                     </svg>
-                    <Link to="/main/dislike" className="text-decoration-none text-dark">Dislike</Link>
+                
                     {username}
                   </span>
                 </li>
+
                 {isAdmin && <li className="nav-item grey-link" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
                   <Link to="/main/admincategory" className="text-decoration-none text-dark">
                     <span className="nav-link link-dark">
