@@ -30,7 +30,7 @@ export default class ArticleList extends Component {
             keyword: '',
             sortBy: '',
             displayComment: false,
-            IsArticleLikedd: []
+            IsArticleLikedd: false
         };
     }
 
@@ -193,6 +193,7 @@ export default class ArticleList extends Component {
 
     }
 
+
     render() {
         const { isLoading, articles } = this.state;
         return (
@@ -203,7 +204,12 @@ export default class ArticleList extends Component {
                         {!isLoading ? (
                             articles.map(article => {
                                 const { sourceid, id, sourcename, title, description, url, urlToImage, prettytime, publishedAt } = article;
-                                const IsArticleLikedd = true;
+                                const [likedd, setlikedd] = React.useState(null);
+                                ArticleService.IsArticleLiked(article).then((response)=>{
+                                    setLikedd(response.data)
+                                });
+                                
+                               
                                 return (
                                     <div className="container px-3 pt-3" key={sourceid, id, title}>
                                         {/* article icons */}
@@ -298,7 +304,7 @@ export default class ArticleList extends Component {
                                                         </div>
                                                         
                                                         <div className="me-1">
-                                                            {IsArticleLikedd?(
+                                                            {likedd?(
                                                             <button className="py-1 mb-1 btn btn-custom btn-sm btn-outline-success active" type="submit" data-bs-toggle="button"
                                                                 onClick={() => this.onLikeClickListener(article)}>
                                                                 <svg className="bi mx-1" width="1em" height="1em">
