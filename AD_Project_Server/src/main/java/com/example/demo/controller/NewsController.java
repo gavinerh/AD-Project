@@ -72,6 +72,8 @@ public class NewsController {
 	JwtUtil jwtUtil;
 	List<Articles> alist = new ArrayList<Articles>();
 	
+	//testing
+	
 	
 	
 	//For WEB TEMPORARY
