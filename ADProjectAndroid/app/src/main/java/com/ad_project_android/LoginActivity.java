@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if((pressTime+1000)>System.currentTimeMillis()){
+        if((pressTime+1500)>System.currentTimeMillis()){
             toast.cancel();
             super.onBackPressed();
             return;

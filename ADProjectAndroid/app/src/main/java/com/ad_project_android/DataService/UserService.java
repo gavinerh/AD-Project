@@ -17,7 +17,7 @@ public interface UserService {
     @POST("account/authenticate")
     Call<TokenJWT> authenticateUser(@Body User user);
 
-    @POST("account/register")
+    @POST("account/registerandroid")
     Call<Void> registerUser(@Body Map user);
 
     @GET("account/{email}")

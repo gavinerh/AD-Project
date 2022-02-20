@@ -31,6 +31,7 @@ import com.ad_project_android.adapters.BookmarkAdapter;
 //<<<<<<< Updated upstream
 import com.ad_project_android.model.Bookmark;
 import com.ad_project_android.model.NewsObject;
+import com.ad_project_android.services.Logout;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -123,7 +124,7 @@ public class BookmarkPage extends AppCompatActivity {
         Call<Void> call = null;
         if (preference ==2) {
             String email = checkEmail();
-            call =newsService.saveBookmark(newsObject, email, tokenString);
+            call =newsService.saveBookmark(newsObject,tokenString);
         }
         call.enqueue(new Callback<Void>() {
             @Override
@@ -135,6 +136,9 @@ public class BookmarkPage extends AppCompatActivity {
                     bms.remove(bkmark);
                     bmadapter.setBms(bms);
                     bmadapter.notifyDataSetChanged();
+                }
+                else if(response.code()==401){
+                    Logout.logout(BookmarkPage.this);
                 }
                 else{
                     Toast.makeText(BookmarkPage.this,
@@ -228,6 +232,9 @@ public class BookmarkPage extends AppCompatActivity {
 //                        TextView bmtitle = findViewById(R.id.bookmarkTitle);
 //                        bmtitle.setVisibility(View.INVISIBLE);
                     }
+                }
+                else if(response.code()==401){
+                    Logout.logout(BookmarkPage.this);
                 }
                 else{
                     Toast.makeText(BookmarkPage.this,"(BM) Server error, Try again later!",Toast.LENGTH_SHORT).show();

@@ -11,7 +11,7 @@ import java.util.Objects;
 public class Bookmark implements Serializable {
     private String title;
     private String url;
-    private String imageurl;
+    private String urlToImage;
     private Bitmap bitmap;
 
     public Bookmark(){}
@@ -22,7 +22,7 @@ public class Bookmark implements Serializable {
                     String imageurl, Bitmap bitmap){
         this.title = title;
         this.url=url;
-        this.imageurl=imageurl;
+        this.urlToImage=imageurl;
         this.bitmap = bitmap;
     }
 
@@ -41,11 +41,12 @@ public class Bookmark implements Serializable {
         this.url = url;
     }
 
-    public String getImageurl() {
-        return imageurl;
+    public String getUrlToImage() {
+        return urlToImage;
     }
-    public void setImageurl(String imageurl) {
-        this.imageurl = imageurl;
+
+    public void setUrlToImage(String urlToImage) {
+        urlToImage = urlToImage;
     }
 
     public Bitmap getBitmap() {

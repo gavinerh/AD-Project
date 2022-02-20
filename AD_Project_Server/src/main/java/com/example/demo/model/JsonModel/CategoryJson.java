@@ -2,11 +2,11 @@ package com.example.demo.model.JsonModel;
 
 public class CategoryJson {
 	private String name;
-	private boolean isChecked;
+	private boolean select;
 	public CategoryJson(String name, boolean isChecked) {
 		super();
 		this.name = name;
-		this.isChecked = isChecked;
+		this.select = isChecked;
 	}
 	public String getName() {
 		return name;
@@ -14,15 +14,16 @@ public class CategoryJson {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public boolean isChecked() {
-		return isChecked;
+	
+	public boolean isSelect() {
+		return select;
 	}
-	public void setChecked(boolean isChecked) {
-		this.isChecked = isChecked;
+	public void setSelect(boolean select) {
+		this.select = select;
 	}
 	@Override
 	public String toString() {
-		return "CategoryJson [name=" + name + ", isChecked=" + isChecked + "]";
+		return "CategoryJson [name=" + name + ", isChecked=" + select + "]";
 	}
 	
 	

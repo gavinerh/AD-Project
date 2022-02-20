@@ -101,6 +101,25 @@ public class AccountController {
 		}
 		else{return new ResponseEntity<>(HttpStatus.CONFLICT);}
 	}
+///////For Android//////////
+@PostMapping(value="/registerandroid")
+public ResponseEntity<?> registerandroid(@RequestBody Map regist){
+	ObjectMapper map = new ObjectMapper();
+	UserCredential user = map.convertValue(regist.get("user"), UserCredential.class);
+	List<String> ca = map.convertValue(regist.get("categories"), new TypeReference<List<String>>() {});
+	List<Category> cats = new ArrayList<>();
+	ca.stream().forEach(x-> cats.add(crepo.findByName(x)));
+
+	if(uService.findUserByEmail(user.getEmail()) == null) {
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		user.setPassword(encoder.encode(user.getPassword()));
+		user.setUserType("normal");
+		user.setCats(cats);
+		uService.save(user);
+		return new ResponseEntity<>(HttpStatus.CREATED);
+	}
+	else{return new ResponseEntity<>(HttpStatus.CONFLICT);}
+}
 	
 	
 	@GetMapping("/{email}")

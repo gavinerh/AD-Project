@@ -1,6 +1,7 @@
 package com.ad_project_android.DataService;
 
 import com.ad_project_android.model.Bookmark;
+import com.ad_project_android.model.CategoryJson;
 import com.ad_project_android.model.NewsObject;
 
 import java.util.List;
@@ -29,6 +30,12 @@ public interface NewsService {
     @GET("newsapi/cats")
     Call<List<String>> getCats();
 
+    @GET("newsapi/category")
+    Call<List<CategoryJson>> getUserCats(@Header("Authorization") String token);
+
+    @POST("newsapi/category")
+    Call<Void> postUserCats(@Body List<CategoryJson> userprefs,@Header("Authorization") String token);
+
     @GET("newsapi/bookmark")
     Call<List<Bookmark>> getBookmark(@Header("Authorization") String token);
 
@@ -38,7 +45,6 @@ public interface NewsService {
     @POST("newsapi/dislike")
     Call<Void> postDislike(@Body NewsObject newsObject, @Header("Authorization") String token);
 
-  @POST("newsapi/bookmark/{email}")
-    Call<Void> saveBookmark(@Body NewsObject newsObject, @Path("email") String email,
-    @Header("Authorization") String token);
+  @POST("newsapi/bookmark")
+    Call<Void> saveBookmark(@Body NewsObject newsObject, @Header("Authorization") String token);
 }

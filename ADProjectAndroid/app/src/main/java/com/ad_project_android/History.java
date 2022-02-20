@@ -24,6 +24,7 @@ import com.ad_project_android.adapters.LikeDislikeAdapter;
 import com.ad_project_android.model.Bookmark;
 import com.ad_project_android.model.LikeDislike;
 import com.ad_project_android.model.NewsObject;
+import com.ad_project_android.services.Logout;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -120,6 +121,9 @@ public class History extends AppCompatActivity {
                     adapter.setLds(lds);
                     adapter.notifyDataSetChanged();
                 }
+                else if(response.code()==401){
+                    Logout.logout(History.this);
+                }
                 else{
                     Toast.makeText(History.this, "Server error, please update preference later",
                             Toast.LENGTH_SHORT).show();}
@@ -203,6 +207,10 @@ public class History extends AppCompatActivity {
                     else{   textView.setVisibility(View.VISIBLE);
 //                            ldtitle.setVisibility(View.INVISIBLE);
                     }
+                }
+                else if(response.code()==401){
+                    Toast.makeText(getApplicationContext(), "Please Log In Again!", Toast.LENGTH_SHORT).show();
+                    Logout.logout(History.this);
                 }
                 else{
                     Toast.makeText(History.this,"Server error, Try again later!",Toast.LENGTH_SHORT).show();
