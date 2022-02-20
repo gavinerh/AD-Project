@@ -274,26 +274,29 @@ export default class ArticleList extends Component {
                                                                 </svg>
                                                                 Share</button>
                                                             <ul className="dropdown-menu" aria-labelledby="dropdown09">
-                                                                <li><FacebookShareButton url={url}
+                                                                <li className="dropdown-item"><FacebookShareButton url={url}
                                                                     quote={title}
                                                                     hashtag={"#newsbook"}
                                                                     description={title}
                                                                     className="Demo__some-network__share-button">
-                                                                    <FacebookIcon size={32} round /> Share to Facebook
+                                                                    <FacebookIcon size={24} round />
+                                                                    <small>&nbsp;&nbsp;Share to Facebook</small>
                                                                 </FacebookShareButton></li>
-                                                                <li><TwitterShareButton url={url}
+                                                                <li className="dropdown-item"><TwitterShareButton url={url}
                                                                     quote={title}
                                                                     hashtag={"#newsbook"}
                                                                     description={title}
                                                                     className="Demo__some-network__share-button">
-                                                                    <TwitterIcon size={32} round /> Share to Twitter
+                                                                    <TwitterIcon size={24} round />
+                                                                    <small>&nbsp;&nbsp;Share to Twitter</small>
                                                                 </TwitterShareButton></li>
-                                                                <li><EmailShareButton url={url}
+                                                                <li className="dropdown-item"><EmailShareButton url={url}
                                                                     quote={title}
                                                                     hashtag={"#newsbook"}
                                                                     description={title}
                                                                     className="Demo__some-network__share-button">
-                                                                    <EmailIcon size={32} round /> Email
+                                                                    <EmailIcon size={24} round />
+                                                                    <small>&nbsp;&nbsp;Email</small>
                                                                 </EmailShareButton></li>
                                                             </ul>
                                                         </div>
