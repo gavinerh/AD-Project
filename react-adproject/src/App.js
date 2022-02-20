@@ -23,7 +23,7 @@ function App() {
           <AuthenticatedRoute path="/main" component={MainPage} />
           <AuthenticatedRoute path="/main/settings" component={Settings} />
           <AuthenticatedRoute path="/main/updateuser" component={UserDetails} />
-          <Route path="/main/settings/updateCategory" component={UpdateCategory} />
+          <Route path="/main/updateCategory" component={UpdateCategory} />
           <Route path='/main/ArticleList' component={ArticleList} />
 
           <Route path="*" component={PageError} />

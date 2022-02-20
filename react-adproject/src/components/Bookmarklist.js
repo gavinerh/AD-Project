@@ -43,7 +43,7 @@ export default class BookmarkList extends Component {
         window.location.reload(false);
     }
 
-    onBookmarkClickListener(article){
+    onBookmarkClickListener(article) {
         console.log(article);
         ArticlesService.bookmarkArticle(article);
         window.location.reload(false);
@@ -151,8 +151,7 @@ export default class BookmarkList extends Component {
                 }))
             )
             //change loading state to display data--> set active article
-            .then(articles =>
-                {
+            .then(articles => {
                 this.setState({
                     articles,
                     isLoading: false
@@ -182,10 +181,10 @@ export default class BookmarkList extends Component {
                     <div className='col-md-9 border-0 flex-column'>
                         {!isLoading ? (
                             articles.map(BookmarkedArticles => {
-                                const { id, sourcename, title, description, url, urlToImage} = BookmarkedArticles;
+                                const { id, sourcename, title, description, url, urlToImage } = BookmarkedArticles;
 
                                 return (
-                                    <div className="container px-3 pt-3" key={ id, url}>
+                                    <div className="container px-3 pt-3" key={id, url}>
                                         {/* article icons */}
                                         <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }}>
                                             <symbol id="hand-thumbs-up" viewBox="0 0 16 16">
@@ -236,57 +235,57 @@ export default class BookmarkList extends Component {
                                                             <svg className="bi " width="1em" height="1em">
                                                                 <use xlinkHref="#clock" />
                                                             </svg>
-                                                            
+
                                                         </small>
                                                         <p className="mb-0">{description}</p></a>
                                                     {/* buttons */}
                                                     <div className="d-flex justify-content-end mt-3">
-                    
+
                                                         <div className="me-1">
-                                                        <FacebookShareButton url={url}
-                                                                    quote={title}
-                                                                    hashtag={"#newsbook"}
-                                                                    description={title}
-                                                                    className="Demo__some-network__share-button"
-                                                        >
-                                                                    <FacebookIcon size={32} round /> 
-                                                                    </FacebookShareButton>
-                                                                    <TwitterShareButton url={url}
-                                                                    quote={title}
-                                                                    hashtag={"#newsbook"}
-                                                                    description={title}
-                                                                    className="Demo__some-network__share-button"
-                                                        >
-                                                                    <TwitterIcon size={32} round /> 
-                                                                    </TwitterShareButton>
-                                                                    <EmailShareButton url={url}
-                                                                    quote={title}
-                                                                    hashtag={"#newsbook"}
-                                                                    description={title}
-                                                                    className="Demo__some-network__share-button"
-                                                        >
-        
-                                                                    <EmailIcon size={32} round /> 
-                                                                    </EmailShareButton>
+                                                            <FacebookShareButton url={url}
+                                                                quote={title}
+                                                                hashtag={"#newsbook"}
+                                                                description={title}
+                                                                className="Demo__some-network__share-button"
+                                                            >
+                                                                <FacebookIcon size={32} round />
+                                                            </FacebookShareButton>
+                                                            <TwitterShareButton url={url}
+                                                                quote={title}
+                                                                hashtag={"#newsbook"}
+                                                                description={title}
+                                                                className="Demo__some-network__share-button"
+                                                            >
+                                                                <TwitterIcon size={32} round />
+                                                            </TwitterShareButton>
+                                                            <EmailShareButton url={url}
+                                                                quote={title}
+                                                                hashtag={"#newsbook"}
+                                                                description={title}
+                                                                className="Demo__some-network__share-button"
+                                                            >
+
+                                                                <EmailIcon size={32} round />
+                                                            </EmailShareButton>
                                                         </div>
-                                                        
-                                                        
+
+
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="d-flex justify-content-end">
                                                 <div>
-                                                    <button className="btn btn-custom btn-sm btn-outline-warning active" data-bs-toggle="button" type="submit" aria-pressed= "true" onClick={() => this.onBookmarkClickListener(BookmarkedArticles)}  >
+                                                    <button className="btn btn-custom btn-sm btn-outline-warning active" data-bs-toggle="button" type="submit" aria-pressed="true" onClick={() => this.onBookmarkClickListener(BookmarkedArticles)}  >
                                                         <svg className="bi" width="1.5em" height="1.5em">
                                                             <use xlinkHref="#bookmark" />
                                                         </svg>
                                                     </button>
-                                                </div>  
-                                         </div>
-                                        
+                                                </div>
+                                            </div>
+
                                         </div>
-                                        
-                                       
+
+
 
                                     </div>
                                 );
@@ -343,4 +342,4 @@ export default class BookmarkList extends Component {
             </React.Fragment>
         );
     }
-}
+} 
