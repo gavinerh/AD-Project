@@ -120,6 +120,7 @@ public class History extends AppCompatActivity {
                     lds.remove(like);
                     adapter.setLds(lds);
                     adapter.notifyDataSetChanged();
+                    if(lds.size()==0){textView.setVisibility(View.VISIBLE);}
                 }
                 else if(response.code()==401){
                     Logout.logout(History.this);
@@ -225,9 +226,9 @@ public class History extends AppCompatActivity {
     }
     private void setadaptor(){
         ListView listView = findViewById(R.id.listView);
-        //set empty page msg
-        TextView emptyView = findViewById(R.id.hist_blankMsg);
-        listView.setEmptyView(emptyView);
+        if(listView==null) {
+            textView.setVisibility(View.VISIBLE);
+        }
         if (listView != null) {
             adapter = new LikeDislikeAdapter(this,like,dislike,this);
             adapter.setLds(dynlds);
