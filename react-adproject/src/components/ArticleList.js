@@ -25,8 +25,6 @@ export default class ArticleList extends Component {
             comment: [],
             isLoading: true,
             errors: null,
-            //  isOn: false,
-            //  display: 'none',
             keyword: '',
             sortBy: '',
             displayComment: false,
@@ -61,27 +59,15 @@ export default class ArticleList extends Component {
     }
 
     onsubmitCommentListener(title) {
-        //      console.log(title);
         var comment = document.getElementById(title).value;
-        // console.log(comment);
-        // console.log(title);
         this.setState({
             displayComment: title
         })
     }
 
     onCommentListener(id, title) {
-
-
-
         var area = document.getElementById(id);
-        // console.log(area);
-        // console.log(area.style);
-
         area.style = "display:block";
-
-
-
         this.setState((prevState) => ({
             displayComment: !prevState.displayComment
         }))
@@ -335,7 +321,7 @@ export default class ArticleList extends Component {
                                             </div>
                                             <div className="d-flex justify-content-end">
                                                 <div>
-                                                    <button className="btn btn-custom btn-sm btn-outline-warning active" data-bs-toggle="button" type="submit" aria-pressed="true" onClick={() => this.onBookmarkClickListener(article)}  >
+                                                    <button className="btn btn-custom btn-sm btn-outline-warning" data-bs-toggle="button" type="submit" aria-pressed="true" onClick={() => this.onBookmarkClickListener(article)}  >
                                                         <svg className="bi" width="1.5em" height="1.5em">
                                                             <use xlinkHref="#bookmark" />
                                                         </svg>
