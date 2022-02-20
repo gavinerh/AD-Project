@@ -18,7 +18,7 @@ export default class ArticleList extends Component {
         this.onDislikeClickListener = this.onDislikeClickListener.bind(this);
         this.onCommentListener = this.onCommentListener.bind(this);
         this.checkArticleLike = this.checkArticleLike.bind(this);
-        this.onBookmarkClickListener = this.onBookmarkClickListener.bind(this);
+        this.onBookmarkClickListener =this.onBookmarkClickListener.bind(this);
 
         this.state = {
             articles: [],
@@ -30,7 +30,8 @@ export default class ArticleList extends Component {
             keyword: '',
             sortBy: '',
             displayComment: false,
-            IsArticleLikedd: false
+            Likedd: false
+           
         };
     }
 
@@ -48,16 +49,16 @@ export default class ArticleList extends Component {
         ArticleService.dislikeArticle(article);
     }
 
-    onBookmarkClickListener(article) {
+    onBookmarkClickListener(article){
         console.log(article);
         ArticlesService.bookmarkArticle(article);
     }
 
-    checkArticleLike(article) {
+    checkArticleLike(article){
         console.log(article)
         ArticlesService.IsArticleLiked(article)
-            .then(response => console.log(response))
-
+        .then(response=> console.log(response))
+        
     }
 
     onsubmitCommentListener(title) {
@@ -117,7 +118,8 @@ export default class ArticleList extends Component {
                     url: `${article.url}`,
                     urlToImage: `${article.urlToImage}`,
                     prettytime: `${article.prettytime}`,
-
+                 
+                   
 
                 }))
             )
@@ -164,7 +166,8 @@ export default class ArticleList extends Component {
                     url: `${article.url}`,
                     urlToImage: `${article.urlToImage}`,
                     prettytime: `${article.prettytime}`,
-                    publishedAt: `${article.publishedAt}`
+                    publishedAt: `${article.publishedAt}`,
+                    
                 }))
             )
             //change loading state to display data--> set active article
@@ -187,11 +190,16 @@ export default class ArticleList extends Component {
                     })
                 }
             });
+
+           
+
+
     }
 
 
     render() {
         const { isLoading, articles } = this.state;
+        
         return (
             <React.Fragment>
                 <div className="d-flex">
@@ -200,10 +208,10 @@ export default class ArticleList extends Component {
                         {!isLoading ? (
                             articles.map(article => {
                                 const { sourceid, id, sourcename, title, description, url, urlToImage, prettytime, publishedAt } = article;
-                                const [likedd, setlikedd] = React.useState(null);
-                                ArticleService.IsArticleLiked(article).then((response)=>{
-                                    setLikedd(response.data)
-                                });
+                               const Likedd = false;
+                                //  ArticleService.IsArticleLiked(article).then((response)=>{
+                                //     this.setState(Likedd,response.data)
+                                // });
                                 
                                
                                 return (
@@ -225,7 +233,10 @@ export default class ArticleList extends Component {
                                             </symbol>
 
                                             <symbol id="link" viewBox="0 0 16 16">
-                                                <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z" />
+                                                <path
+                                                    d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9c-.086 0-.17.01-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z" />
+                                                <path
+                                                    d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z" />
                                             </symbol>
 
                                             <symbol id="comment" viewBox="0 0 16 16">
@@ -269,39 +280,35 @@ export default class ArticleList extends Component {
                                                             </button>
                                                         </div>
                                                         <div className="me-1">
-                                                            <button className="py-1 mb-1 btn btn-custom btn-sm btn-outline-dark" id="dropdown09" data-bs-toggle="dropdown"
-                                                                aria-expanded="false"><svg className="bi mx-1" width="1em" height="1em">
-                                                                    <use xlinkHref="#link" />
-                                                                </svg>
-                                                                Share</button>
-                                                            <ul className="dropdown-menu" aria-labelledby="dropdown09">
-                                                                <li><FacebookShareButton url={url}
+                                                        <FacebookShareButton url={url}
                                                                     quote={title}
                                                                     hashtag={"#newsbook"}
                                                                     description={title}
-                                                                    className="Demo__some-network__share-button">
-                                                                    <FacebookIcon size={32} round /> Share to Facebook
-                                                                </FacebookShareButton></li>
-                                                                <li><TwitterShareButton url={url}
+                                                                    className="Demo__some-network__share-button"
+                                                        >
+                                                                    <FacebookIcon size={32} round /> 
+                                                                    </FacebookShareButton>
+                                                                    <TwitterShareButton url={url}
                                                                     quote={title}
                                                                     hashtag={"#newsbook"}
                                                                     description={title}
-                                                                    className="Demo__some-network__share-button">
-                                                                    <TwitterIcon size={32} round /> Share to Twitter
-                                                                </TwitterShareButton></li>
-                                                                <li><EmailShareButton url={url}
+                                                                    className="Demo__some-network__share-button"
+                                                        >
+                                                                    <TwitterIcon size={32} round /> 
+                                                                    </TwitterShareButton>
+                                                                    <EmailShareButton url={url}
                                                                     quote={title}
                                                                     hashtag={"#newsbook"}
                                                                     description={title}
-                                                                    className="Demo__some-network__share-button">
-                                                                    <EmailIcon size={32} round /> Email
-                                                                </EmailShareButton></li>
-                                                            </ul>
+                                                                    className="Demo__some-network__share-button"
+                                                        >
+        
+                                                                    <EmailIcon size={32} round /> 
+                                                                    </EmailShareButton>
                                                         </div>
-
+                                                        
                                                         <div className="me-1">
-<<<<<<< HEAD
-                                                            {likedd?(
+                                                            {Likedd?(
                                                             <button className="py-1 mb-1 btn btn-custom btn-sm btn-outline-success active" type="submit" data-bs-toggle="button"
                                                                 onClick={() => this.onLikeClickListener(article)}>
                                                                 <svg className="bi mx-1" width="1em" height="1em">
@@ -316,47 +323,30 @@ export default class ArticleList extends Component {
                                                                 </svg>
                                                                 Like
                                                             </button>)}
-=======
-                                                            {IsArticleLikedd ? (
-                                                                <button className="py-1 mb-1 btn btn-custom btn-sm btn-outline-success active" type="submit" data-bs-toggle="button"
-                                                                    onClick={() => this.onLikeClickListener(article)}>
-                                                                    <svg className="bi mx-1" width="1em" height="1em">
-                                                                        <use xlinkHref="#hand-thumbs-up" />
-                                                                    </svg>
-                                                                    Like
-                                                                </button>) : (
-                                                                <button className="py-1 mb-1 btn btn-custom btn-sm btn-outline-success " type="submit" data-bs-toggle="button"
-                                                                    onClick={() => this.onLikeClickListener(article)}>
-                                                                    <svg className="bi mx-1" width="1em" height="1em">
-                                                                        <use xlinkHref="#hand-thumbs-up" />
-                                                                    </svg>
-                                                                    Like
-                                                                </button>)}
->>>>>>> branch 'main' of https://github.com/gavinerh/AD-Project.git
                                                         </div>
                                                         <div>
-
-
-                                                            <button className="py-1 mb-1 btn btn-custom btn-sm btn-outline-danger" type="submit" data-bs-toggle="button" aria-pressed='false'
+                                                            
+                                                            
+                                                            <button className="py-1 mb-1 btn btn-custom btn-sm btn-outline-danger" type="submit" data-bs-toggle="button" aria-pressed= 'false'
                                                                 onClick={() => this.onDislikeClickListener(article)}>
                                                                 <svg className="bi mx-1" width="1em" height="1em">
                                                                     <use xlinkHref="#hand-thumbs-down" />
                                                                 </svg>
                                                                 Dislike
                                                             </button>
-
+                                                        
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="d-flex justify-content-end">
                                                 <div>
-                                                    <button className="btn btn-custom btn-sm btn-outline-warning active" data-bs-toggle="button" type="submit" aria-pressed="true" onClick={() => this.onBookmarkClickListener(article)}  >
+                                                    <button className="btn btn-custom btn-sm btn-outline-warning active" data-bs-toggle="button" type="submit" aria-pressed= "true" onClick={() => this.onBookmarkClickListener(article)}  >
                                                         <svg className="bi" width="1.5em" height="1.5em">
                                                             <use xlinkHref="#bookmark" />
                                                         </svg>
                                                     </button>
-                                                </div>
+                                                </div>  
                                             </div>
                                         </div>
                                         <div id={title + "comment"} style={{ display: "none" }}>
