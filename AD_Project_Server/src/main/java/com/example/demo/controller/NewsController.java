@@ -63,8 +63,6 @@ public class NewsController {
 	@Autowired
 	SourceRepo srepo;
 	@Autowired
-	CategoryService cService;
-	@Autowired
 	LikedArticleRepository larepo;
 	@Autowired
 	DislikedArticleRepository darepo;
@@ -349,6 +347,14 @@ public class NewsController {
 			list.add(cj);
 		}
 		return list;
+	}
+	
+	@GetMapping(path="/cats")
+	public List<String> getcats(){
+		List<Category> category = cService.getAllCategories();
+		List<String> cats = new ArrayList<>();
+		category.stream().forEach(x-> cats.add(x.getName()));
+		return cats;
 	}
 	
 //	@PostMapping(path="/category")
