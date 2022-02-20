@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.ad_project_android.DataService.UserService;
 import com.ad_project_android.model.User;
+import com.ad_project_android.services.Logout;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -52,7 +53,12 @@ public class AccountActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
                         if(response.code() == 200){
+                            Toast.makeText(AccountActivity.this,"Account Update Successful",Toast.LENGTH_SHORT);
                             finishActivity();
+                        }
+                        if(response.code()==401){
+                            Logout.logout(AccountActivity.this);
+                            finish();
                         }
                     }
 
@@ -86,6 +92,9 @@ public class AccountActivity extends AppCompatActivity {
                         // populate the form
                         User user = response.body();
                         populateEditText(user.getEmail(), user.getPhone(), user.getName());
+                    }
+                    if(response.code()==401){
+                        Logout.logout(AccountActivity.this);
                     }
                 }
 

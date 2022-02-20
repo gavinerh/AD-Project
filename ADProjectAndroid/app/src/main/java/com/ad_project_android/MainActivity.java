@@ -30,6 +30,7 @@ import com.ad_project_android.adapters.MyAdapter;
 import com.ad_project_android.model.Bookmark;
 import com.ad_project_android.model.NewsObject;
 import com.ad_project_android.services.ImageDownloader;
+import com.ad_project_android.services.Logout;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -185,14 +186,14 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
                         initFilesList();
                         setadaptor(dynamicNewsObject);
                         populateAdaptor();
-                    }else{
-                        logout();
+                    }
+                    else if(response.code()==401){
+                        Logout.logout(MainActivity.this);
                     }
                 }
                 @Override
                 public void onFailure(Call<Map> call, Throwable t) {
                     Toast.makeText(getApplicationContext(), "Server error, please try again later", Toast.LENGTH_SHORT).show();
-
                 }
             });
     }
@@ -261,13 +262,17 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
             call = newsService.postDislike(newsObject, tokenString);
         } else if (preference == 2) {
             String email = checkEmail();
-            call = newsService.saveBookmark(newsObject, email, tokenString);
+            call = newsService.saveBookmark(newsObject,tokenString);
         }
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if(response.code() == 200){
                     Toast.makeText(MainActivity.this, "Preference is registered", Toast.LENGTH_SHORT).show();
+                    adapter.notifyDataSetChanged();
+                }
+                else if(response.code()==401){
+                    Logout.logout(MainActivity.this);
                 }
             }
 
@@ -314,14 +319,6 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
             return;
         }
     }
-
-    private void logout(){
-        SharedPreferences pref = getSharedPreferences(LoginActivity.USER_CREDENTIAL, MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.clear();
-        editor.commit();
-        finish();
-    }
     public void setDialog(){
         // 1. Instantiate an Builder with its constructor
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -332,7 +329,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
-                logout();
+                Logout.logout(MainActivity.this);
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

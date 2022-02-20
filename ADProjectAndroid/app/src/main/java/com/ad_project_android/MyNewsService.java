@@ -98,7 +98,7 @@ public class MyNewsService extends IntentService {
 
     private void downloadBMImages(){
         // download images from received image url
-        ImageDownloader.downloadImage(bm.getImageurl(), file);
+        ImageDownloader.downloadImage(bm.getUrlToImage(), file);
     }
     private void notifyBMDownloadComplete(){
         Intent intent = new Intent(NOTIFICATION);

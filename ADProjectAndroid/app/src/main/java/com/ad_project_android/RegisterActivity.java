@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.ad_project_android.DataService.UserService;
 import com.ad_project_android.model.User;
+import com.ad_project_android.services.Logout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -100,7 +101,10 @@ public class RegisterActivity extends AppCompatActivity {
                     backToLogin();
                     return;
                 }
-                Toast.makeText(getApplicationContext(), "Email is already registered", Toast.LENGTH_SHORT).show();
+                else if(response.code()==401){
+                    Logout.logout(RegisterActivity.this);
+                }
+                else if(response.code()==409)Toast.makeText(getApplicationContext(), "Email is already registered", Toast.LENGTH_SHORT).show();
             }
 
             @Override

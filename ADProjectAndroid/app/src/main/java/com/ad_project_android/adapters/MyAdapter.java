@@ -143,14 +143,17 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
                 public void onClick(View view) {
                     if (likeBtn.isChecked()) {
                         likeonoff[rowpos] = true; //save state
+                        likes.add(myitems.get(pos).getTitle());
                         sendNewsObjectPosition(myitems.get(pos), 1);
                         if (dislikeBtn.isChecked()) {
                             dislikeBtn.setChecked(false);
                             dislikeonoff[rowpos] = false;
-                            sendNewsObjectPosition(myitems.get(pos), -1);
+                            dislikes.remove(myitems.get(pos).getTitle());
+                            //sendNewsObjectPosition(myitems.get(pos), -1);
                         }
                     } else if (!likeBtn.isChecked()) {
                         likeonoff[rowpos] = false;
+                        likes.remove(myitems.get(pos).getTitle());
                         sendNewsObjectPosition(myitems.get(pos), 1);
                     }
                 }
@@ -162,14 +165,17 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
                 public void onClick(View view) {
                     if (dislikeBtn.isChecked()) {
                         dislikeonoff[rowpos] = true;//save state
+                        dislikes.add(myitems.get(pos).getTitle());
                         sendNewsObjectPosition(myitems.get(pos), -1);
                         if (likeBtn.isChecked()) {
                             likeBtn.setChecked(false);
                             likeonoff[rowpos] = false;
-                            sendNewsObjectPosition(myitems.get(pos), 1);
+                            likes.remove(myitems.get(pos).getTitle());
+                            //sendNewsObjectPosition(myitems.get(pos), 1);
                         }
                     } else if (!dislikeBtn.isChecked()) {
                         dislikeonoff[rowpos] = false;// save state
+                        dislikes.remove(myitems.get(pos).getTitle());
                         sendNewsObjectPosition(myitems.get(pos), -1);
                     }
                 }
@@ -191,9 +197,11 @@ public class MyAdapter extends ArrayAdapter<Object> implements AdapterInterface 
                 public void onClick(View view) {
                     if (bookmarkBtn.isChecked()) { //check if already bookmarked
                         bookmarkonoff[rowpos] = true;
+                        bms.add(myitems.get(pos).getTitle());
                         sendNewsObjectPosition(myitems.get(pos), 2);
                     } else if (!bookmarkBtn.isChecked()) { //unbookmark
                         bookmarkonoff[rowpos] = false;
+                        bms.remove(myitems.get(pos).getTitle());
                         sendNewsObjectPosition(myitems.get(pos), 2);
                     }
                 }

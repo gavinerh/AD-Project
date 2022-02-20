@@ -63,7 +63,7 @@ public class NewsController {
 	@Autowired
 	SourceRepo srepo;
 	@Autowired
-	CategoryRepo crepo;
+	CategoryService cService;
 	@Autowired
 	LikedArticleRepository larepo;
 	@Autowired
@@ -323,6 +323,9 @@ public class NewsController {
 		UserCredential user = finduser(request);
 		DislikedArticle dislike = darepo.findByUserAndTitle(user,article.getTitle());
 		LikedArticle like = larepo.findByUserAndTitle(user,article.getTitle());
+		if(like!=null) {
+			larepo.delete(like);
+		}
 		if(dislike ==null) {
 
 		darepo.saveAndFlush(new DislikedArticle(article.getTitle(),article.getDescription(),article.getUrl(),user,article.getUrlToImage()));}
@@ -367,10 +370,10 @@ public class NewsController {
 		else {
 		for (CategoryJson a : res) {
 			Category category = cService.finCategoryByName(a.getName());
-			if (a.isChecked() == true && !user.getCats().contains(category)) {
+			if (a.isSelect() == true && !user.getCats().contains(category)) {
 
 				user.getCats().add(category);
-			} else if (a.isChecked() == false && user.getCats().contains(category)) {
+			} else if (a.isSelect() == false && user.getCats().contains(category)) {
 				user.getCats().remove(category);
 			}
 		}

@@ -47,6 +47,8 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 		.cors().and()
 		.authorizeHttpRequests().antMatchers("/account/authenticate").permitAll()
 		.antMatchers("/account/register").permitAll()
+		.antMatchers("/account/registerandroid").permitAll()
+		.antMatchers("/newsapi/cats").permitAll()
 		.anyRequest().authenticated()
 		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
