@@ -80,7 +80,9 @@ public class BookmarkPage extends AppCompatActivity {
             bm.setBitmap(bitmap);}
             if(bm!=null){
             dynamicbms.add(bm);
-            bmadapter.notifyDataSetChanged();}
+            bmadapter.notifyDataSetChanged();
+            if(bms.size()==0){bmtxt.setVisibility(View.VISIBLE);}
+            }
         }
     };
     @Override
@@ -251,9 +253,9 @@ public class BookmarkPage extends AppCompatActivity {
     private void setBMadapter() {
 //      private void setBMadapter(List<Bookmark> bookMarks) {
         ListView listView = findViewById(R.id.listView);
-        //set empty page msg
-        TextView emptyView = findViewById(R.id.bm_blankMsg);
-        listView.setEmptyView(emptyView);
+        if(listView == null) {
+            bmtxt.setVisibility(View.VISIBLE);
+        }
         if (listView != null) {
             bmadapter = new BookmarkAdapter(
                     this, dynamicbms,this);
