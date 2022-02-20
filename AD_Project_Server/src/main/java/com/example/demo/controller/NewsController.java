@@ -41,6 +41,7 @@ import com.example.demo.model.JsonModel.CategoryJson;
 import com.example.demo.model.JsonModel.MLJson;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.ArticlesService;
+import com.example.demo.service.CategoryService;
 import com.example.demo.service.NewsService;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -53,6 +54,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class NewsController {
 	@Autowired
 	UserService uService;
+	@Autowired
+	CategoryService cService;
 	@Autowired
 	BookmarkedArticlesRepository bmrepo;
 	@Autowired

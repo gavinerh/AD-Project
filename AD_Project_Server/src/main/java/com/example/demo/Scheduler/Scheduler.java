@@ -36,7 +36,7 @@ public class Scheduler {
 	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("h:mm:ss a");
 
 	//// RETRIEVE ARTICLES FROM API/////
-	@Scheduled(cron = "50 31 01 * * ?")
+	@Scheduled(cron = "00 15 09 * * ?")
 
 	public void scheduleTaskUsingCronExpression() {
 		
@@ -45,14 +45,17 @@ public class Scheduler {
 	    
 	    List<Articles> nlist = new ArrayList<>();
 	    List<Articles> aList = new ArrayList<>();
- 	    List<category> cats = Arrays.asList(category.values());
-		for(category s:cats) {
+ 	    List<Category> cats = crepo.findAll();
+		for(Category s:cats) {
 			//NewsSet ns = NewsService.getNewsHome(s.name(), null, null);
 			
-			aList = NewsService.getNewsByCountryCategory(s.name(), null);
-			/*
-			 * for (Articles a:aList) { a.setCategoty(s); }
-			 */
+			aList = NewsService.getNewsByCountryCategory(s.getName(), null);
+			
+			  for (Articles a:aList) 
+			  { 
+				  a.setCategory(s);; 
+			  }
+			 
 			nlist.addAll(aList);
 		}
 		System.out.println("Fetched Articles (size): "+nlist.size());
