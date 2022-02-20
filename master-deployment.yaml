@@ -1,0 +1,83 @@
+# mysql service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysqldb-service
+spec:
+  selector:
+    app: mysqldb
+  type: ClusterIP
+  ports:
+    - name: http
+      protocol: TCP
+      port: 3306
+      targetPort: 3306
+
+---
+# mysql deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysqldb
+spec:
+  selector:
+    matchLabels:
+      app: mysqldb
+  template:
+    metadata:
+      labels:
+        app: mysqldb
+    spec:
+      containers:
+        - name: mysqldb
+          image: mysql:5.7
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: MYSQL_DATABASE
+              value: adproject
+
+---
+# java service
+apiVersion: v1
+kind: Service
+metadata:
+  name: java-server-service
+spec:
+  selector:
+    app: java-server
+  type: NodePort
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30000
+
+---
+# java deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: java-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: java-server
+  template:
+    metadata:
+      labels:
+        app: java-server
+    spec:
+      containers:
+        - name: java-server
+          image: gavinerh/adproject-java
+          imagePullPolicy: Always
+          env:
+            - name: MYSQL_HOST
+              value: "mysqldb-service.default"
+        - name: python-ml
+          image: gavinerh/python-ml
