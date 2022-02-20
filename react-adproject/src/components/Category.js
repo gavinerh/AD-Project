@@ -3,6 +3,7 @@ import { useState } from "react";
 function Category(props) {
     const [category, setCategory] = useState(props.category)
 
+    console.log(props.category);
     function checkHandler(event) {
         let isChecked = category.checked;
         isChecked = !isChecked;
@@ -18,7 +19,7 @@ function Category(props) {
 
     return (
         <div className="form-check">
-            <input className="form-check-input" type="checkbox" id="flexCheckDefault" checked={category.checked} onChange={checkHandler} />
+            <input className="form-check-input" type="checkbox" id="flexCheckDefault" checked={category.select} onChange={checkHandler} />
             <label className="form-check-label" htmlFor="flexCheckDefault">{category.name}</label>
         </div>
 

@@ -2,12 +2,18 @@ import ArticleService from '../service/ArticlesService';
 import React, { Component, useEffect, useState } from 'react';
 import Category from './Category';
 import axios from 'axios';
+import { Link, Redirect } from 'react-router-dom';
 function UpdateCategory() {
     const [categories, setCategories] = useState([]);
 
     function formSubmitHandler(event) {
         event.preventDefault();
-        ArticleService.setCategories(categories);
+        ArticleService.setCategories(categories)
+        .then(response => {
+            if(response.status === 200){
+                // <Redirect to="/main" />
+            }
+        })
     }
 
     useEffect(() => {
@@ -43,7 +49,7 @@ function UpdateCategory() {
                             {categories.map(category1 => {
                                 return <Category key={category1.name} category={category1} onInputCheckHandler={inputCheckHandler} />
                             })}
-                            <button className="mt-3 btn btn-primary" type="submit">Submit</button>
+                            <button className="mt-3 btn btn-primary" type="submit"><Link to="/main" style={{color: 'white', 'text-decoration': 'none'}}>Submit</Link></button>
                             {/* <input type='submit' /> */}
                         </form>
                     </div>
