@@ -63,8 +63,6 @@ public class NewsController {
 	@Autowired
 	SourceRepo srepo;
 	@Autowired
-	CategoryService cService;
-	@Autowired
 	LikedArticleRepository larepo;
 	@Autowired
 	DislikedArticleRepository darepo;
