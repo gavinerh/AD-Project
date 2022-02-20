@@ -22,12 +22,11 @@ public class BookmarkedArticles {
 	private Integer id;
 	@Column(length=512)
 	private String title;
-	@Column(length=1000)
-	private String imageurl;
 	@Column(length=512)
 	private String url;
 	@Column(length=512)
-	private String description;		
+	private String description;	
+	@Column(length=1000)
 	private String UrlToImage;
 	private String prettytime;
 	@ManyToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REMOVE}, fetch=FetchType.EAGER)
