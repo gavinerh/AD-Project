@@ -24,7 +24,7 @@ function UpdateCategory() {
             if (category.name === name) {
                 const updatedCategory = {
                     ...category,
-                    checked: ischecked,
+                    select: ischecked,
                 };
                 return updatedCategory;
             }

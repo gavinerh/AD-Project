@@ -14,33 +14,17 @@ export default class BookmarkList extends Component {
     constructor(props) {
         super(props);
         this.retrieveArticles = this.retrieveArticles.bind(this);
-        this.onLikeClickListener = this.onLikeClickListener.bind(this);
-        this.onCommentListener = this.onCommentListener.bind(this);
 
         this.state = {
             articles: [],
             isLoading: true,
             errors: null,
-            //  isOn: false,
-            //  display: 'none',
-            keyword: '',
-            sortBy: '',
-            displayComment: false,
+
         };
     }
 
     componentDidMount() {
         this.retrieveArticles();
-    }
-
-    onLikeClickListener(article) {
-        console.log(article);
-        ArticlesService.likeArticle(article);
-    }
-    onDislikeClickListener(article) {
-        console.log(article);
-        ArticleService.dislikeArticle(article);
-        window.location.reload(false);
     }
 
     onBookmarkClickListener(article) {
@@ -49,94 +33,6 @@ export default class BookmarkList extends Component {
         window.location.reload(false);
     }
 
-    onsubmitCommentListener(title) {
-        //      console.log(title);
-        var comment = document.getElementById(title).value;
-        // console.log(comment);
-        // console.log(title);
-        this.setState({
-            displayComment: title
-        })
-    }
-
-    onCommentListener(id, title) {
-
-
-
-        var area = document.getElementById(id);
-        // console.log(area);
-        // console.log(area.style);
-
-        area.style = "display:block";
-
-
-
-        this.setState((prevState) => ({
-            displayComment: !prevState.displayComment
-        }))
-
-    }
-
-    // set fnx to 'save' state of keyword
-    keywordChangeHandler = (e) => {
-        this.setState({
-            keyword: e.target.value,
-        })
-    }
-
-    //sorting articles handler
-    sortByInputHandler = (e) => {
-        this.setState({
-            sortBy: e.target.value
-        })
-    }
-
-    //on Submit use curr keyword to retrieve articles
-    // searchFormHandler = (e) => {
-    //     e.preventDefault();
-    //     ArticlesService.updateKeyword(this.state.keyword, this.state.sortBy)
-    //         .then(response =>
-    //             response.data.map(article => ({
-    //                 sourceid: `${article.source.sourceid}`,
-    //                 id: `${article.source.id}`,
-    //                 sourcename: `${article.source.name}`,
-    //                 author: `${article.author}`,
-    //                 title: `${article.title}`,
-    //                 description: `${article.description}`,
-    //                 url: `${article.url}`,
-    //                 imageurl: `${article.urlToImage}`,
-    //                 prettytime: `${article.prettytime}`
-
-    //             }))
-    //         )
-    //         //change loading state to display data--> set active article
-    //         .then(articles => {
-    //             this.setState({
-    //                 articles,
-    //                 isLoading: false,
-    //                 // keyword: '', //clear search field
-    //             });
-    //         })
-    //         .then(response => {
-    //             console.log("no error");
-    //             // console.log(response);
-    //         })
-    //         .catch(error => {
-    //             if (!AuthenticationService.checkJwtValidity()) {
-    //                 this.setState({
-    //                     isLoading: <div>
-    //                         <Modal />
-    //                     </div>
-    //                 })
-    //             } else {
-    //                 this.setState({
-    //                     isLoading: <p>Loading...</p>
-    //                 })
-    //             }
-    //         });
-    // }
-
-    //HOMEPAGE (TEMPORARY)
     retrieveArticles() {
         //using axios to request data
         ArticleService.getBookmarkArticles()
@@ -178,13 +74,13 @@ export default class BookmarkList extends Component {
             <React.Fragment>
                 <div className="d-flex">
                     {/* Articles column */}
-                    <div className='col-md-9 border-0 flex-column'>
+                    <div className='col-sm-12 col-lg-9 border-0 flex-column'>
                         {!isLoading ? (
                             articles.map(BookmarkedArticles => {
                                 const { id, sourcename, title, description, url, urlToImage } = BookmarkedArticles;
 
                                 return (
-                                    <div className="container px-3 pt-3" key={id, url}>
+                                    <div className="container px-3 pt-3 rounded-5" key={id, url}>
                                         {/* article icons */}
                                         <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }}>
                                             <symbol id="hand-thumbs-up" viewBox="0 0 16 16">
@@ -231,46 +127,7 @@ export default class BookmarkList extends Component {
                                             <div className="d-flex w-100 justify-content-between">
                                                 <div className="flex-fill">
                                                     <a href={url} target="_blank" rel="noopener noreferrer" className="text-decoration-none text-dark"><h5 className="mb-0">{title}</h5>
-                                                        <small className="opacity-75 py-1">{sourcename}&nbsp;&nbsp;
-                                                            <svg className="bi " width="1em" height="1em">
-                                                                <use xlinkHref="#clock" />
-                                                            </svg>
-
-                                                        </small>
-                                                        <p className="mb-0">{description}</p></a>
-                                                    {/* buttons */}
-                                                    <div className="d-flex justify-content-end mt-3">
-
-                                                        <div className="me-1">
-                                                            <FacebookShareButton url={url}
-                                                                quote={title}
-                                                                hashtag={"#newsbook"}
-                                                                description={title}
-                                                                className="Demo__some-network__share-button"
-                                                            >
-                                                                <FacebookIcon size={32} round />
-                                                            </FacebookShareButton>
-                                                            <TwitterShareButton url={url}
-                                                                quote={title}
-                                                                hashtag={"#newsbook"}
-                                                                description={title}
-                                                                className="Demo__some-network__share-button"
-                                                            >
-                                                                <TwitterIcon size={32} round />
-                                                            </TwitterShareButton>
-                                                            <EmailShareButton url={url}
-                                                                quote={title}
-                                                                hashtag={"#newsbook"}
-                                                                description={title}
-                                                                className="Demo__some-network__share-button"
-                                                            >
-
-                                                                <EmailIcon size={32} round />
-                                                            </EmailShareButton>
-                                                        </div>
-
-
-                                                    </div>
+                                                        <p className="py-1 mb-0">{description}</p></a>
                                                 </div>
                                             </div>
                                             <div className="d-flex justify-content-end">
@@ -282,61 +139,13 @@ export default class BookmarkList extends Component {
                                                     </button>
                                                 </div>
                                             </div>
-
                                         </div>
-
-
-
                                     </div>
                                 );
                             })
                         ) : (
                             <p>Loading articles...</p>
                         )}
-                    </div>
-
-                    Search bar
-                    <div className='col-md-3 d-none d-sm-none d-md-block flex-column'>
-                        <div className="container my-3">
-                            <div className='p-3 card card-cover bg-light rounded-5 shadow-sm'>
-                                <form onSubmit={this.searchFormHandler} >
-                                    <input type="keyword" value={this.state.keyword} onChange={this.keywordChangeHandler}
-                                        className="form-control mb-2" placeholder="Search..." aria-label="Search" />
-
-                                    {/* sort by */}
-                                    <hr />
-                                    <h5>Sort by</h5>
-                                    <div className="form-check" >
-                                        <label>
-                                            <input type="radio" name="popularity" value="popularity" className="form-check-input"
-                                                checked={this.state.sortBy === "popularity"}
-                                                onChange={this.sortByInputHandler} />
-                                            Popularity
-                                        </label>
-                                    </div>
-                                    <div className="form-check my-2" >
-                                        <label>
-                                            <input type="radio" name="publishedAt" value="publishedAt" className="form-check-input"
-                                                checked={this.state.sortBy === "publishedAt"}
-                                                onChange={this.sortByInputHandler} />
-                                            Most recent
-                                        </label>
-                                    </div>
-                                    <div className="form-check my-2" >
-                                        <label>
-                                            <input type="radio" name="relevancy" value="relevancy" className="form-check-input"
-                                                checked={this.state.sortBy === "relevancy"}
-                                                onChange={this.sortByInputHandler} />
-                                            Relevance
-                                        </label>
-                                    </div>
-                                    <button className="col-12 btn btn-secondary mt-2" type="submit">
-                                        Submit
-                                    </button>
-
-                                </form>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </React.Fragment>

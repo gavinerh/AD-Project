@@ -9,7 +9,7 @@ function Category(props) {
         setCategory((prev) => {
             return {
                 ...prev,
-                checked: event.target.checked
+                select: event.target.checked
             }
         })
         // console.log(category.name, category.checked);
@@ -18,7 +18,7 @@ function Category(props) {
 
     return (
         <div className="form-check">
-            <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked={category.checked} onChange={checkHandler} />
+            <input className="form-check-input" type="checkbox" id="flexCheckDefault" checked={category.checked} onChange={checkHandler} />
             <label className="form-check-label" htmlFor="flexCheckDefault">{category.name}</label>
         </div>
 

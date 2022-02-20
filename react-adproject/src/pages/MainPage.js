@@ -186,7 +186,7 @@ function MainPage() {
             </div >
           </div >
           {/* main container */}
-          < div className="col-md-9 ms-sm-auto col-lg-10 px-md-4" >
+          < div className="col-md-9 ms-sm-auto col-lg-10 px-md-4 pb-3" >
             <div>
               <Switch>
                 {routes.map((route, index) => (

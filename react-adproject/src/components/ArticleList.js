@@ -108,8 +108,8 @@ export default class ArticleList extends Component {
         ArticlesService.updateKeyword(this.state.keyword, this.state.sortBy)
             .then(response =>
                 response.data.map(article => ({
-                    sourceid: `${article.source.sourceid}`,
-                    id: `${article.source.id}`,
+                    sourceid: `${article.source.id}`,
+                    id: `${article.id}`,
                     sourcename: `${article.source.name}`,
                     author: `${article.author}`,
                     title: `${article.title}`,
@@ -155,8 +155,8 @@ export default class ArticleList extends Component {
             //once get response, map API endpoints to our props
             .then(response =>
                 response.data.map(article => ({
-                    sourceid: `${article.source.sourceid}`,
-                    id: `${article.source.id}`,
+                    sourceid: `${article.source.id}`,
+                    id: `${article.id}`,
                     sourcename: `${article.source.name}`,
                     author: `${article.author}`,
                     title: `${article.title}`,
@@ -200,12 +200,11 @@ export default class ArticleList extends Component {
                         {!isLoading ? (
                             articles.map(article => {
                                 const { sourceid, id, sourcename, title, description, url, urlToImage, prettytime, publishedAt } = article;
-                                const [likedd, setlikedd] = React.useState(null);
-                                ArticleService.IsArticleLiked(article).then((response)=>{
-                                    setLikedd(response.data)
-                                });
-                                
-                               
+                                //const [likedd, setlikedd] = React.useState(null);
+                                const likedd = false;
+
+
+
                                 return (
                                     <div className="container px-3 pt-3" key={sourceid, id, title}>
                                         {/* article icons */}
@@ -300,24 +299,7 @@ export default class ArticleList extends Component {
                                                         </div>
 
                                                         <div className="me-1">
-<<<<<<< HEAD
-                                                            {likedd?(
-                                                            <button className="py-1 mb-1 btn btn-custom btn-sm btn-outline-success active" type="submit" data-bs-toggle="button"
-                                                                onClick={() => this.onLikeClickListener(article)}>
-                                                                <svg className="bi mx-1" width="1em" height="1em">
-                                                                    <use xlinkHref="#hand-thumbs-up" />
-                                                                </svg>
-                                                                Like
-                                                            </button>):(
-                                                            <button className="py-1 mb-1 btn btn-custom btn-sm btn-outline-success " type="submit" data-bs-toggle="button"
-                                                                onClick={() => this.onLikeClickListener(article)}>
-                                                                <svg className="bi mx-1" width="1em" height="1em">
-                                                                    <use xlinkHref="#hand-thumbs-up" />
-                                                                </svg>
-                                                                Like
-                                                            </button>)}
-=======
-                                                            {IsArticleLikedd ? (
+                                                            {likedd ? (
                                                                 <button className="py-1 mb-1 btn btn-custom btn-sm btn-outline-success active" type="submit" data-bs-toggle="button"
                                                                     onClick={() => this.onLikeClickListener(article)}>
                                                                     <svg className="bi mx-1" width="1em" height="1em">
@@ -332,7 +314,6 @@ export default class ArticleList extends Component {
                                                                     </svg>
                                                                     Like
                                                                 </button>)}
->>>>>>> branch 'main' of https://github.com/gavinerh/AD-Project.git
                                                         </div>
                                                         <div>
 
