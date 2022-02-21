@@ -26,18 +26,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Repository.BookmarkedArticlesRepository;
-import com.example.demo.Repository.CategoryRepo;
 import com.example.demo.Repository.DislikedArticleRepository;
 import com.example.demo.Repository.LikedArticleRepository;
 import com.example.demo.Repository.SourceRepo;
+import com.example.demo.Scheduler.Scheduler;
 import com.example.demo.model.Articles;
 import com.example.demo.model.BookmarkedArticles;
 import com.example.demo.model.Category;
-import com.example.demo.model.Comment;
 import com.example.demo.model.DislikedArticle;
 import com.example.demo.model.LikedArticle;
 import com.example.demo.model.NewsSet;
-import com.example.demo.model.Source;
 import com.example.demo.model.UserCredential;
 import com.example.demo.model.JsonModel.CategoryJson;
 import com.example.demo.model.JsonModel.MLJson;
@@ -45,11 +43,10 @@ import com.example.demo.model.JsonModel.ReactJson;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.ArticlesService;
 import com.example.demo.service.CategoryService;
+import com.example.demo.service.FetchingService;
 import com.example.demo.service.NewsService;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import antlr.debug.NewLineListener;
 
 
 
@@ -74,6 +71,10 @@ public class NewsController {
 	@Autowired
 	JwtUtil jwtUtil;
 	List<Articles> alist = new ArrayList<Articles>();
+	@Autowired
+	Scheduler sched;
+	@Autowired
+	FetchingService fService;
 	
 	//testing
 	
@@ -110,6 +111,9 @@ public class NewsController {
 	 @RequestMapping(value = "/") 
 	  public List<ReactJson> HomePage(HttpServletRequest request) {
 		 // NewsSet ns =NewsService.getNewsHome("technology", null, null);
+		 if(aService.findAll().isEmpty()) {
+			 fService.populateArticles();
+		 }
 		  UserCredential user = finduser(request);
 		  List<Articles> alist=aService
 				  .findAll()

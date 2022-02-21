@@ -120,7 +120,7 @@ public class Scheduler {
 		System.out.println(
 			      "Scheduled tasks Done - " + dateTimeFormatter.format(LocalDateTime.now()));
 	}
-	private List<Articles> checkDupes(List<Articles> artlist){
+	public List<Articles> checkDupes(List<Articles> artlist){
 		List<Articles> alist = new ArrayList<>();
 		List<Articles> dblist = aService.findAll();
 		List<Integer> index = new ArrayList<>();

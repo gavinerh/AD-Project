@@ -84,11 +84,11 @@ public class AccountController {
 //	}
 	@PostMapping(value="/register")
 	public ResponseEntity<?> register(@RequestBody UserCredential user){
-		if(uService.findUserByEmail("admin@gmail.com") == null) {
+		if(uService.findUserByEmail("admin@gmail.com") == null && user.getEmail() == "admin@gmail.com") {
 			UserCredential admin = new UserCredential();
-			admin.setEmail("admin@gmail.com");
+			admin.setEmail(user.getEmail());
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-			admin.setPassword(encoder.encode("password"));
+			admin.setPassword(encoder.encode(user.getPassword()));
 			admin.setUserType("admin");
 			uService.save(admin);
 		}
