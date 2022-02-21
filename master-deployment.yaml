@@ -48,13 +48,12 @@ metadata:
 spec:
   selector:
     app: java-server
-  type: NodePort
+  type: LoadBalancer
   ports:
     - name: http
       protocol: TCP
       port: 8080
       targetPort: 8080
-      nodePort: 30000
 
 ---
 # java deployment
@@ -79,5 +78,7 @@ spec:
           env:
             - name: MYSQL_HOST
               value: "mysqldb-service.default"
+            - name: MY_SQL_PASSWORD
+              value: root
         - name: python-ml
           image: gavinerh/python-ml
