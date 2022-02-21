@@ -133,8 +133,8 @@ public class NewsController {
 //	  
 //		  }
 		  
-		  List<LikedArticle> likes = larepo.findAll();
-		  List<DislikedArticle> dislikes = darepo.findAll();
+		  List<LikedArticle> likes = larepo.findByUser(user);
+		  List<DislikedArticle> dislikes = darepo.findByUser(user);
 		  if(likes.size()>10 || dislikes.size()>1) {alist = mlfunction(likes,dislikes,alist);}
 
 		  List<ReactJson> newslist = new ArrayList<ReactJson>();
