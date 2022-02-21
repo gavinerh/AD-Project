@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ArticleService from '../service/ArticlesService';
 import './ArticleList.css';
+import { Redirect } from "react-router-dom";
 import noImage from '../assets/no-image-placeholder.svg';
 import Modal from "./Modal";
 import AuthenticationService from "../service/AuthenticationService";
@@ -114,7 +115,8 @@ export default class DislikedHistory extends Component {
                                 );
                             })
                         ) : (
-                            <p>Loading articles...</p>
+                            AuthenticationService.checkJwtValidity() ?
+                            <p>Loading articles...</p> : <Redirect to="/" />
                         )}
                     </div>
                 </div>

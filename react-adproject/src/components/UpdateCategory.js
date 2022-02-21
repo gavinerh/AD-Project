@@ -1,8 +1,8 @@
 import ArticleService from '../service/ArticlesService';
 import React, { Component, useEffect, useState } from 'react';
 import Category from './Category';
-import axios from 'axios';
 import { Link, Redirect } from 'react-router-dom';
+import AuthenticationService from '../service/AuthenticationService';
 function UpdateCategory() {
     const [categories, setCategories] = useState([]);
 
@@ -24,7 +24,7 @@ function UpdateCategory() {
                 setCategories(response.data);
             });
     }, [])
-
+    
 
     function inputCheckHandler(name, ischecked) {
         const newCategoryList = categories.map(category => {
@@ -42,6 +42,7 @@ function UpdateCategory() {
 
     return (
         <div className="container p-3">
+            { AuthenticationService.checkJwtValidity() ?
             <main>
                 <div className="row g-5">
                     <div className="col-md-6">
@@ -55,7 +56,7 @@ function UpdateCategory() {
                         </form>
                     </div>
                 </div>
-            </main>
+            </main> : <Redirect to="/" />}
         </div>
         // <>
         // <div>

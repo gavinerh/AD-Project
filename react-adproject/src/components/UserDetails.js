@@ -1,6 +1,6 @@
 import UserDataService from "../service/UserDataService";
 import { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import AuthenticationService from "../service/AuthenticationService";
 import Modal from "./Modal";
 
@@ -13,7 +13,7 @@ function UserDetails() {
         name: '',
         error: null
     });
-    const [isloading, setIsloading] = useState('');
+    const [isloading, setIsloading] = useState(false);
     useEffect(() => {
         UserDataService.getUser(UserDataService)
             .then(response => {
@@ -27,12 +27,10 @@ function UserDetails() {
                 });
             })
             .catch(error => {
-                console.log("token has expired");
                 if (!AuthenticationService.checkJwtValidity()) {
-                    setIsloading(<div><Modal /></div>)
-                } else {
-                    setIsloading(<p>Loading ...</p>)
-                }
+                    setIsloading(true);
+                } 
+                console.log(error);
             })
     }, [])
 
@@ -71,7 +69,7 @@ function UserDetails() {
                 }).catch(error => {
                     console.log("token has expired");
                     if (!AuthenticationService.checkJwtValidity()) {
-                        setIsloading(<div><Modal /></div>)
+                        <Redirect to="/" />
                     }
                 })
         }
@@ -111,7 +109,7 @@ function UserDetails() {
                                 </div>
                             </form>
                         </div>
-                        : isloading}
+                        : <Redirect to="/" />}
                 </div>
             </main>
         </div>

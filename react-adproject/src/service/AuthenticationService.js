@@ -77,7 +77,6 @@ class AuthenticationService {
             
             return false;
         }
-        console.log("token is still valid");
         return true;
     }
 }

@@ -340,7 +340,9 @@ export default class ArticleList extends Component {
                                 );
                             })
                         ) : (
+                            AuthenticationService.checkJwtValidity() ?
                             <p>Loading articles...</p>
+                            : <Redirect to="/" />
                         )}
                     </div>
 

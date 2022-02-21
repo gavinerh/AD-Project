@@ -13,15 +13,6 @@ class UserDataService{
         return axios.post(`http://localhost:8080/account/register`, user)
     }
 
-    // register(name, phone, email, password){
-    //     return axios.post('http://localhost:8080:/account/register', {
-    //         name: name,
-    //         phone: phone,
-    //         email: email,
-    //         password: password
-    //     });
-    // }
-
     getUser(){
         let email = AuthenticationService.getUserEmail();
         return axios.get(`http://localhost:8080/account/${email}`, AuthenticationService.setupHeader())

@@ -144,7 +144,9 @@ export default class BookmarkList extends Component {
                                 );
                             })
                         ) : (
+                            AuthenticationService.checkJwtValidity() ?
                             <p>Loading articles...</p>
+                            : <Redirect to="/" />
                         )}
                     </div>
                 </div>

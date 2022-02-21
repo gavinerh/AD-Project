@@ -126,7 +126,8 @@ export default class LikedHistory extends Component {
                                 );
                             })
                         ) : (
-                            <p>Loading articles...</p>
+                            AuthenticationService.checkJwtValidity() ?
+                            <p>Loading articles...</p> : <Redirect to="/" />
                         )}
                     </div>
                 </div>
