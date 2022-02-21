@@ -67,7 +67,6 @@ public class NewsController {
 	ArticlesService aService;
 	@Autowired
 	SourceRepo srepo;
-
 	@Autowired
 	LikedArticleRepository larepo;
 	@Autowired
@@ -383,6 +382,14 @@ public class NewsController {
 		return list;
 	}
 	
+	@GetMapping(path="/cats")
+	public List<String> getcats(){
+		List<Category> category = cService.getAllCategories();
+		List<String> cats = new ArrayList<>();
+		category.stream().forEach(x-> cats.add(x.getName()));
+		return cats;
+	}
+	
 //	@PostMapping(path="/category")
 //	public ResponseEntity<Void> postCategories(HttpServletRequest request, @RequestBody List<CategoryJson> res){
 //		System.out.println(res);
@@ -471,7 +478,7 @@ public class NewsController {
 	          for(int i:result.getResult()) {
 	        	  mlList.add(alist.get(i));
 	          }
-
+git 
 	      } catch (MalformedURLException e) {
 	          e.printStackTrace();
 	      }catch (IOException e){

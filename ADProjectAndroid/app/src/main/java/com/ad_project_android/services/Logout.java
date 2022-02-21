@@ -14,7 +14,7 @@ public class Logout {
         SharedPreferences.Editor editor = pref.edit();
         editor.clear();
         editor.commit();
-        Toast.makeText(context,"Log in Expired! Please Log In Again!",Toast.LENGTH_LONG);
+        Toast.makeText(context,"Log in Expired! Please Log In Again!",Toast.LENGTH_LONG).show();
         Intent intent = new Intent(context, LoginActivity.class);
         intent.putExtra("finish", true);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // To clean up all activities

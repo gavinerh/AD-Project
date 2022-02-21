@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
                         setadaptor(dynamicNewsObject);
                         populateAdaptor();
                     }
-                    else if(response.code()==401){
+                    else {
                         Logout.logout(MainActivity.this);
                     }
                 }
@@ -271,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements AdapterInterface 
                     Toast.makeText(MainActivity.this, "Preference is registered", Toast.LENGTH_SHORT).show();
                     adapter.notifyDataSetChanged();
                 }
-                else if(response.code()==401){
+                else{
                     Logout.logout(MainActivity.this);
                 }
             }

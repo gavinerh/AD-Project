@@ -120,13 +120,11 @@ public class History extends AppCompatActivity {
                     lds.remove(like);
                     adapter.setLds(lds);
                     adapter.notifyDataSetChanged();
-                }
-                else if(response.code()==401){
-                    Logout.logout(History.this);
+                    if(lds.size()==0){textView.setVisibility(View.VISIBLE);}
                 }
                 else{
-                    Toast.makeText(History.this, "Server error, please update preference later",
-                            Toast.LENGTH_SHORT).show();}
+                    Logout.logout(History.this);
+                }
             }
 
             @Override
@@ -208,12 +206,9 @@ public class History extends AppCompatActivity {
 //                            ldtitle.setVisibility(View.INVISIBLE);
                     }
                 }
-                else if(response.code()==401){
+                else{
                     Toast.makeText(getApplicationContext(), "Please Log In Again!", Toast.LENGTH_SHORT).show();
                     Logout.logout(History.this);
-                }
-                else{
-                    Toast.makeText(History.this,"Server error, Try again later!",Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -225,9 +220,6 @@ public class History extends AppCompatActivity {
     }
     private void setadaptor(){
         ListView listView = findViewById(R.id.listView);
-        //set empty page msg
-        TextView emptyView = findViewById(R.id.hist_blankMsg);
-        listView.setEmptyView(emptyView);
         if (listView != null) {
             adapter = new LikeDislikeAdapter(this,like,dislike,this);
             adapter.setLds(dynlds);

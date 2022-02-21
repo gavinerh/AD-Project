@@ -56,7 +56,7 @@ public class AccountActivity extends AppCompatActivity {
                             Toast.makeText(AccountActivity.this,"Account Update Successful",Toast.LENGTH_SHORT);
                             finishActivity();
                         }
-                        if(response.code()==401){
+                        else{
                             Logout.logout(AccountActivity.this);
                             finish();
                         }
@@ -93,7 +93,7 @@ public class AccountActivity extends AppCompatActivity {
                         User user = response.body();
                         populateEditText(user.getEmail(), user.getPhone(), user.getName());
                     }
-                    if(response.code()==401){
+                    else{
                         Logout.logout(AccountActivity.this);
                     }
                 }

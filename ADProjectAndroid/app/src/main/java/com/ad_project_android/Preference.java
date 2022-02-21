@@ -100,18 +100,6 @@ public class Preference extends AppCompatActivity {
                 });
                 snackbar.show();
             }
-//            else {
-//                usercats.remove(pref);
-//                snackbar = Snackbar.make(mCoordinate, "Preference removed", Snackbar.LENGTH_SHORT);
-//                snackbar.setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE);
-//                snackbar.setAction("X", new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        snackbar.dismiss();
-//                    }
-//                });
-//                snackbar.show();
-//            }
         });
         adapter.setUserpref(usercats);
         adapter.notifyDataSetChanged();
@@ -165,10 +153,8 @@ public class Preference extends AppCompatActivity {
                     cats = response.body();
                     setadaptor();
                 }
-                else if (response.code() == 401) {
+                else {
                     Logout.logout(Preference.this);
-                } else {
-                    Toast.makeText(Preference.this, "Server error, Try again later!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -190,11 +176,8 @@ public class Preference extends AppCompatActivity {
                     usercats = response.body();
                     setadaptor1();
                 }
-                else if (response.code() == 401) {
-                    Logout.logout(Preference.this);
-                }
                 else {
-                    Toast.makeText(Preference.this, "Server error, Try again later!", Toast.LENGTH_SHORT).show();
+                    Logout.logout(Preference.this);
                 }
             }
 
@@ -217,10 +200,8 @@ public class Preference extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                     finish();
                 }
-                else if (response.code() == 401) {
+                else{
                     Logout.logout(Preference.this);
-                } else {
-                    Toast.makeText(Preference.this, "Server error, Try again later!", Toast.LENGTH_SHORT).show();
                 }
             }
 

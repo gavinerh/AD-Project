@@ -80,7 +80,9 @@ public class BookmarkPage extends AppCompatActivity {
             bm.setBitmap(bitmap);}
             if(bm!=null){
             dynamicbms.add(bm);
-            bmadapter.notifyDataSetChanged();}
+            bmadapter.notifyDataSetChanged();
+            if(bms.size()==0){bmtxt.setVisibility(View.VISIBLE);}
+            }
         }
     };
     @Override
@@ -136,14 +138,12 @@ public class BookmarkPage extends AppCompatActivity {
                     bms.remove(bkmark);
                     bmadapter.setBms(bms);
                     bmadapter.notifyDataSetChanged();
-                }
-                else if(response.code()==401){
-                    Logout.logout(BookmarkPage.this);
+                    if(bms.size()==0){bmtxt.setVisibility(View.VISIBLE);}
                 }
                 else{
-                    Toast.makeText(BookmarkPage.this,
-                            "(BM) Server error, please try again later",
-                            Toast.LENGTH_SHORT).show();}
+                    Logout.logout(BookmarkPage.this);
+                }
+
             }
 
             @Override
@@ -233,11 +233,8 @@ public class BookmarkPage extends AppCompatActivity {
 //                        bmtitle.setVisibility(View.INVISIBLE);
                     }
                 }
-                else if(response.code()==401){
+                else {
                     Logout.logout(BookmarkPage.this);
-                }
-                else{
-                    Toast.makeText(BookmarkPage.this,"(BM) Server error, Try again later!",Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -251,9 +248,6 @@ public class BookmarkPage extends AppCompatActivity {
     private void setBMadapter() {
 //      private void setBMadapter(List<Bookmark> bookMarks) {
         ListView listView = findViewById(R.id.listView);
-        //set empty page msg
-        TextView emptyView = findViewById(R.id.bm_blankMsg);
-        listView.setEmptyView(emptyView);
         if (listView != null) {
             bmadapter = new BookmarkAdapter(
                     this, dynamicbms,this);

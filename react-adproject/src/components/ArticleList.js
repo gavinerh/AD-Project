@@ -25,8 +25,6 @@ export default class ArticleList extends Component {
             comment: [],
             isLoading: true,
             errors: null,
-            //  isOn: false,
-            //  display: 'none',
             keyword: '',
             sortBy: '',
             displayComment: false,
@@ -62,27 +60,15 @@ export default class ArticleList extends Component {
     }
 
     onsubmitCommentListener(title) {
-        //      console.log(title);
         var comment = document.getElementById(title).value;
-        // console.log(comment);
-        // console.log(title);
         this.setState({
             displayComment: title
         })
     }
 
     onCommentListener(id, title) {
-
-
-
         var area = document.getElementById(id);
-        // console.log(area);
-        // console.log(area.style);
-
         area.style = "display:block";
-
-
-
         this.setState((prevState) => ({
             displayComment: !prevState.displayComment
         }))
@@ -109,8 +95,8 @@ export default class ArticleList extends Component {
         ArticlesService.updateKeyword(this.state.keyword, this.state.sortBy)
             .then(response =>
                 response.data.map(article => ({
-                    sourceid: `${article.source.sourceid}`,
-                    id: `${article.source.id}`,
+                    sourceid: `${article.source.id}`,
+                    id: `${article.id}`,
                     sourcename: `${article.source.name}`,
                     author: `${article.author}`,
                     title: `${article.title}`,
@@ -158,8 +144,8 @@ export default class ArticleList extends Component {
             //once get response, map API endpoints to our props
             .then(response =>
                 response.data.map(article => ({
-                    sourceid: `${article.source.sourceid}`,
-                    id: `${article.source.sourceid}`,
+                    sourceid: `${article.source.id}`,
+                    id: `${article.id}`,
                     sourcename: `${article.source.name}`,
                     author: `${article.author}`,
                     title: `${article.title}`,
@@ -283,31 +269,37 @@ export default class ArticleList extends Component {
                                                             </button>
                                                         </div>
                                                         <div className="me-1">
-                                                        <FacebookShareButton url={url}
+                                                            <button className="py-1 mb-1 btn btn-custom btn-sm btn-outline-dark" id="dropdown09" data-bs-toggle="dropdown"
+                                                                aria-expanded="false"><svg className="bi mx-1" width="1em" height="1em">
+                                                                    <use xlinkHref="#link" />
+                                                                </svg>
+                                                                Share</button>
+                                                            <ul className="dropdown-menu" aria-labelledby="dropdown09">
+                                                                <li className="dropdown-item"><FacebookShareButton url={url}
                                                                     quote={title}
                                                                     hashtag={"#newsbook"}
                                                                     description={title}
-                                                                    className="Demo__some-network__share-button"
-                                                        >
-                                                                    <FacebookIcon size={32} round /> 
-                                                                    </FacebookShareButton>
-                                                                    <TwitterShareButton url={url}
+                                                                    className="Demo__some-network__share-button">
+                                                                    <FacebookIcon size={24} round />
+                                                                    <small>&nbsp;&nbsp;Share to Facebook</small>
+                                                                </FacebookShareButton></li>
+                                                                <li className="dropdown-item"><TwitterShareButton url={url}
                                                                     quote={title}
                                                                     hashtag={"#newsbook"}
                                                                     description={title}
-                                                                    className="Demo__some-network__share-button"
-                                                        >
-                                                                    <TwitterIcon size={32} round /> 
-                                                                    </TwitterShareButton>
-                                                                    <EmailShareButton url={url}
+                                                                    className="Demo__some-network__share-button">
+                                                                    <TwitterIcon size={24} round />
+                                                                    <small>&nbsp;&nbsp;Share to Twitter</small>
+                                                                </TwitterShareButton></li>
+                                                                <li className="dropdown-item"><EmailShareButton url={url}
                                                                     quote={title}
                                                                     hashtag={"#newsbook"}
                                                                     description={title}
-                                                                    className="Demo__some-network__share-button"
-                                                        >
-        
-                                                                    <EmailIcon size={32} round /> 
-                                                                    </EmailShareButton>
+                                                                    className="Demo__some-network__share-button">
+                                                                    <EmailIcon size={24} round />
+                                                                    <small>&nbsp;&nbsp;Email</small>
+                                                                </EmailShareButton></li>
+                                                            </ul>
                                                         </div>
                                                         
                                                         <div className="me-1">
@@ -358,7 +350,9 @@ export default class ArticleList extends Component {
                                 );
                             })
                         ) : (
+                            AuthenticationService.checkJwtValidity() ?
                             <p>Loading articles...</p>
+                            : <Redirect to="/" />
                         )}
                     </div>
 
