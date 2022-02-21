@@ -118,6 +118,7 @@ export default class ArticleList extends Component {
                     url: `${article.url}`,
                     urlToImage: `${article.urlToImage}`,
                     prettytime: `${article.prettytime}`,
+
                  
                    
 
@@ -158,7 +159,7 @@ export default class ArticleList extends Component {
             .then(response =>
                 response.data.map(article => ({
                     sourceid: `${article.source.sourceid}`,
-                    id: `${article.source.id}`,
+                    id: `${article.source.sourceid}`,
                     sourcename: `${article.source.name}`,
                     author: `${article.author}`,
                     title: `${article.title}`,
@@ -167,6 +168,9 @@ export default class ArticleList extends Component {
                     urlToImage: `${article.urlToImage}`,
                     prettytime: `${article.prettytime}`,
                     publishedAt: `${article.publishedAt}`,
+                    isliked: `${article.isliked}`,
+                    isdisliked: `${article.isdisliked}`,
+                    isbookmarked: `${article.isbookmarked}`
                     
                 }))
             )
@@ -207,14 +211,12 @@ export default class ArticleList extends Component {
                     <div className='col-md-12 col-lg-9 border-0 flex-column'>
                         {!isLoading ? (
                             articles.map(article => {
-                                const { sourceid, id, sourcename, title, description, url, urlToImage, prettytime, publishedAt } = article;
-                               const Likedd = false;
-                                //  ArticleService.IsArticleLiked(article).then((response)=>{
-                                //     this.setState(Likedd,response.data)
-                                // });
+                                const { sourceid, id, sourcename, title, description, url, urlToImage, prettytime, isliked,isdisliked,isbookmarked, publishedAt } = article;
+                                
                                 
                                
                                 return (
+                                       
                                     <div className="container px-3 pt-3" key={sourceid, id, title}>
                                         {/* article icons */}
                                         <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }}>
@@ -253,6 +255,7 @@ export default class ArticleList extends Component {
 
                                         {/*start of one news box*/}
                                         <div className="list-group-item rounded-5 d-flex gap-3 p-3" aria-current="true">
+                                            
                                             {/* display image */}
                                             <div className="d-flex justify-content-start">
                                                 <a href={url} target="_blank" rel="noopener noreferrer"><img src={urlToImage} alt={title} width="128" height="128" className="rounded flex-shrink-0"
@@ -308,26 +311,21 @@ export default class ArticleList extends Component {
                                                         </div>
                                                         
                                                         <div className="me-1">
-                                                            {Likedd?(
-                                                            <button className="py-1 mb-1 btn btn-custom btn-sm btn-outline-success active" type="submit" data-bs-toggle="button"
+                                                       
+                                                            <button className={"py-1 mb-1 btn btn-custom btn-sm btn-outline-success" + (isliked==="true"? ' active':'')}type="submit" data-bs-toggle="button"
                                                                 onClick={() => this.onLikeClickListener(article)}>
                                                                 <svg className="bi mx-1" width="1em" height="1em">
                                                                     <use xlinkHref="#hand-thumbs-up" />
                                                                 </svg>
                                                                 Like
-                                                            </button>):(
-                                                            <button className="py-1 mb-1 btn btn-custom btn-sm btn-outline-success " type="submit" data-bs-toggle="button"
-                                                                onClick={() => this.onLikeClickListener(article)}>
-                                                                <svg className="bi mx-1" width="1em" height="1em">
-                                                                    <use xlinkHref="#hand-thumbs-up" />
-                                                                </svg>
-                                                                Like
-                                                            </button>)}
+                                                            </button>
+                                                            
+                                                         
                                                         </div>
                                                         <div>
                                                             
                                                             
-                                                            <button className="py-1 mb-1 btn btn-custom btn-sm btn-outline-danger" type="submit" data-bs-toggle="button" aria-pressed= 'false'
+                                                            <button className={"py-1 mb-1 btn btn-custom btn-sm btn-outline-danger" + (isdisliked==="true"? ' active':'')} type="submit" data-bs-toggle="button" aria-pressed= 'false'
                                                                 onClick={() => this.onDislikeClickListener(article)}>
                                                                 <svg className="bi mx-1" width="1em" height="1em">
                                                                     <use xlinkHref="#hand-thumbs-down" />
@@ -341,7 +339,7 @@ export default class ArticleList extends Component {
                                             </div>
                                             <div className="d-flex justify-content-end">
                                                 <div>
-                                                    <button className="btn btn-custom btn-sm btn-outline-warning active" data-bs-toggle="button" type="submit" aria-pressed= "true" onClick={() => this.onBookmarkClickListener(article)}  >
+                                                    <button className={"btn btn-custom btn-sm btn-outline-warning"+ (isbookmarked==="true"? ' active':'')} data-bs-toggle="button" type="submit" aria-pressed= "true" onClick={() => this.onBookmarkClickListener(article)}  >
                                                         <svg className="bi" width="1.5em" height="1.5em">
                                                             <use xlinkHref="#bookmark" />
                                                         </svg>
