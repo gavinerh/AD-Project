@@ -205,8 +205,11 @@ public class NewsController {
 ///////////////////////////////////////////////////////////////////////	
 		//Fetch News from database
 
-		List<Articles> alist = aService.findAll();
-///////////////////////////////////////////////////////////////////////
+		List<Articles> alist = aService
+				  .findAll()
+				  .stream()
+				  .filter(article -> user.getCats().contains(article.getCategory()))
+				  .collect(Collectors.toList()); 
        
 		System.out.println("Fetched Articles size: "+alist.size());
 		List<Articles> android = new ArrayList<>();
@@ -478,7 +481,7 @@ public class NewsController {
 	          for(int i:result.getResult()) {
 	        	  mlList.add(alist.get(i));
 	          }
-git 
+
 	      } catch (MalformedURLException e) {
 	          e.printStackTrace();
 	      }catch (IOException e){
