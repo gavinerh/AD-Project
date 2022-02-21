@@ -8,12 +8,13 @@ function UpdateCategory() {
 
     function formSubmitHandler(event) {
         event.preventDefault();
+        console.log("code came here");
         ArticleService.setCategories(categories)
         .then(response => {
             if(response.status === 200){
-                // <Redirect to="/main" />
+                <Redirect to="/main" />
             }
-        })
+        }).catch(error => console.log(error))
     }
 
     useEffect(() => {
@@ -45,11 +46,11 @@ function UpdateCategory() {
                 <div className="row g-5">
                     <div className="col-md-6">
                         <h4 className="mb-3">Select news categories</h4>
-                        <form onSubmit={formSubmitHandler}>
+                        <form>
                             {categories.map(category1 => {
                                 return <Category key={category1.name} category={category1} onInputCheckHandler={inputCheckHandler} />
                             })}
-                            <button className="mt-3 btn btn-primary" type="submit"><Link to="/main" style={{color: 'white', 'text-decoration': 'none'}}>Submit</Link></button>
+                            <button onClick={formSubmitHandler} className="mt-3 btn btn-primary" type="submit"><Link to="/main" style={{color: 'white', 'text-decoration': 'none'}}>Submit</Link></button>
                             {/* <input type='submit' /> */}
                         </form>
                     </div>
