@@ -17,15 +17,11 @@ import lombok.NoArgsConstructor;
 public class DislikedArticle {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-
 	private int id;
-
-
 	@Column(length=512)
 	private String title;
 	@Column(length=512)
 	private String description;
-
 	@Column(length=512)
 	private String url;
 	@ManyToOne

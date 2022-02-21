@@ -18,7 +18,7 @@ export default class ArticleList extends Component {
         this.onDislikeClickListener = this.onDislikeClickListener.bind(this);
         this.onCommentListener = this.onCommentListener.bind(this);
         this.checkArticleLike = this.checkArticleLike.bind(this);
-        this.onBookmarkClickListener = this.onBookmarkClickListener.bind(this);
+        this.onBookmarkClickListener =this.onBookmarkClickListener.bind(this);
 
         this.state = {
             articles: [],
@@ -28,7 +28,8 @@ export default class ArticleList extends Component {
             keyword: '',
             sortBy: '',
             displayComment: false,
-            IsArticleLikedd: false
+            Likedd: false
+           
         };
     }
 
@@ -46,16 +47,16 @@ export default class ArticleList extends Component {
         ArticleService.dislikeArticle(article);
     }
 
-    onBookmarkClickListener(article) {
+    onBookmarkClickListener(article){
         console.log(article);
         ArticlesService.bookmarkArticle(article);
     }
 
-    checkArticleLike(article) {
+    checkArticleLike(article){
         console.log(article)
         ArticlesService.IsArticleLiked(article)
-            .then(response => console.log(response))
-
+        .then(response=> console.log(response))
+        
     }
 
     onsubmitCommentListener(title) {
@@ -104,6 +105,8 @@ export default class ArticleList extends Component {
                     urlToImage: `${article.urlToImage}`,
                     prettytime: `${article.prettytime}`,
 
+                 
+                   
 
                 }))
             )
@@ -150,7 +153,11 @@ export default class ArticleList extends Component {
                     url: `${article.url}`,
                     urlToImage: `${article.urlToImage}`,
                     prettytime: `${article.prettytime}`,
-                    publishedAt: `${article.publishedAt}`
+                    publishedAt: `${article.publishedAt}`,
+                    isliked: `${article.isliked}`,
+                    isdisliked: `${article.isdisliked}`,
+                    isbookmarked: `${article.isbookmarked}`
+                    
                 }))
             )
             //change loading state to display data--> set active article
@@ -173,11 +180,16 @@ export default class ArticleList extends Component {
                     })
                 }
             });
+
+           
+
+
     }
 
 
     render() {
         const { isLoading, articles } = this.state;
+        
         return (
             <React.Fragment>
                 <div className="d-flex">
@@ -185,13 +197,12 @@ export default class ArticleList extends Component {
                     <div className='col-md-12 col-lg-9 border-0 flex-column'>
                         {!isLoading ? (
                             articles.map(article => {
-                                const { sourceid, id, sourcename, title, description, url, urlToImage, prettytime, publishedAt } = article;
-                                //const [likedd, setlikedd] = React.useState(null);
-                                const likedd = false;
-
-
-
+                                const { sourceid, id, sourcename, title, description, url, urlToImage, prettytime, isliked,isdisliked,isbookmarked, publishedAt } = article;
+                                
+                                
+                               
                                 return (
+                                       
                                     <div className="container px-3 pt-3" key={sourceid, id, title}>
                                         {/* article icons */}
                                         <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }}>
@@ -210,7 +221,10 @@ export default class ArticleList extends Component {
                                             </symbol>
 
                                             <symbol id="link" viewBox="0 0 16 16">
-                                                <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z" />
+                                                <path
+                                                    d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9c-.086 0-.17.01-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z" />
+                                                <path
+                                                    d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z" />
                                             </symbol>
 
                                             <symbol id="comment" viewBox="0 0 16 16">
@@ -227,6 +241,7 @@ export default class ArticleList extends Component {
 
                                         {/*start of one news box*/}
                                         <div className="list-group-item rounded-5 d-flex gap-3 p-3" aria-current="true">
+                                            
                                             {/* display image */}
                                             <div className="d-flex justify-content-start">
                                                 <a href={url} target="_blank" rel="noopener noreferrer"><img src={urlToImage} alt={title} width="128" height="128" className="rounded flex-shrink-0"
@@ -286,47 +301,42 @@ export default class ArticleList extends Component {
                                                                 </EmailShareButton></li>
                                                             </ul>
                                                         </div>
-
+                                                        
                                                         <div className="me-1">
-                                                            {likedd ? (
-                                                                <button className="py-1 mb-1 btn btn-custom btn-sm btn-outline-success active" type="submit" data-bs-toggle="button"
-                                                                    onClick={() => this.onLikeClickListener(article)}>
-                                                                    <svg className="bi mx-1" width="1em" height="1em">
-                                                                        <use xlinkHref="#hand-thumbs-up" />
-                                                                    </svg>
-                                                                    Like
-                                                                </button>) : (
-                                                                <button className="py-1 mb-1 btn btn-custom btn-sm btn-outline-success " type="submit" data-bs-toggle="button"
-                                                                    onClick={() => this.onLikeClickListener(article)}>
-                                                                    <svg className="bi mx-1" width="1em" height="1em">
-                                                                        <use xlinkHref="#hand-thumbs-up" />
-                                                                    </svg>
-                                                                    Like
-                                                                </button>)}
+                                                       
+                                                            <button className={"py-1 mb-1 btn btn-custom btn-sm btn-outline-success" + (isliked==="true"? ' active':'')}type="submit" data-bs-toggle="button"
+                                                                onClick={() => this.onLikeClickListener(article)}>
+                                                                <svg className="bi mx-1" width="1em" height="1em">
+                                                                    <use xlinkHref="#hand-thumbs-up" />
+                                                                </svg>
+                                                                Like
+                                                            </button>
+                                                            
+                                                         
                                                         </div>
                                                         <div>
-
-
-                                                            <button className="py-1 mb-1 btn btn-custom btn-sm btn-outline-danger" type="submit" data-bs-toggle="button" aria-pressed='false'
+                                                            
+                                                            
+                                                            <button className={"py-1 mb-1 btn btn-custom btn-sm btn-outline-danger" + (isdisliked==="true"? ' active':'')} type="submit" data-bs-toggle="button" aria-pressed= 'false'
                                                                 onClick={() => this.onDislikeClickListener(article)}>
                                                                 <svg className="bi mx-1" width="1em" height="1em">
                                                                     <use xlinkHref="#hand-thumbs-down" />
                                                                 </svg>
                                                                 Dislike
                                                             </button>
-
+                                                        
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="d-flex justify-content-end">
                                                 <div>
-                                                    <button className="btn btn-custom btn-sm btn-outline-warning" data-bs-toggle="button" type="submit" aria-pressed="true" onClick={() => this.onBookmarkClickListener(article)}  >
+                                                    <button className={"btn btn-custom btn-sm btn-outline-warning"+ (isbookmarked==="true"? ' active':'')} data-bs-toggle="button" type="submit" aria-pressed= "true" onClick={() => this.onBookmarkClickListener(article)}  >
                                                         <svg className="bi" width="1.5em" height="1.5em">
                                                             <use xlinkHref="#bookmark" />
                                                         </svg>
                                                     </button>
-                                                </div>
+                                                </div>  
                                             </div>
                                         </div>
                                         <div id={title + "comment"} style={{ display: "none" }}>

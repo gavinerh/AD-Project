@@ -33,18 +33,23 @@ import com.example.demo.Repository.SourceRepo;
 import com.example.demo.model.Articles;
 import com.example.demo.model.BookmarkedArticles;
 import com.example.demo.model.Category;
+import com.example.demo.model.Comment;
 import com.example.demo.model.DislikedArticle;
 import com.example.demo.model.LikedArticle;
 import com.example.demo.model.NewsSet;
+import com.example.demo.model.Source;
 import com.example.demo.model.UserCredential;
 import com.example.demo.model.JsonModel.CategoryJson;
 import com.example.demo.model.JsonModel.MLJson;
+import com.example.demo.model.JsonModel.ReactJson;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.ArticlesService;
 import com.example.demo.service.CategoryService;
 import com.example.demo.service.NewsService;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import antlr.debug.NewLineListener;
 
 
 
@@ -103,7 +108,7 @@ public class NewsController {
 
 	
 	 @RequestMapping(value = "/") 
-	  public List<Articles> HomePage(HttpServletRequest request) {
+	  public List<ReactJson> HomePage(HttpServletRequest request) {
 		 // NewsSet ns =NewsService.getNewsHome("technology", null, null);
 		  UserCredential user = finduser(request);
 		  List<Articles> alist=aService
@@ -124,7 +129,35 @@ public class NewsController {
 //			  System.out.println("News Articles " + alist.size());
 //	  
 //		  } 
-		  return alist; 
+		  List<ReactJson> newslist = new ArrayList<ReactJson>();
+		  for (Articles a: alist)
+		  {
+			  ReactJson temp = new ReactJson(a.getId(), a.getSource(), a.getAuthor(), a.getTitle(), a.getDescription(), a.getUrl(),
+						a.getUrlToImage(), a.getPublishedAt(), a.getPrettytime(), a.getContent(),a.getComments(),
+					false, a.getCategory(), false, false);
+		
+			  LikedArticle like = larepo.findByUserAndTitle(user,temp.getTitle());
+			  DislikedArticle dislike = darepo.findByUserAndTitle(user,temp.getTitle());
+			  BookmarkedArticles bookmarked = bmrepo.findByUserAndTitle(user,temp.getTitle());
+				
+			  if(like != null)
+			  {
+				  temp.setIsliked(true);
+			  }
+			  if(dislike != null)
+			  {
+				  temp.setIsdisliked(true);
+			  }
+			  if(bookmarked != null)
+			  {
+				  temp.setIsbookmarked(true);
+			  }
+			  
+			  System.out.println(temp);
+			  newslist.add(temp);
+		  }
+		 
+		  return newslist; 
 	  }
 	//search using NEWSAPI
 	@GetMapping(value= {"/kw/updateKeyword"})
@@ -172,8 +205,11 @@ public class NewsController {
 ///////////////////////////////////////////////////////////////////////	
 		//Fetch News from database
 
-		List<Articles> alist = aService.findAll();
-///////////////////////////////////////////////////////////////////////
+		List<Articles> alist = aService
+				  .findAll()
+				  .stream()
+				  .filter(article -> user.getCats().contains(article.getCategory()))
+				  .collect(Collectors.toList()); 
        
 		System.out.println("Fetched Articles size: "+alist.size());
 		List<Articles> android = new ArrayList<>();
