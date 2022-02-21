@@ -18,11 +18,8 @@ import com.example.demo.Repository.CategoryRepo;
 import com.example.demo.Repository.SourceRepo;
 import com.example.demo.model.Articles;
 import com.example.demo.model.Category;
-import com.example.demo.model.NewsSet;
 import com.example.demo.service.ArticlesService;
 import com.example.demo.service.NewsService;
-
-import Enumerates.category;
 
 @Configuration
 @EnableScheduling
@@ -36,8 +33,7 @@ public class Scheduler {
 	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("h:mm:ss a");
 
 	//// RETRIEVE ARTICLES FROM API/////
-	@Scheduled(cron = "00 15 09 * * ?")
-
+	@Scheduled(cron = "0 0 */8 ? * *")
 	public void scheduleTaskUsingCronExpression() {
 		
 	    System.out.println(
@@ -53,7 +49,7 @@ public class Scheduler {
 			
 			  for (Articles a:aList) 
 			  { 
-				  a.setCategory(s);; 
+				  a.setCategory(s); 
 			  }
 			 
 			nlist.addAll(aList);
@@ -76,7 +72,7 @@ public class Scheduler {
 	
 	/////DELETE OLD ARTICLES////
 	
-	@Scheduled(cron = "00 31 01 * * ?")
+	@Scheduled(cron = "0 0 0 */3 * ?")
 	public void scheduleTaskToDeleteOldArticles() {
 		
 	    System.out.println(
@@ -88,7 +84,7 @@ public class Scheduler {
 	    LocalDate now = LocalDate.now();
 	    db.stream().forEach(x-> {
 	    	LocalDate date = LocalDate.parse(x.getPublishedAt(), df);
-	    	if(date.plusDays(3).isEqual(now)) {
+	    	if(date.plusDays(3).isEqual(now) || date.plusDays(3).isBefore(now)) {
 	    		toDelete.add(x);
 	    	}
 	    });

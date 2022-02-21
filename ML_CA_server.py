@@ -70,7 +70,7 @@ def jsontest():
 def like():
     ## Cleaning and preprocessing to transform into feature vectors ##
 
-     #Titles#
+     #Titles & Descriptions#
     json_data = request.get_json()
     title = json_data['titles']
     print(len(title))
@@ -87,7 +87,9 @@ def like():
     if len(dislikes)>0:
         dislikes = clean(dislikes)
         dislike_clean = preprocess(dislikes)
+        print('DisLikes: ',len(dislike_clean))
         indx = []
+        indexes = [] 
         for st in dislike_clean:
             dq = [st]
             q_fv = tfidf.transform(dq).toarray()
@@ -107,17 +109,18 @@ def like():
             print(i)
             tfidf_df = tfidf_df.drop(i)
         for index in tfidf_df.index:
-            indexes = [] 
             doc_idx = int(index[3:])
             if doc_idx not in indexes:
-                indexes.append(doc_idx) 
+                indexes.append(doc_idx)
+             
         result = {'result':indexes}
     print('Tfidf_df size after remove dislike',len(tfidf_df.index))
     ###Likes###
     likes = json_data['likedNews']
-    if len(likes) > 0:
+    if len(likes) > 10:
         likes = clean(likes)
         query_clean = preprocess(likes)
+        print('Likes: ',len(query_clean))
         idx = []
         for s in query_clean:
             query = [s]
@@ -137,18 +140,6 @@ def like():
     return jsonify(result)
 
 
-
-@app.route('/dislike', methods=['POST'])
-def dislike():
-    json_data = request.get_json()
-    title = json_data['dislike']
-    print(title)
-    title = re.findall(re_title,title)
-    print(title)
-    process = preprocess(title)
-    process = {'result':process}
-    print(process)
-    return jsonify(process)
 
 # run the server
 if __name__ == '__main__':

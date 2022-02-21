@@ -70,7 +70,6 @@ public class NewsController {
 	DislikedArticleRepository darepo;
 	@Autowired
 	JwtUtil jwtUtil;
-	List<Articles> alist = new ArrayList<Articles>();
 	@Autowired
 	Scheduler sched;
 	@Autowired
@@ -132,7 +131,12 @@ public class NewsController {
 //			  }
 //			  System.out.println("News Articles " + alist.size());
 //	  
-//		  } 
+//		  }
+		  
+		  List<LikedArticle> likes = larepo.findAll();
+		  List<DislikedArticle> dislikes = darepo.findAll();
+		  if(likes.size()>10 || dislikes.size()>1) {alist = mlfunction(likes,dislikes,alist);}
+
 		  List<ReactJson> newslist = new ArrayList<ReactJson>();
 		  for (Articles a: alist)
 		  {
@@ -209,26 +213,23 @@ public class NewsController {
 ///////////////////////////////////////////////////////////////////////	
 		//Fetch News from database
 
-		List<Articles> alist = aService
+		List<Articles> clist = aService
 				  .findAll()
 				  .stream()
 				  .filter(article -> user.getCats().contains(article.getCategory()))
-				  .collect(Collectors.toList()); 
+				  .collect(Collectors.toList());
        
-		System.out.println("Fetched Articles size: "+alist.size());
+		System.out.println("Fetched Articles size: "+clist.size());
 		List<Articles> android = new ArrayList<>();
 		List<LikedArticle> likes = larepo.findByUser(user);
 		List<DislikedArticle> dislikes = darepo.findByUser(user);
 		List<BookmarkedArticles> bms = bmrepo.findByUser(user);
 		
-		if(likes.size()>10 || dislikes.size()>10) {android = mlfunction(likes,dislikes);}
+		if(likes.size()>10 || dislikes.size()>1) {android = mlfunction(likes,dislikes,clist);}
 		
 		else {
-			if(alist.size()>50) {
-		for(int i = 0; i<100; i++) {
-			android.add(alist.get(i));}}
-			else {android = alist;}
-		}
+			android = clist;
+			}
 		List<String> like = new ArrayList<>();
 		List<String> dislike = new ArrayList<>();
 		List<String> bm = new ArrayList<>();
@@ -435,7 +436,7 @@ public class NewsController {
 	}
 /////////////////////////////Private Methods///////////////////////////////////////
 
-	private List<Articles> mlfunction(List<LikedArticle> llist, List<DislikedArticle> dlist) {
+	private List<Articles> mlfunction(List<LikedArticle> llist, List<DislikedArticle> dlist,List<Articles> clist) {
 		List<Articles> mlList = new ArrayList<>();
 		
 		try {
@@ -451,7 +452,7 @@ public class NewsController {
 	          List<String> titles = new ArrayList<>();
 	          List<String> likes = new ArrayList<>();
 	          List<String> dislikes = new ArrayList<>();
-	          alist.stream()
+	          clist.stream()
 	          		.forEach(x-> {
 	          			titles.add(x.getTitle()+" "+x.getDescription()==null? "":x.getDescription());
 	  	          			});
@@ -483,7 +484,7 @@ public class NewsController {
 	          //disconnect from url connection
 	          conn.disconnect();
 	          for(int i:result.getResult()) {
-	        	  mlList.add(alist.get(i));
+	        	  mlList.add(clist.get(i));
 	          }
 
 	      } catch (MalformedURLException e) {
