@@ -38,6 +38,7 @@ spec:
               value: root
             - name: MYSQL_DATABASE
               value: adproject
+          args: ["--sql-mode="]
 
 ---
 # java service
@@ -73,7 +74,8 @@ spec:
     spec:
       containers:
         - name: java-server
-          image: gavinerh/adproject-java
+        # working now dont change
+          image: gavinerh/adproject-test2
           imagePullPolicy: Always
           env:
             - name: MYSQL_HOST
@@ -81,4 +83,4 @@ spec:
             - name: MY_SQL_PASSWORD
               value: root
         - name: python-ml
-          image: gavinerh/python-ml
+          image:  gavinerh/python-ml

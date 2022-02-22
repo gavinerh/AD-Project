@@ -35,7 +35,7 @@ public class NewsService {
 	    
 	    String domain = "https://newsapi.org/v2/everything";
 	    String query = "?q=" + category;
-	    String date = "&from=" + localdate;
+	    String date = "&from=" + "2022-02-15";
 	    String sortBy = "&sortBy=relevancy";
 	    String urlString = domain + query + date + sortBy + myLang + myPageSize + key; 
 		    try {

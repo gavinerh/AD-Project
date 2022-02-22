@@ -77,41 +77,17 @@ public class NewsController {
 	
 	//testing
 	
-	
-	
-	//For WEB TEMPORARY
-	/*
-	 * @RequestMapping(value="/") public List<Articles> HomePage() { List<Articles>
-	 * alist = NewsService.getNewsByCountryCategory("Technology", null);
-	 * for(Articles art:alist) { //check if articles exist in DB
-	 * if(aService.findExistngArticle(art.getTitle(), art.getDescription())==null) {
-	 * srepo.save(art.getSource()); //save sources to DB aService.save(art); //save
-	 * articles to DB } } System.out.println("News Articles "+alist.size()); return
-	 * alist; }
-	 */
 
-//	@RequestMapping(value="/")
-//	public List<Articles> HomePage() {
-//		NewsSet ns = NewsService.getNewsHome("technology", null, null);
-//		List<Articles> alist = aService.findAll();//ns.getArticles();
-////		for(Articles art:alist) {
-////			//check if articles exist in  DB
-////			if(aService.findExistngArticle(art.getTitle(), art.getDescription())==null) {
-////				srepo.save(art.getSource()); //save sources to DB
-////				aService.save(art); //save articles to DB
-////			}
-////		}
-//		System.out.println("News Articles "+alist.size());
-//		return alist;
-//	}
-//	
 
 	
 	 @RequestMapping(value = "/") 
 	  public List<ReactJson> HomePage(HttpServletRequest request) {
 		 // NewsSet ns =NewsService.getNewsHome("technology", null, null);
 		 if(aService.findAll().isEmpty()) {
-			 fService.populateArticles();
+			 List<Category> cats = cService.getAllCategories();
+			 for(Category c : cats) {
+				 fService.populateArticles(c);
+			 }
 		 }
 		  UserCredential user = finduser(request);
 		  List<Articles> alist=aService
