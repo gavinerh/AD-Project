@@ -223,15 +223,12 @@ public class NewsController {
 		return new ResponseEntity<Map<String,List<?>>>(aj, HttpStatus.OK);
 	}
 	//create method to retrieve bookmarked articles
-		@GetMapping(path="/bmpreference")
-		public ResponseEntity<?> getbmpref(HttpServletRequest request) {
-			UserCredential user = finduser(request);
-			List<BookmarkedArticles> bookmarks = bmrepo.findByUser(user);
-
-			Map<String,List<?>> bmpref = new HashMap<String,List<?>>();
-			bmpref.put("bookmarks", bookmarks);	
-			return new ResponseEntity<Map<String, List<?>>>(bmpref, HttpStatus.OK);
-		}	
+	@GetMapping(path="/bmpreference")
+	public ResponseEntity<List<BookmarkedArticles>> getbmpref(HttpServletRequest request) {
+		UserCredential user = finduser(request);
+		List<BookmarkedArticles> bookmarks = bmrepo.findByUser(user);
+		return new ResponseEntity<List<BookmarkedArticles>>(bookmarks, HttpStatus.OK);
+	}	
 	@GetMapping(path="/preference")
 	public ResponseEntity<?> getpref(HttpServletRequest request){
 		UserCredential user = finduser(request);

@@ -205,15 +205,15 @@ public class BookmarkPage extends AppCompatActivity {
         AlertDialog dialog =  builder.create();
         dialog.show();
     }
-    //call data from Server
+  //call data from Server
     private void getBMPreference(){
         NewsService newsService = getNewsServiceInstance();
-        Call<Map> call = newsService.getBMPreference(tokenString);
-        call.enqueue(new Callback<Map>() {
+        Call<List<Bookmark>> call = newsService.getBMPreference(tokenString);
+        call.enqueue(new Callback<List<Bookmark>>() {
             @Override
-            public void onResponse(Call<Map> call, Response<Map> response) {
+            public void onResponse(Call<List<Bookmark>> call, Response<List<Bookmark>> response) {
                 if(response.code() == 200){
-                    List<Object> bm =(List<Object>) response.body().get("bookmarks");
+                    List<Bookmark> bm = response.body();
                     if(bm!=null){
                         bm.stream().forEach(x->{
                             Bookmark b = new Gson().fromJson
@@ -229,8 +229,6 @@ public class BookmarkPage extends AppCompatActivity {
                     }
                     else{
                         bmtxt.setVisibility(View.VISIBLE);
-//                        TextView bmtitle = findViewById(R.id.bookmarkTitle);
-//                        bmtitle.setVisibility(View.INVISIBLE);
                     }
                 }
                 else {
